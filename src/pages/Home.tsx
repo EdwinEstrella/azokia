@@ -24,40 +24,13 @@ import {
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 import TestimonialsSection from '../components/TestimonialsSection';
+import { FeaturesSectionWithHoverEffects } from '../components/ui/feature-section-with-hover-effects';
 
 const Home: React.FC = () => {
   const { } = useLanguage();
 
   // Estados para los carruseles
   const [currentProject, setCurrentProject] = useState(0);
-
-  // Beneficios principales según especificación - SIN EMOJIS
-  const benefits = [
-    {
-      icon: Bot,
-      title: 'Automatizamos procesos clave',
-      description: 'Implementamos automatizaciones inteligentes que optimizan tu flujo de trabajo y aumentan la eficiencia operativa.',
-      gradient: 'from-blue-500 to-cyan-500'
-    },
-    {
-      icon: Globe,
-      title: 'Diseños web optimizados para ventas',
-      description: 'Creamos páginas web y landing pages que convierten visitantes en clientes reales.',
-      gradient: 'from-purple-500 to-pink-500'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Estrategias digitales que escalan',
-      description: 'Desarrollamos campañas de marketing digital que crecen junto con tu negocio.',
-      gradient: 'from-green-500 to-emerald-500'
-    },
-    {
-      icon: Users,
-      title: 'Acompañamiento real con expertos',
-      description: 'Nuestro equipo te guía en cada paso de tu transformación digital.',
-      gradient: 'from-orange-500 to-red-500'
-    }
-  ];
 
   // Servicios destacados según especificación - SIN EMOJIS
   const featuredServices = [
@@ -221,29 +194,7 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => (
-              <div
-                key={benefit.title}
-                className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 animate-slide-up transform hover:scale-105 text-center"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1E90FF]/10 to-[#9B59B6]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative">
-                  {/* Icono profesional con gradiente */}
-                  <div className={`w-16 h-16 bg-gradient-to-br ${benefit.gradient} rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-blue-500/25 transition-all duration-300 transform group-hover:scale-110`}>
-                    <benefit.icon className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-[#EAEAEA] mb-4">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-[#EAEAEA]/70 text-sm leading-relaxed">
-                    {benefit.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+          <FeaturesSectionWithHoverEffects />
         </div>
       </section>
 
