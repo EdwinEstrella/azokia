@@ -48,7 +48,6 @@ const Header: React.FC = () => {
                 alt="Azokia Logo" 
                 className="w-10 h-10 object-contain transform hover:scale-105 transition-transform duration-200"
               />
-              <div className="absolute -inset-1 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl blur opacity-20 hover:opacity-30 transition-opacity duration-200"></div>
             </div>
             <div className="flex items-baseline space-x-1">
               <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-300 bg-clip-text text-transparent">
