@@ -32,6 +32,7 @@ const Home: React.FC = () => {
       title: 'Inteligencia Artificial aplicada al marketing',
       description: 'Chatbots inteligentes, automatizaciones con IA y análisis predictivo para maximizar tus resultados.',
       features: ['Chatbots con IA', 'Análisis predictivo', 'Automatización inteligente', 'Segmentación de audiencias', 'Personalización de contenido', 'Optimización de campañas'],
+    },
     {
       icon: ShoppingCart,
       title: 'E-commerce y Tiendas Online',
