@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Briefcase, Mail } from 'lucide-react';
+import { Home, Briefcase, Mail, Globe, Code2, Bot, Target } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { NavBar } from './ui/tubelight-navbar';
 
@@ -8,7 +8,33 @@ const Header: React.FC = () => {
 
   const navItems = [
     { name: t('home'), url: '/', icon: Home },
-    { name: t('services'), url: '/services', icon: Briefcase },
+    { 
+      name: t('services'), 
+      url: '#', 
+      icon: Briefcase,
+      subItems: [
+        { 
+          name: 'Desarrollo Web', 
+          url: '/web-development',
+          description: 'Sitios web profesionales y e-commerce'
+        },
+        { 
+          name: 'Desarrollo de Software', 
+          url: '/software-development',
+          description: 'Aplicaciones personalizadas y sistemas'
+        },
+        { 
+          name: 'Automatización', 
+          url: '/automation',
+          description: 'Automatizaciones con n8n e IA'
+        },
+        { 
+          name: 'Marketing Digital', 
+          url: '/digital-marketing',
+          description: 'Campañas y estrategias digitales'
+        }
+      ]
+    },
     { name: t('contact'), url: '/contact', icon: Mail },
   ];
 

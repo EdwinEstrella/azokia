@@ -5,7 +5,6 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ChatBubble from './components/ChatBubble';
 import Home from './pages/Home';
-import Services from './pages/Services';
 import WebDevelopment from './pages/WebDevelopment';
 import SoftwareDevelopment from './pages/SoftwareDevelopment';
 import Automation from './pages/Automation';
@@ -25,7 +24,6 @@ function App() {
           <main>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/services" element={<Services />} />
               <Route path="/web-development" element={<WebDevelopment />} />
               <Route path="/software-development" element={<SoftwareDevelopment />} />
               <Route path="/automation" element={<Automation />} />
