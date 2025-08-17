@@ -87,14 +87,6 @@ const Header: React.FC = () => {
                     
                     {isServicesOpen && (
                       <div className="absolute top-full left-0 mt-2 w-64 bg-slate-800/95 backdrop-blur-md rounded-lg shadow-2xl border border-white/10 py-2 z-50">
-                        <Link
-                          to="/services"
-                          onClick={handleNavClick}
-                          className="block px-4 py-2 text-sm text-gray-300 hover:text-blue-400 hover:bg-white/5 transition-colors"
-                        >
-                          Ver Todos los Servicios
-                        </Link>
-                        <div className="border-t border-white/10 my-2"></div>
                         {item.submenu.map((subItem) => (
                           <Link
                             key={subItem.name}
