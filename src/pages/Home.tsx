@@ -27,12 +27,12 @@ import {
 import { useLanguage } from '../contexts/LanguageContext';
 import { HeroSection } from '../components/ui/hero-section-dark';
 import ContactForm from '../components/ContactForm';
+import TestimonialsSection from '../components/TestimonialsSection';
 
 const Home: React.FC = () => {
   const { } = useLanguage();
 
   // Estados para los carruseles
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [currentProject, setCurrentProject] = useState(0);
 
   // Beneficios principales según especificación - SIN EMOJIS
@@ -186,14 +186,6 @@ const Home: React.FC = () => {
       clearInterval(projectInterval);
     };
   }, []);
-
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
 
   const nextProject = () => {
     setCurrentProject((prev) => (prev + 1) % successCases.length);
@@ -421,98 +413,8 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Testimonios - Slider profesional */}
-      <section className="py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden z-20">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[#1E90FF]/20 to-[#9B59B6]/20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 left-10 w-72 h-72 bg-gradient-to-br from-[#9B59B6]/20 to-[#2ECC71]/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }}></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#EAEAEA] mb-4">
-              Testimonios
-            </h2>
-            <p className="text-xl text-[#EAEAEA]/70">
-              Lo que dicen nuestros clientes satisfechos
-            </p>
-          </div>
-
-          <div className="relative max-w-4xl mx-auto">
-            <div className="overflow-hidden">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentTestimonial * 100}%)` }}
-              >
-                {testimonials.map((testimonial, index) => (
-                  <div key={index} className="w-full flex-shrink-0 px-4">
-                    {/* Estilo profesional */}
-                    <div className="group relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 border border-[#1E90FF]/30 hover:border-[#1E90FF]/60 transition-all duration-300 text-center shadow-lg hover:shadow-[#1E90FF]/25 transform hover:scale-105">
-                      {/* Efecto profesional */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#1E90FF]/10 to-[#9B59B6]/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-transparent via-[#1E90FF]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"></div>
-                      
-                      <div className="relative">
-                        <div className="w-16 h-16 bg-gradient-to-br from-[#1E90FF] to-[#9B59B6] rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                          <Quote className="h-8 w-8 text-white" />
-                        </div>
-                        <p className="text-lg text-[#EAEAEA]/90 mb-8 leading-relaxed italic">
-                          "{testimonial.content}"
-                        </p>
-                        <div className="flex items-center justify-center mb-4">
-                          {[...Array(testimonial.rating)].map((_, i) => (
-                            <Star key={i} className="h-5 w-5 text-[#2ECC71] fill-current" />
-                          ))}
-                        </div>
-                        <div className="flex items-center justify-center">
-                          <img
-                            src={testimonial.image}
-                            alt={testimonial.name}
-                            className="w-16 h-16 rounded-full object-cover mr-4 shadow-lg border-2 border-[#1E90FF]/30"
-                          />
-                          <div className="text-left">
-                            <h4 className="text-[#EAEAEA] font-semibold">{testimonial.name}</h4>
-                            <p className="text-[#1E90FF] text-sm">{testimonial.role}</p>
-                            <p className="text-[#EAEAEA]/60 text-sm">{testimonial.company}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Navigation buttons */}
-            <button
-              onClick={prevTestimonial}
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 w-12 h-12 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-[#1E90FF]/25 transition-all duration-300 hover:scale-110 z-10"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-            <button
-              onClick={nextTestimonial}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 w-12 h-12 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-[#1E90FF]/25 transition-all duration-300 hover:scale-110 z-10"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
-
-            {/* Dots indicator */}
-            <div className="flex justify-center mt-8 space-x-2">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentTestimonial(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentTestimonial
-                      ? 'bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] scale-125'
-                      : 'bg-gray-600 hover:bg-gray-500'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Testimonios - Columnas animadas */}
+      <TestimonialsSection />
 
       {/* CTA Intermedio - Banner profesional */}
       <section className="py-20 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] relative overflow-hidden z-20">
