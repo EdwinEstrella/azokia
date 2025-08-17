@@ -254,8 +254,6 @@ const translations = {
     
     // All Services
     allServices: 'Ver Todos los Servicios',
-    viewDetails: 'Ver Detalles',
-    learnMore: 'Conocer Más',
   },
   en: {
     // Navigation
@@ -502,8 +500,6 @@ const translations = {
     
     // All Services
     allServices: 'View All Services',
-    viewDetails: 'View Details',
-    learnMore: 'Learn More',
   }
 };
 

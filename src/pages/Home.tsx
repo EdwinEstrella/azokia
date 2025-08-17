@@ -2,13 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight, 
-  Sparkles, 
   TrendingUp, 
   Rocket, 
-  Star, 
   ChevronLeft, 
   ChevronRight, 
-  Quote, 
   Bot, 
   Globe, 
   Users, 
@@ -25,7 +22,6 @@ import {
   Store
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { HeroSection } from '../components/ui/hero-section-dark';
 import ContactForm from '../components/ContactForm';
 import TestimonialsSection from '../components/TestimonialsSection';
 
@@ -143,46 +139,14 @@ const Home: React.FC = () => {
     }
   ];
 
-  // Testimonios
-  const testimonials = [
-    {
-      name: 'María González',
-      company: 'TechStart Solutions',
-      role: 'CEO',
-      content: 'Trabajar con Azokia fue una de las mejores decisiones para mi negocio. Su enfoque en automatización transformó completamente nuestros procesos.',
-      rating: 5,
-      image: 'https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=400'
-    },
-    {
-      name: 'Carlos Rodríguez',
-      company: 'E-commerce Plus',
-      role: 'Director de Marketing',
-      content: 'Trabajar con Azokia fue una de las mejores decisiones para mi negocio. Los resultados superaron todas nuestras expectativas.',
-      rating: 5,
-      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400'
-    },
-    {
-      name: 'Ana Martínez',
-      company: 'Local Business Pro',
-      role: 'Fundadora',
-      content: 'Trabajar con Azokia fue una de las mejores decisiones para mi negocio. Su profesionalismo es excepcional.',
-      rating: 5,
-      image: 'https://images.pexels.com/photos/3756681/pexels-photo-3756681.jpeg?auto=compress&cs=tinysrgb&w=400'
-    }
-  ];
 
   // Efectos para auto-scroll de carruseles
   useEffect(() => {
-    const testimonialInterval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-
     const projectInterval = setInterval(() => {
       setCurrentProject((prev) => (prev + 1) % successCases.length);
     }, 4000);
 
     return () => {
-      clearInterval(testimonialInterval);
       clearInterval(projectInterval);
     };
   }, []);
@@ -197,29 +161,49 @@ const Home: React.FC = () => {
 
   return (
     <div className="pt-20 bg-[#0D0F2D] relative">
-      {/* New Hero Section */}
-      <HeroSection
-        title="AGENCIA DE MARKETING DIGITAL & IA"
-        subtitle={{
-          regular: "Construyamos Tu Historia de ",
-          gradient: "Éxito Digital"
-        }}
-        description="En Azokia combinamos automatización, IA y estrategia para crear páginas web, embudos de venta y campañas que sí convierten."
-        ctaText="Comenzar Ahora"
-        ctaHref="/contact"
-        bottomImage={{
-          light: "/original-25a987b5055b056376f5d1a10fad76c2.webp",
-          dark: "/original-25a987b5055b056376f5d1a10fad76c2.webp"
-        }}
-        gridOptions={{
-          angle: 65,
-          opacity: 0.3,
-          cellSize: 60,
-          lightLineColor: "#1E90FF",
-          darkLineColor: "#9B59B6"
-        }}
-        className="min-h-screen"
-      />
+      {/* Hero Section */}
+      <section className="py-20 bg-gradient-to-br from-[#0D0F2D] via-blue-900 to-indigo-900 relative overflow-hidden min-h-screen flex items-center">
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+        </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="mb-6">
+            <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full text-white text-sm font-medium mb-6">
+              AGENCIA DE MARKETING DIGITAL & IA
+            </div>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold text-[#EAEAEA] mb-6">
+            Construyamos Tu Historia de{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1E90FF] to-[#9B59B6]">
+              Éxito Digital
+            </span>
+          </h1>
+          <p className="text-xl text-[#EAEAEA]/70 max-w-3xl mx-auto mb-8">
+            En Azokia combinamos automatización, IA y estrategia para crear páginas web, embudos de venta y campañas que sí convierten.
+          </p>
+          <Link
+            to="/contact"
+            className="group inline-flex items-center px-10 py-5 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] text-white font-semibold rounded-xl shadow-2xl hover:shadow-[#1E90FF]/25 transition-all duration-300 transform hover:scale-105"
+          >
+            <Rocket className="mr-3 h-6 w-6" />
+            <span>Comenzar Ahora</span>
+            <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-1 transition-transform" />
+          </Link>
+          
+          {/* Hero Image */}
+          <div className="mt-16">
+            <div className="relative max-w-4xl mx-auto">
+              <img
+                src="/original-25a987b5055b056376f5d1a10fad76c2.webp"
+                alt="Azokia Dashboard"
+                className="w-full rounded-2xl shadow-2xl border border-white/10"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F2D]/20 to-transparent rounded-2xl"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Beneficios Rápidos - Tarjetas profesionales con íconos */}
       <section className="py-20 bg-[#0D0F2D] relative overflow-hidden z-20">
