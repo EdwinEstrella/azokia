@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isServicesOpen, setIsServicesOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
   const location = useLocation();
 
   const navigation = [
     { name: t('home'), href: '/' },
-    { name: t('services'), href: '/services' },
+    { 
+      name: t('services'), 
+      href: '/services',
+      submenu: [
+        { name: 'Desarrollo Web', href: '/web-development' },
+        { name: 'Desarrollo de Software', href: '/software-development' },
+        { name: 'Automatización', href: '/automation' },
+        { name: 'Marketing Digital', href: '/digital-marketing' }
+      ]
+    },
     { name: t('contact'), href: '/contact' },
   ];
 
@@ -53,21 +63,68 @@ const Header: React.FC = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                onClick={handleNavClick}
-                className={`text-sm font-medium transition-all duration-200 hover:text-blue-400 relative ${
-                  isActive(item.href)
-                    ? 'text-blue-400'
-                    : 'text-gray-300'
-                }`}
-              >
-                {item.name}
-                {isActive(item.href) && (
-                  <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
+              <div key={item.name} className="relative">
+                {item.submenu ? (
+                  <div
+                    className="relative"
+                    onMouseEnter={() => setIsServicesOpen(true)}
+                    onMouseLeave={() => setIsServicesOpen(false)}
+                  >
+                    <button
+                      className={`flex items-center text-sm font-medium transition-all duration-200 hover:text-blue-400 relative ${
+                        location.pathname.includes('/web-development') || 
+                        location.pathname.includes('/software-development') || 
+                        location.pathname.includes('/automation') || 
+                        location.pathname.includes('/digital-marketing') || 
+                        location.pathname === '/services'
+                          ? 'text-blue-400'
+                          : 'text-gray-300'
+                      }`}
+                    >
+                      {item.name}
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
+                    
+                    {isServicesOpen && (
+                      <div className="absolute top-full left-0 mt-2 w-64 bg-slate-800/95 backdrop-blur-md rounded-lg shadow-2xl border border-white/10 py-2 z-50">
+                        <Link
+                          to="/services"
+                          onClick={handleNavClick}
+                          className="block px-4 py-2 text-sm text-gray-300 hover:text-blue-400 hover:bg-white/5 transition-colors"
+                        >
+                          Ver Todos los Servicios
+                        </Link>
+                        <div className="border-t border-white/10 my-2"></div>
+                        {item.submenu.map((subItem) => (
+                          <Link
+                            key={subItem.name}
+                            to={subItem.href}
+                            onClick={handleNavClick}
+                            className="block px-4 py-2 text-sm text-gray-300 hover:text-blue-400 hover:bg-white/5 transition-colors"
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    to={item.href}
+                    onClick={handleNavClick}
+                    className={`text-sm font-medium transition-all duration-200 hover:text-blue-400 relative ${
+                      isActive(item.href)
+                        ? 'text-blue-400'
+                        : 'text-gray-300'
+                    }`}
+                  >
+                    {item.name}
+                    {isActive(item.href) && (
+                      <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full"></div>
+                    )}
+                  </Link>
                 )}
-              </Link>
+              </div>
             ))}
           </nav>
 
@@ -111,16 +168,43 @@ const Header: React.FC = () => {
           <div className="md:hidden py-4 border-t border-slate-700/50">
             <nav className="flex flex-col space-y-4">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={handleNavClick}
-                  className={`text-base font-medium transition-colors duration-200 hover:text-blue-400 ${
-                    isActive(item.href) ? 'text-blue-400' : 'text-gray-300'
-                  }`}
-                >
-                  {item.name}
-                </Link>
+                <div key={item.name}>
+                  {item.submenu ? (
+                    <>
+                      <Link
+                        to={item.href}
+                        onClick={handleNavClick}
+                        className={`text-base font-medium transition-colors duration-200 hover:text-blue-400 ${
+                          isActive(item.href) ? 'text-blue-400' : 'text-gray-300'
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                      <div className="ml-4 mt-2 space-y-2">
+                        {item.submenu.map((subItem) => (
+                          <Link
+                            key={subItem.name}
+                            to={subItem.href}
+                            onClick={handleNavClick}
+                            className="block text-sm text-gray-400 hover:text-blue-400 transition-colors duration-200"
+                          >
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      onClick={handleNavClick}
+                      className={`text-base font-medium transition-colors duration-200 hover:text-blue-400 ${
+                        isActive(item.href) ? 'text-blue-400' : 'text-gray-300'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </div>
               ))}
             </nav>
           </div>

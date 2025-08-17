@@ -6,6 +6,10 @@ import Footer from './components/Footer';
 import ChatBubble from './components/ChatBubble';
 import Home from './pages/Home';
 import Services from './pages/Services';
+import WebDevelopment from './pages/WebDevelopment';
+import SoftwareDevelopment from './pages/SoftwareDevelopment';
+import Automation from './pages/Automation';
+import DigitalMarketing from './pages/DigitalMarketing';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Terms from './pages/Terms';
@@ -22,6 +26,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/services" element={<Services />} />
+              <Route path="/web-development" element={<WebDevelopment />} />
+              <Route path="/software-development" element={<SoftwareDevelopment />} />
+              <Route path="/automation" element={<Automation />} />
+              <Route path="/digital-marketing" element={<DigitalMarketing />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/terms" element={<Terms />} />
