@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Link, useLocation } from "react-router-dom"
-import { LucideIcon, ChevronDown } from "lucide-react"
+import { DivideIcon as LucideIcon, ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface SubMenuItem {
