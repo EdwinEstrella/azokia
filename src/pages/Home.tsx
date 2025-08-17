@@ -4,8 +4,6 @@ import {
   ArrowRight, 
   TrendingUp, 
   Rocket, 
-  ChevronLeft, 
-  ChevronRight, 
   Bot, 
   Globe, 
   Users, 
@@ -17,20 +15,15 @@ import {
   Smartphone,
   MousePointer,
   Settings,
-  Stethoscope,
-  Cpu,
-  Store
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 import TestimonialsSection from '../components/TestimonialsSection';
 import { FeaturesSectionWithHoverEffects } from '../components/ui/feature-section-with-hover-effects';
+import { BackgroundGradient } from '../components/ui/background-gradient';
 
 const Home: React.FC = () => {
   const { } = useLanguage();
-
-  // Estados para los carruseles
-  const [currentProject, setCurrentProject] = useState(0);
 
   // Servicios destacados según especificación - SIN EMOJIS
   const featuredServices = [
@@ -39,48 +32,38 @@ const Home: React.FC = () => {
       title: 'Inteligencia Artificial aplicada al marketing',
       description: 'Chatbots inteligentes, automatizaciones con IA y análisis predictivo para maximizar tus resultados.',
       features: ['Chatbots con IA', 'Análisis predictivo', 'Automatización inteligente'],
-      gradient: 'from-blue-600 to-purple-600'
     },
     {
       icon: ShoppingCart,
       title: 'Tiendas online y embudos automatizados',
       description: 'E-commerce completos con sistemas de automatización que venden las 24 horas del día.',
       features: ['E-commerce completo', 'Embudos de venta', 'Automatización de ventas'],
-      gradient: 'from-green-600 to-blue-600'
     },
     {
       icon: Briefcase,
       title: 'Branding y diseño de marca',
       description: 'Identidad visual completa que conecta emocionalmente con tu audiencia.',
       features: ['Logo y branding', 'Identidad visual', 'Manual de marca'],
-      gradient: 'from-purple-600 to-pink-600'
     },
     {
       icon: Smartphone,
       title: 'Redes sociales',
       description: 'Gestión profesional de redes sociales con contenido que genera engagement real.',
       features: ['Gestión de RRSS', 'Contenido viral', 'Community management'],
-      gradient: 'from-pink-600 to-red-600'
     },
     {
       icon: MousePointer,
       title: 'Landing pages que convierten',
       description: 'Páginas de aterrizaje optimizadas para maximizar conversiones y generar leads.',
       features: ['Diseño optimizado', 'A/B Testing', 'Alta conversión'],
-      gradient: 'from-cyan-600 to-blue-600'
     },
     {
       icon: Settings,
       title: 'Automatización y CRM',
       description: 'Sistemas CRM automatizados que nutren leads y cierran ventas automáticamente.',
       features: ['CRM automatizado', 'Lead nurturing', 'Seguimiento automático'],
-      gradient: 'from-indigo-600 to-purple-600'
     }
   ];
-
-  // Efectos para auto-scroll de carruseles
-  useEffect(() => {
-  }, []);
 
 
   return (
@@ -167,36 +150,34 @@ const Home: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredServices.map((service, index) => (
-              <div
+              <BackgroundGradient
                 key={service.title}
-                className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 animate-slide-up transform hover:scale-105"
+                className="rounded-[22px] p-4 sm:p-8 bg-[#0D0F2D] animate-slide-up"
+                containerClassName="transform hover:scale-105 transition-all duration-300"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1E90FF]/10 to-[#9B59B6]/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative">
-                  {/* Icono profesional con gradiente personalizado */}
-                  <div className={`w-16 h-16 bg-gradient-to-br ${service.gradient} rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-blue-500/25 transition-all duration-300 transform group-hover:scale-110`}>
-                    <service.icon className="h-8 w-8 text-white" />
-                  </div>
-                  
-                  <h3 className="text-xl font-semibold text-[#EAEAEA] mb-4">
-                    {service.title}
-                  </h3>
-                  
-                  <p className="text-[#EAEAEA]/70 mb-6 leading-relaxed">
-                    {service.description}
-                  </p>
-                  
-                  <ul className="space-y-2">
-                    {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
-                        <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                {/* Icono profesional */}
+                <div className="w-16 h-16 bg-gradient-to-br from-[#1E90FF] to-[#9B59B6] rounded-xl flex items-center justify-center mb-6 shadow-lg">
+                  <service.icon className="h-8 w-8 text-white" />
                 </div>
-              </div>
+                
+                <h3 className="text-xl font-semibold text-[#EAEAEA] mb-4">
+                  {service.title}
+                </h3>
+                
+                <p className="text-[#EAEAEA]/70 mb-6 leading-relaxed">
+                  {service.description}
+                </p>
+                
+                <ul className="space-y-2">
+                  {service.features.map((feature, featureIndex) => (
+                    <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
+                      <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </BackgroundGradient>
             ))}
           </div>
         </div>
