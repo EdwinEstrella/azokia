@@ -78,59 +78,10 @@ const Home: React.FC = () => {
     }
   ];
 
-  // Casos de éxito según especificación - SIN EMOJIS
-  const successCases = [
-    {
-      title: 'Clínica Vibe',
-      category: 'E-commerce',
-      description: 'Creamos el ecommerce para Clínica Vibe y aumentaron un 230% sus conversiones en 3 meses.',
-      image: 'https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg?auto=compress&cs=tinysrgb&w=800',
-      results: '+230% conversiones',
-      metric: '3 meses',
-      icon: Stethoscope,
-      gradient: 'from-blue-500 to-cyan-500'
-    },
-    {
-      title: 'TechStart Solutions',
-      category: 'Automatización',
-      description: 'Sistema completo de automatización que redujo 40 horas semanales de trabajo manual.',
-      image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800',
-      results: '-40 horas/semana',
-      metric: 'Automatización',
-      icon: Cpu,
-      gradient: 'from-purple-500 to-pink-500'
-    },
-    {
-      title: 'Local Business Pro',
-      category: 'Marketing Digital',
-      description: 'Estrategia integral que generó 500+ leads cualificados en 2 meses.',
-      image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800',
-      results: '+500 leads',
-      metric: '2 meses',
-      icon: Store,
-      gradient: 'from-green-500 to-emerald-500'
-    }
-  ];
-
-
   // Efectos para auto-scroll de carruseles
   useEffect(() => {
-    const projectInterval = setInterval(() => {
-      setCurrentProject((prev) => (prev + 1) % successCases.length);
-    }, 4000);
-
-    return () => {
-      clearInterval(projectInterval);
-    };
   }, []);
 
-  const nextProject = () => {
-    setCurrentProject((prev) => (prev + 1) % successCases.length);
-  };
-
-  const prevProject = () => {
-    setCurrentProject((prev) => (prev - 1 + successCases.length) % successCases.length);
-  };
 
   return (
     <div className="pt-16 md:pt-20 bg-[#0D0F2D] relative">
@@ -251,102 +202,6 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Casos de Éxito - Tarjetas profesionales con íconos */}
-      <section className="py-12 md:py-20 bg-[#0D0F2D] relative overflow-hidden z-20">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#1E90FF]/5 to-[#9B59B6]/5"></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="text-center mb-8 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#EAEAEA] mb-4">
-              Casos de Éxito
-            </h2>
-            <p className="text-lg md:text-xl text-[#EAEAEA]/70 px-4">
-              Resultados reales que hablan por sí solos
-            </p>
-          </div>
-
-          <div className="relative max-w-5xl mx-auto">
-            <div className="overflow-hidden rounded-3xl">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentProject * 100}%)` }}
-              >
-                {successCases.map((project, index) => (
-                  <div key={index} className="w-full flex-shrink-0">
-                    <div className="group relative bg-white/5 backdrop-blur-sm rounded-3xl overflow-hidden border-2 border-[#1E90FF]/30 hover:border-[#1E90FF]/60 transition-all duration-300 shadow-lg hover:shadow-[#1E90FF]/25">
-                      {/* Efecto neón profesional */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#1E90FF]/10 to-[#9B59B6]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="relative">
-                        <div className="aspect-video overflow-hidden relative">
-                          <img
-                            src={project.image}
-                            alt={project.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F2D]/80 to-transparent"></div>
-                          {/* Icono profesional en lugar de emoji */}
-                          <div className={`absolute top-4 left-4 w-12 h-12 bg-gradient-to-br ${project.gradient} rounded-xl flex items-center justify-center shadow-lg`}>
-                            <project.icon className="h-6 w-6 text-white" />
-                          </div>
-                        </div>
-                        <div className="p-8">
-                          <div className="flex items-center justify-between mb-4">
-                            <span className="px-3 py-1 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] text-white text-sm font-medium rounded-full">
-                              {project.category}
-                            </span>
-                            <span className="text-[#2ECC71] font-bold text-lg">
-                              {project.results}
-                            </span>
-                          </div>
-                          <h3 className="text-2xl font-bold text-[#EAEAEA] mb-4">
-                            {project.title}
-                          </h3>
-                          <p className="text-[#EAEAEA]/70 leading-relaxed mb-4">
-                            {project.description}
-                          </p>
-                          <div className="text-[#1E90FF] font-medium">
-                            Tiempo: {project.metric}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Navigation buttons */}
-            <button
-              onClick={prevProject}
-              className="hidden md:flex absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 w-12 h-12 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full items-center justify-center text-white shadow-lg hover:shadow-[#1E90FF]/25 transition-all duration-300 hover:scale-110 z-10"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
-            <button
-              onClick={nextProject}
-              className="hidden md:flex absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-6 w-12 h-12 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full items-center justify-center text-white shadow-lg hover:shadow-[#1E90FF]/25 transition-all duration-300 hover:scale-110 z-10"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
-
-            {/* Dots indicator */}
-            <div className="flex justify-center mt-8 space-x-2">
-              {successCases.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentProject(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentProject
-                      ? 'bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] scale-125'
-                      : 'bg-gray-600 hover:bg-gray-500'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Testimonios - Columnas animadas */}
       <TestimonialsSection />
