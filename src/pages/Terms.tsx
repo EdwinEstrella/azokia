@@ -91,7 +91,7 @@ const Terms: React.FC = () => {
                   </p>
                   <ul className="list-disc list-inside text-gray-700 space-y-2">
                     <li><strong>Correo electrónico:</strong> edwinestrella@azokia.com / info@azokia.com</li>
-                    <li><strong>Dirección:</strong> New York, NY, Estados Unidos</li>
+                    <li><strong>Dirección:</strong> Urbanización Villa Laura, Calle 1ra Número 16, Santo Domingo, República Dominicana</li>
                   </ul>
                 </div>
               </div>
@@ -160,7 +160,7 @@ const Terms: React.FC = () => {
                   </p>
                   <ul className="list-disc list-inside text-gray-700 space-y-2">
                     <li><strong>Email:</strong> edwinestrella@azokia.com / info@azokia.com</li>
-                    <li><strong>Address:</strong> New York, NY, United States</li>
+                    <li><strong>Address:</strong> Urbanización Villa Laura, Calle 1ra Número 16, Santo Domingo, República Dominicana</li>
                   </ul>
                 </div>
               </div>

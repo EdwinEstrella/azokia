@@ -35,9 +35,9 @@ const Home: React.FC = () => {
     },
     {
       icon: ShoppingCart,
-      title: 'Tiendas online y embudos automatizados',
-      description: 'E-commerce completos con sistemas de automatización que venden las 24 horas del día.',
-      features: ['E-commerce completo', 'Embudos de venta', 'Automatización de ventas'],
+      title: 'E-commerce y Tiendas Online',
+      description: 'Plataformas de comercio electrónico completas con pasarelas de pago, gestión de inventario y automatización de ventas.',
+      features: ['Tienda online completa', 'Pasarelas de pago', 'Gestión de inventario', 'Automatización de pedidos', 'Panel administrativo', 'Reportes de ventas'],
     },
     {
       icon: Briefcase,

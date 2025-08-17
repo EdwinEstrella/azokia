@@ -22,8 +22,8 @@ const Contact: React.FC = () => {
     },
     {
       icon: MapPin,
-      title: t('mainOffice'),
-      details: 'New York, NY',
+      title: 'Oficina Principal',
+      details: 'Santo Domingo, RD',
       description: t('visitUs'),
     },
     {
@@ -210,11 +210,12 @@ const Contact: React.FC = () => {
                 <Globe className="h-10 w-10 text-white" />
               </div>
               <h3 className="text-2xl font-semibold text-white mb-2">
-                {t('mainOffice')}
+                Oficina Principal
               </h3>
               <p className="text-gray-300">
-                New York, NY<br />
-                {t('unitedStates')}
+                Urbanización Villa Laura<br />
+                Calle 1ra Número 16<br />
+                Santo Domingo, República Dominicana
               </p>
             </div>
           </div>

@@ -111,6 +111,7 @@ const Privacy: React.FC = () => {
                   <ul className="list-disc list-inside text-gray-700 space-y-2">
                     <li><strong>Correo:</strong> info@azokia.com</li>
                     <li><strong>Responsable de Protección de Datos:</strong> Edwin Estrella (edwinestrella@azokia.com)</li>
+                    <li><strong>Dirección:</strong> Urbanización Villa Laura, Calle 1ra Número 16, Santo Domingo, República Dominicana</li>
                   </ul>
                 </div>
 
@@ -206,6 +207,7 @@ const Privacy: React.FC = () => {
                   <ul className="list-disc list-inside text-gray-700 space-y-2">
                     <li><strong>Email:</strong> info@azokia.com</li>
                     <li><strong>Data Protection Officer:</strong> Edwin Estrella (edwinestrella@azokia.com)</li>
+                    <li><strong>Address:</strong> Urbanización Villa Laura, Calle 1ra Número 16, Santo Domingo, República Dominicana</li>
                   </ul>
                 </div>
 

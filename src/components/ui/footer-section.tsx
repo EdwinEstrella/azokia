@@ -95,8 +95,9 @@ function Footerdemo() {
           <div>
             <h3 className="mb-4 text-lg font-semibold text-[#EAEAEA]">{t('contact')}</h3>
             <address className="space-y-2 text-sm not-italic text-[#EAEAEA]/80">
-              <p>New York, NY</p>
-              <p>Estados Unidos</p>
+              <p>Urbanización Villa Laura</p>
+              <p>Calle 1ra Número 16</p>
+              <p>Santo Domingo, República Dominicana</p>
               <p>Phone: +1 (555) 123-4567</p>
               <p>Email: info@azokia.com</p>
             </address>

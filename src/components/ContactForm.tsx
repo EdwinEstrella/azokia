@@ -21,16 +21,43 @@ const ContactForm: React.FC<ContactFormProps> = ({ compact = false }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Here you would typically send the data to your backend
-    alert('¡Mensaje enviado! Te contactaremos pronto.');
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      businessType: '',
-      budget: '',
-      message: '',
+    
+    // Determinar el ID basado en si es compact o no
+    const formId = compact ? 'contactoExpress' : 'contacto_lento';
+    
+    // Preparar datos para el webhook
+    const webhookData = {
+      id: formId,
+      timestamp: new Date().toISOString(),
+      ...formData
+    };
+    
+    // Enviar al webhook
+    fetch('https://n8n.ibpweb.site/webhook/azokiallc', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(webhookData),
+    })
+    .then(response => {
+      if (response.ok) {
+        alert('¡Mensaje enviado! Te contactaremos pronto.');
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          businessType: '',
+          budget: '',
+          message: '',
+        });
+      } else {
+        throw new Error('Error al enviar el formulario');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('Hubo un error al enviar el formulario. Por favor, intenta de nuevo.');
     });
   };
 
