@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Briefcase, Mail, Globe, Code2, Bot, Target, Menu, X } from 'lucide-react';
+import { Home, Briefcase, Mail, Menu, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { NavBar } from './ui/tubelight-navbar';
 
