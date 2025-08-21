@@ -97,18 +97,6 @@ const Home: React.FC = () => {
             <span>Comenzar Ahora</span>
             <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
           </Link>
-          
-          {/* Hero Image */}
-          <div className="mt-8 md:mt-16">
-            <div className="relative max-w-4xl mx-auto">
-              <img
-                src="/original-25a987b5055b056376f5d1a10fad76c2.webp"
-                alt="Azokia Dashboard"
-                className="w-full rounded-xl md:rounded-2xl shadow-2xl border border-white/10"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0D0F2D]/20 to-transparent rounded-xl md:rounded-2xl"></div>
-            </div>
-          </div>
         </div>
       </section>
 
