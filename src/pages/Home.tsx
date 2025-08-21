@@ -154,7 +154,7 @@ const Home: React.FC = () => {
                 key={service.title}
                 className="rounded-[22px] p-4 sm:p-8 bg-[#0D0F2D] animate-slide-up"
                 containerClassName="transform hover:scale-105 transition-all duration-300"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                
               >
                 {/* Icono profesional */}
                 <div className="w-16 h-16 bg-gradient-to-br from-[#1E90FF] to-[#9B59B6] rounded-xl flex items-center justify-center mb-6 shadow-lg">

@@ -15,7 +15,7 @@ interface SubMenuItem {
 interface NavItem {
   name: string
   url: string
-  icon: LucideIcon
+  icon: typeof LucideIcon
   subItems?: SubMenuItem[]
 }
 
