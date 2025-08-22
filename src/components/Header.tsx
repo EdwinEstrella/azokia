@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Brain, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
 import LoginButton from './LoginButton';
 import { useAuth } from '../contexts/AuthContext';
@@ -22,10 +22,7 @@ const Header: React.FC = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-[#1E90FF] to-[#9B59B6] rounded-xl flex items-center justify-center shadow-lg">
-              <Brain className="h-6 w-6 text-white" />
-            </div>
+          <Link to="/" className="flex items-center">
             <span className="text-xl font-bold text-[#EAEAEA]">Azokia</span>
           </Link>
 
