@@ -1,197 +1,137 @@
-import { prisma } from '../lib/prisma'
-import { 
-  CreateClientData, 
-  CreateProductData, 
-  CreateContractData, 
-  CreatePaymentData,
-  UpdateClientData,
-  UpdateProductData,
-  Client,
-  Product,
-  Contract,
-  Payment
-} from '../types/database'
+import { supabase } from '../lib/supabase'
+import { Database } from '../types/supabase'
+
+type Tables = Database['public']['Tables']
 
 export class DatabaseService {
-  // Client Operations
-  static async createClient(userId: string, data: CreateClientData): Promise<Client> {
-    return prisma.client.create({
-      data: {
+  // Operaciones genéricas para cualquier tabla
+  static async getAll<T extends keyof Tables>(
+    table: T,
+    userId: string
+  ): Promise<Tables[T]['Row'][]> {
+    const { data, error } = await supabase
+      .from(table)
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return data
+  }
+
+  static async getById<T extends keyof Tables>(
+    table: T,
+    id: string,
+    userId: string
+  ): Promise<Tables[T]['Row'] | null> {
+    const { data, error } = await supabase
+      .from(table)
+      .select('*')
+      .eq('id', id)
+      .eq('user_id', userId)
+      .single()
+
+    if (error) return null
+    return data
+  }
+
+  static async create<T extends keyof Tables>(
+    table: T,
+    data: Omit<Tables[T]['Insert'], 'id' | 'created_at' | 'updated_at' | 'user_id'>,
+    userId: string
+  ): Promise<Tables[T]['Row']> {
+    const { data: result, error } = await supabase
+      .from(table)
+      .insert({
         ...data,
-        userId
-      }
-    })
+        user_id: userId
+      })
+      .select()
+      .single()
+
+    if (error) throw error
+    return result
   }
 
-  static async getClients(userId: string): Promise<Client[]> {
-    return prisma.client.findMany({
-      where: { userId },
-      include: {
-        contracts: {
-          include: {
-            product: true,
-            payments: true
-          }
-        }
-      },
-      orderBy: { createdAt: 'desc' }
-    })
+  static async update<T extends keyof Tables>(
+    table: T,
+    id: string,
+    data: Partial<Tables[T]['Update']>,
+    userId: string
+  ): Promise<Tables[T]['Row']> {
+    const { data: result, error } = await supabase
+      .from(table)
+      .update(data)
+      .eq('id', id)
+      .eq('user_id', userId)
+      .select()
+      .single()
+
+    if (error) throw error
+    return result
   }
 
-  static async getClientById(userId: string, clientId: string): Promise<Client | null> {
-    return prisma.client.findFirst({
-      where: {
-        id: clientId,
-        userId
-      },
-      include: {
-        contracts: {
-          include: {
-            product: true,
-            payments: {
-              orderBy: { dueDate: 'asc' }
-            }
-          }
-        },
-        payments: {
-          orderBy: { dueDate: 'asc' }
-        }
-      }
-    })
+  static async delete<T extends keyof Tables>(
+    table: T,
+    id: string,
+    userId: string
+  ): Promise<void> {
+    const { error } = await supabase
+      .from(table)
+      .delete()
+      .eq('id', id)
+      .eq('user_id', userId)
+
+    if (error) throw error
   }
 
-  static async updateClient(userId: string, clientId: string, data: UpdateClientData): Promise<Client> {
-    return prisma.client.update({
-      where: {
-        id: clientId,
-        userId
-      },
-      data
-    })
+  // Métodos específicos para consultas complejas
+  static async getClientWithContracts(clientId: string, userId: string) {
+    const { data, error } = await supabase
+      .from('clients')
+      .select(`
+        *,
+        contracts (*,
+          products (*)
+        ),
+        payments (*)
+      `)
+      .eq('id', clientId)
+      .eq('user_id', userId)
+      .single()
+
+    if (error) throw error
+    return data
   }
 
-  static async deleteClient(userId: string, clientId: string): Promise<void> {
-    await prisma.client.delete({
-      where: {
-        id: clientId,
-        userId
-      }
-    })
+  static async getPendingPayments(userId: string) {
+    const { data, error } = await supabase
+      .from('payments')
+      .select(`
+        *,
+        clients (*),
+        contracts (*)
+      `)
+      .eq('user_id', userId)
+      .eq('status', 'PENDING')
+      .lte('due_date', new Date().toISOString())
+      .order('due_date', { ascending: true })
+
+    if (error) throw error
+    return data
   }
 
-  // Product Operations
-  static async createProduct(userId: string, data: CreateProductData): Promise<Product> {
-    return prisma.product.create({
-      data: {
-        ...data,
-        userId
-      }
-    })
-  }
+  static async searchClients(query: string, userId: string) {
+    const { data, error } = await supabase
+      .from('clients')
+      .select(`
+        *,
+        contracts (*)
+      `)
+      .eq('user_id', userId)
+      .or(`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`)
 
-  static async getProducts(userId: string): Promise<Product[]> {
-    return prisma.product.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' }
-    })
-  }
-
-  static async updateProduct(userId: string, productId: string, data: UpdateProductData): Promise<Product> {
-    return prisma.product.update({
-      where: {
-        id: productId,
-        userId
-      },
-      data
-    })
-  }
-
-  static async deleteProduct(userId: string, productId: string): Promise<void> {
-    await prisma.product.delete({
-      where: {
-        id: productId,
-        userId
-      }
-    })
-  }
-
-  // Contract Operations
-  static async createContract(userId: string, data: CreateContractData): Promise<Contract> {
-    return prisma.contract.create({
-      data: {
-        ...data,
-        userId
-      },
-      include: {
-        client: true,
-        product: true
-      }
-    })
-  }
-
-  static async getContracts(userId: string): Promise<Contract[]> {
-    return prisma.contract.findMany({
-      where: { userId },
-      include: {
-        client: true,
-        product: true,
-        payments: {
-          orderBy: { dueDate: 'asc' }
-        }
-      },
-      orderBy: { createdAt: 'desc' }
-    })
-  }
-
-  // Payment Operations
-  static async createPayment(userId: string, data: CreatePaymentData): Promise<Payment> {
-    return prisma.payment.create({
-      data: {
-        ...data,
-        userId
-      },
-      include: {
-        client: true,
-        contract: true
-      }
-    })
-  }
-
-  static async getPendingPayments(userId: string): Promise<Payment[]> {
-    return prisma.payment.findMany({
-      where: {
-        userId,
-        status: 'PENDING',
-        dueDate: {
-          lte: new Date()
-        }
-      },
-      include: {
-        client: true,
-        contract: true
-      },
-      orderBy: { dueDate: 'asc' }
-    })
-  }
-
-  // Search Operations
-  static async searchClients(userId: string, query: string): Promise<Client[]> {
-    return prisma.client.findMany({
-      where: {
-        userId,
-        OR: [
-          { name: { contains: query, mode: 'insensitive' } },
-          { email: { contains: query, mode: 'insensitive' } },
-          { phone: { contains: query, mode: 'insensitive' } }
-        ]
-      },
-      include: {
-        contracts: {
-          include: {
-            product: true
-          }
-        }
-      }
-    })
+    if (error) throw error
+    return data
   }
 }

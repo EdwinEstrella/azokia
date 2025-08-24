@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react'
 import { testConnection } from '../lib/prisma'
 import { testPgConnection } from '../lib/postgres-fallback'

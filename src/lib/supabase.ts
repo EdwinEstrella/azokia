@@ -10,14 +10,20 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey)
 
-// Direct PostgreSQL connection for complex queries
-export const getPostgresClient = async () => {
+// Helper para obtener el cliente de PostgREST para consultas complejas
+export const getPostgrestClient = async () => {
   const { createClient } = await import('@supabase/postgrest-js')
   
-  return createClient(import.meta.env.VITE_SUPABASE_URL, {
+  return createClient(supabaseUrl, {
     headers: {
-      'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
-      'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+      'apikey': supabaseAnonKey,
+      'Authorization': `Bearer ${supabaseAnonKey}`
     }
   })
+}
+
+// Helper para manejar errores de Supabase
+export const handleSupabaseError = (error: any) => {
+  console.error('Supabase Error:', error)
+  throw new Error(error.message || 'Error de base de datos')
 }
