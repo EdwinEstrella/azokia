@@ -1,49 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, FileText, Download, Send, DollarSign, Calendar, Clock } from 'lucide-react';
+import { Plus, FileText, Download, Send, CheckCircle, Clock, AlertCircle, DollarSign } from 'lucide-react';
 import { useSupabase } from '../../hooks/useSupabase';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
+import { InvoiceForm } from '../../components/forms/InvoiceForm';
 
 const Invoices: React.FC = () => {
-  const [invoices, setInvoices] = useState([
-    {
-      id: 'INV-2024-001',
-      client: 'TechSolutions Inc.',
-      amount: 25000,
-      status: 'paid',
-      issueDate: '2024-01-15',
-      dueDate: '2024-01-30',
-      paidDate: '2024-01-25',
-      items: [
-        { description: 'Desarrollo web', quantity: 1, price: 25000 }
-      ]
-    },
-    {
-      id: 'INV-2024-002',
-      client: 'FashionStore MX',
-      amount: 15000,
-      status: 'pending',
-      issueDate: '2024-02-01',
-      dueDate: '2024-02-15',
-      paidDate: null,
-      items: [
-        { description: 'Diseño UI/UX', quantity: 1, price: 15000 }
-      ]
-    },
-    {
-      id: 'INV-2024-003',
-      client: 'Consultoría ABC',
-      amount: 35000,
-      status: 'overdue',
-      issueDate: '2024-01-20',
-      dueDate: '2024-02-05',
-      paidDate: null,
-      items: [
-        { description: 'Consultoría estratégica', quantity: 1, price: 35000 }
-      ]
-    }
-  ]);
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { getInvoices, loading } = useSupabase('user-id');
+
+  useEffect(() => {
+    loadInvoices();
+  }, []);
+
+  const loadInvoices = async () => {
+    const data = await getInvoices();
+    setInvoices(data || []);
+  };
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('es-MX', {
@@ -52,22 +28,37 @@ const Invoices: React.FC = () => {
     }).format(amount);
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'paid': return 'text-green-400 bg-green-500/20';
-      case 'pending': return 'text-yellow-400 bg-yellow-500/20';
-      case 'overdue': return 'text-red-400 bg-red-500/20';
-      default: return 'text-gray-400 bg-gray-500/20';
+      case 'PAID': return <CheckCircle className="h-4 w-4 text-green-400" />;
+      case 'PENDING': return <Clock className="h-4 w-4 text-yellow-400" />;
+      case 'OVERDUE': return <AlertCircle className="h-4 w-4 text-red-400" />;
+      default: return <FileText className="h-4 w-4 text-gray-400" />;
     }
   };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'paid': return 'Pagada';
-      case 'pending': return 'Pendiente';
-      case 'overdue': return 'Vencida';
-      default: return 'Desconocido';
-    }
+  const generateInvoicePDF = (invoice: any) => {
+    // Simular generación de PDF
+    const pdfContent = `
+      FACTURA: ${invoice.invoice_number}
+      CLIENTE: ${invoice.clients?.name}
+      MONTO: ${formatCurrency(invoice.amount)}
+      FECHA EMISIÓN: ${new Date(invoice.issue_date).toLocaleDateString()}
+      FECHA VENCIMIENTO: ${new Date(invoice.due_date).toLocaleDateString()}
+      ESTADO: ${invoice.status}
+    `;
+    
+    const blob = new Blob([pdfContent], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `factura-${invoice.invoice_number}.pdf`;
+    a.click();
+  };
+
+  const handleInvoiceCreated = () => {
+    setIsDialogOpen(false);
+    loadInvoices();
   };
 
   return (
@@ -79,10 +70,20 @@ const Invoices: React.FC = () => {
             <h1 className="text-3xl font-bold text-[#EAEAEA] mb-2">Facturas</h1>
             <p className="text-[#EAEAEA]/60">Emite facturas y gestiona pagos</p>
           </div>
-          <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Nueva Factura
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
+                <Plus className="h-4 w-4 mr-2" />
+                Nueva Factura
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-[#0D0F2D] border-[#1E90FF]/30 max-w-4xl">
+              <DialogHeader>
+                <DialogTitle className="text-[#EAEAEA]">Crear Nueva Factura</DialogTitle>
+              </DialogHeader>
+              <InvoiceForm onSuccess={handleInvoiceCreated} />
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Stats */}
@@ -90,7 +91,7 @@ const Invoices: React.FC = () => {
           <Card className="p-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/20">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-[#EAEAEA]/60 text-sm">Total Facturas</p>
+                <p className="text-[#EAEAEA]/60 text-sm">Total</p>
                 <p className="text-2xl font-bold text-[#EAEAEA]">{invoices.length}</p>
               </div>
               <FileText className="h-8 w-8 text-[#1E90FF]" />
@@ -102,7 +103,10 @@ const Invoices: React.FC = () => {
               <div>
                 <p className="text-[#EAEAEA]/60 text-sm">Por Cobrar</p>
                 <p className="text-2xl font-bold text-yellow-400">
-                  {formatCurrency(invoices.filter(i => i.status === 'pending').reduce((sum, i) => sum + i.amount, 0))}
+                  {formatCurrency(invoices
+                    .filter(i => i.status === 'PENDING')
+                    .reduce((sum, i) => sum + i.amount, 0)
+                  )}
                 </p>
               </div>
               <Clock className="h-8 w-8 text-yellow-400" />
@@ -114,10 +118,13 @@ const Invoices: React.FC = () => {
               <div>
                 <p className="text-[#EAEAEA]/60 text-sm">Pagadas</p>
                 <p className="text-2xl font-bold text-green-400">
-                  {formatCurrency(invoices.filter(i => i.status === 'paid').reduce((sum, i) => sum + i.amount, 0))}
+                  {formatCurrency(invoices
+                    .filter(i => i.status === 'PAID')
+                    .reduce((sum, i) => sum + i.amount, 0)
+                  )}
                 </p>
               </div>
-              <DollarSign className="h-8 w-8 text-green-400" />
+              <CheckCircle className="h-8 w-8 text-green-400" />
             </div>
           </Card>
 
@@ -126,80 +133,101 @@ const Invoices: React.FC = () => {
               <div>
                 <p className="text-[#EAEAEA]/60 text-sm">Vencidas</p>
                 <p className="text-2xl font-bold text-red-400">
-                  {formatCurrency(invoices.filter(i => i.status === 'overdue').reduce((sum, i) => sum + i.amount, 0))}
+                  {formatCurrency(invoices
+                    .filter(i => i.status === 'OVERDUE')
+                    .reduce((sum, i) => sum + i.amount, 0)
+                  )}
                 </p>
               </div>
-              <Calendar className="h-8 w-8 text-red-400" />
+              <AlertCircle className="h-8 w-8 text-red-400" />
             </div>
           </Card>
         </div>
 
-        {/* Invoices Table */}
-        <Card className="p-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/20">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-[#1E90FF]/20">
-                  <th className="text-left py-3 text-[#EAEAEA]/60 font-medium">Factura</th>
-                  <th className="text-left py-3 text-[#EAEAEA]/60 font-medium">Cliente</th>
-                  <th className="text-left py-3 text-[#EAEAEA]/60 font-medium">Monto</th>
-                  <th className="text-left py-3 text-[#EAEAEA]/60 font-medium">Emisión</th>
-                  <th className="text-left py-3 text-[#EAEAEA]/60 font-medium">Vencimiento</th>
-                  <th className="text-left py-3 text-[#EAEAEA]/60 font-medium">Estado</th>
-                  <th className="text-right py-3 text-[#EAEAEA]/60 font-medium">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoices.map((invoice) => (
-                  <tr key={invoice.id} className="border-b border-[#1E90FF]/10 last:border-b-0">
-                    <td className="py-4">
-                      <div className="text-[#EAEAEA] fontmedio">{invoice.id}</div>
-                    </td>
-                    <td className="py-4">
-                      <div className="text-[#EAEAEA]">{invoice.client}</div>
-                    </td>
-                    <td className="py-4">
-                      <div className="text-[#EAEAEA] font-semibold">
-                        {formatCurrency(invoice.amount)}
-                      </div>
-                    </td>
-                    <td className="py-4">
-                      <div className="text-[#EAEAEA]/70">
-                        {new Date(invoice.issueDate).toLocaleDateString()}
-                      </div>
-                    </td>
-                    <td className="py-4">
-                      <div className="text-[#EAEAEA]/70">
-                        {new Date(invoice.dueDate).toLocaleDateString()}
-                      </div>
-                    </td>
-                    <td className="py-4">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(invoice.status)}`}>
-                        {getStatusText(invoice.status)}
-                      </span>
-                    </td>
-                    <td className="py-4 text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="sm" className="text-[#EAEAEA] hover:bg-[#1E90FF]/20">
-                          <Download className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-[#EAEAEA] hover:bg-[#1E90FF]/20">
-                          <Send className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Card>
+        {/* Invoices List */}
+        <div className="space-y-4">
+          {invoices.map((invoice) => (
+            <BackgroundGradient
+              key={invoice.id}
+              className="rounded-2xl p-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/30"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="text-lg font-semibold text-[#EAEAEA]">
+                      Factura #{invoice.invoice_number}
+                    </h3>
+                    {getStatusIcon(invoice.status)}
+                  </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <p className="text-[#EAEAEA]/60">Cliente</p>
+                      <p className="text-[#EAEAEA]">{invoice.clients?.name}</p>
+                    </div>
+                    <div>
+                      <p className="text-[#EAEAEA]/60">Fecha Emisión</p>
+                      <p className="text-[#EAEAEA]">
+                        {new Date(invoice.issue_date).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-[#EAEAEA]/60">Fecha Vencimiento</p>
+                      <p className="text-[#EAEAEA]">
+                        {new Date(invoice.due_date).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-        {invoices.length === 0 && (
+                <div className="text-right">
+                  <p className="text-2xl font-bold text-[#EAEAEA]">
+                    {formatCurrency(invoice.amount)}
+                  </p>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    invoice.status === 'PAID' ? 'bg-green-500/20 text-green-400' :
+                    invoice.status === 'PENDING' ? 'bg-yellow-500/20 text-yellow-400' :
+                    'bg-red-500/20 text-red-400'
+                  }`}>
+                    {invoice.status}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-4 border-t border-[#1E90FF]/20">
+                <div className="text-sm text-[#EAEAEA]/60">
+                  {invoice.items?.length || 0} conceptos
+                </div>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="border-[#1E90FF]/30 text-[#EAEAEA]"
+                    onClick={() => generateInvoicePDF(invoice)}
+                  >
+                    <Download className="h-4 w-4 mr-1" />
+                    Descargar
+                  </Button>
+                  {invoice.status === 'PENDING' && (
+                    <Button size="sm" className="bg-green-500 hover:bg-green-600">
+                      <Send className="h-4 w-4 mr-1" />
+                      Enviar
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </BackgroundGradient>
+          ))}
+        </div>
+
+        {invoices.length === 0 && !loading && (
           <div className="text-center py-12">
             <FileText className="h-16 w-16 text-[#EAEAEA]/40 mx-auto mb-4" />
             <div className="text-[#EAEAEA]/40 mb-4">No hay facturas registradas</div>
-            <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
+            <Button 
+              className="bg-[#1E90FF] hover:bg-[#1E90FF]/90"
+              onClick={() => setIsDialogOpen(true)}
+            >
               <Plus className="h-4 w-4 mr-2" />
               Crear primera factura
             </Button>
