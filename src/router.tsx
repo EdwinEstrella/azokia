@@ -13,6 +13,7 @@ import Finances from './pages/dashboard/Finances';
 import Automation from './pages/dashboard/Automation';
 import Mobile from './pages/dashboard/Mobile';
 import Settings from './pages/dashboard/Settings';
+import DashboardHome from './pages/dashboard/Home';
 
 const router = createBrowserRouter([
   {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Dashboard />,
+            element: <DashboardHome />,
           },
           {
             path: 'clients',

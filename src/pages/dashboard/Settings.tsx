@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, User, Bell, Shield, Palette, Database, Download, Upload, Trash2 } from 'lucide-react';
+import { User, Building, Bell, CreditCard, Database, RefreshCw as Sync, UploadCloud, DownloadCloud } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import { Input } from '../../components/ui/input';
@@ -9,237 +9,140 @@ import { BackgroundGradient } from '../../components/ui/background-gradient';
 
 const Settings: React.FC = () => {
   const [activeTab, setActiveTab] = useState('profile');
-  const [userSettings, setUserSettings] = useState({
-    name: 'Juan Pérez',
-    email: 'juan@empresa.com',
-    company: 'Mi Empresa S.A.',
-    language: 'es-MX',
-    timezone: 'America/Mexico_City',
-    currency: 'MXN',
-    notifications: {
-      email: true,
-      push: true,
-      sms: false,
-      invoices: true,
-      projects: true,
-      payments: true
-    },
-    appearance: {
-      theme: 'dark',
-      compact: false,
-      animations: true
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const handleSync = () => {
+    setIsSyncing(true);
+    setTimeout(() => setIsSyncing(false), 2000);
+  };
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'profile':
+        return (
+          <Card className="p-8 bg-transparent border-none">
+            <h2 className="text-2xl font-semibold mb-6 text-[#EAEAEA]">Perfil de Usuario</h2>
+            <div className="space-y-6">
+              <div className="flex items-center gap-6">
+                <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="User Avatar" className="h-24 w-24 rounded-full object-cover" />
+                <div>
+                  <Button variant="outline" className="border-[#1E90FF]/30 text-[#EAEAEA]">Cambiar Foto</Button>
+                  <p className="text-sm text-[#EAEAEA]/60 mt-2">JPG, GIF o PNG. Tamaño máximo de 5MB.</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="name" className="text-[#EAEAEA]/80">Nombre Completo</Label>
+                  <Input id="name" defaultValue="Alejandro Vargas" className="bg-[#0D0F2D] border-[#1E90FF]/20" />
+                </div>
+                <div>
+                  <Label htmlFor="email" className="text-[#EAEAEA]/80">Correo Electrónico</Label>
+                  <Input id="email" type="email" defaultValue="alex.vargas@example.com" className="bg-[#0D0F2D] border-[#1E90FF]/20" />
+                </div>
+              </div>
+              <div className="pt-4 text-right">
+                <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">Guardar Cambios</Button>
+              </div>
+            </div>
+          </Card>
+        );
+      case 'company':
+        return (
+          <Card className="p-8 bg-transparent border-none">
+            <h2 className="text-2xl font-semibold mb-6 text-[#EAEAEA]">Información de la Empresa</h2>
+            <div className="space-y-6">
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="companyName" className="text-[#EAEAEA]/80">Nombre de la Empresa</Label>
+                  <Input id="companyName" defaultValue="Innovatech Solutions" className="bg-[#0D0F2D] border-[#1E90FF]/20" />
+                </div>
+                <div>
+                  <Label htmlFor="companyPhone" className="text-[#EAEAEA]/80">Teléfono</Label>
+                  <Input id="companyPhone" defaultValue="+52 55 1234 5678" className="bg-[#0D0F2D] border-[#1E90FF]/20" />
+                </div>
+              </div>
+               <div>
+                  <Label htmlFor="companyAddress" className="text-[#EAEAEA]/80">Dirección</Label>
+                  <Input id="companyAddress" defaultValue="Av. Insurgentes Sur 123, CDMX" className="bg-[#0D0F2D] border-[#1E90FF]/20" />
+                </div>
+              <div className="pt-4 text-right">
+                <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">Guardar Cambios</Button>
+              </div>
+            </div>
+          </Card>
+        );
+      case 'data':
+        return (
+          <Card className="p-8 bg-transparent border-none">
+            <h2 className="text-2xl font-semibold mb-6 text-[#EAEAEA]">Gestión de Datos</h2>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between p-4 border border-[#1E90FF]/20 rounded-lg">
+                <div>
+                  <h3 className="font-medium text-[#EAEAEA]">Sincronización en la Nube</h3>
+                  <p className="text-sm text-[#EAEAEA]/60">Última sincronización: Hoy a las 11:45 AM</p>
+                </div>
+                <Button onClick={handleSync} variant="outline" className="border-[#1E90FF]/30 text-[#EAEAEA]">
+                  <Sync className={`h-4 w-4 mr-2 ${isSyncing ? 'animate-spin' : ''}`} />
+                  {isSyncing ? 'Sincronizando...' : 'Sincronizar Ahora'}
+                </Button>
+              </div>
+              <div className="flex items-center justify-between p-4 border border-[#1E90FF]/20 rounded-lg">
+                <div>
+                  <h3 className="font-medium text-[#EAEAEA]">Exportar Datos</h3>
+                  <p className="text-sm text-[#EAEAEA]/60">Descarga todos tus datos en formato CSV.</p>
+                </div>
+                <Button variant="outline" className="border-[#1E90FF]/30 text-[#EAEAEA]">
+                  <DownloadCloud className="h-4 w-4 mr-2" />
+                  Exportar
+                </Button>
+              </div>
+            </div>
+          </Card>
+        );
+      default:
+        return null;
     }
-  });
+  };
 
   const tabs = [
     { id: 'profile', label: 'Perfil', icon: User },
+    { id: 'company', label: 'Empresa', icon: Building },
     { id: 'notifications', label: 'Notificaciones', icon: Bell },
-    { id: 'security', label: 'Seguridad', icon: Shield },
-    { id: 'appearance', label: 'Apariencia', icon: Palette },
-    { id: 'data', label: 'Datos', icon: Database }
+    { id: 'billing', label: 'Facturación', icon: CreditCard },
+    { id: 'data', label: 'Datos', icon: Database },
   ];
 
-  const handleSettingChange = (category: string, key: string, value: any) => {
-    setUserSettings(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category],
-        [key]: value
-      }
-    }));
-  };
-
-  const exportData = () => {
-    const dataStr = JSON.stringify(userSettings, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    const exportFileDefaultName = 'azokia-settings.json';
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportFileDefaultName);
-    linkElement.click();
-  };
-
   return (
-    <div className="min-h-screen bg-[#0D0F2D] p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center gap-3 mb-8">
-          <Settings className="h-8 w-8 text-[#1E90FF]" />
-          <h1 className="text-3xl font-bold text-[#EAEAEA]">Configuración</h1>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-          {/* Sidebar */}
-          <Card className="p-4 bg-[#0D0F2D]/80 border border-[#1E90FF]/20 lg:col-span-1">
-            <nav className="space-y-1">
-              {tabs.map((tab) => {
+    <div className="min-h-screen bg-[#0D0F2D] p-6 text-[#EAEAEA]">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8">Configuración</h1>
+        <div className="flex flex-col lg:flex-row gap-8">
+          <aside className="lg:w-1/4">
+            <nav className="flex flex-row lg:flex-col gap-2">
+              {tabs.map(tab => {
                 const Icon = tab.icon;
                 return (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                    className={`flex items-center gap-3 w-full text-left px-4 py-3 rounded-lg transition-colors ${
                       activeTab === tab.id
-                        ? 'bg-[#1E90FF]/20 text-[#1E90FF] border border-[#1E90FF]/30'
-                        : 'text-[#EAEAEA]/70 hover:text-[#EAEAEA] hover:bg-[#1E90FF]/10'
+                        ? 'bg-[#1E90FF]/20 text-[#1E90FF]'
+                        : 'hover:bg-[#1E90FF]/10'
                     }`}
                   >
                     <Icon className="h-5 w-5" />
-                    <span className="font-medium">{tab.label}</span>
+                    <span className="hidden sm:inline">{tab.label}</span>
                   </button>
                 );
               })}
             </nav>
-          </Card>
-
-          {/* Content */}
-          <Card className="p-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/20 lg:col-span-3">
-            {activeTab === 'profile' && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-semibold text-[#EAEAEA] mb-6">Perfil de Usuario</h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Label htmlFor="name" className="text-[#EAEAEA]">Nombre completo</Label>
-                    <Input
-                      id="name"
-                      value={userSettings.name}
-                      onChange={(e) => setUserSettings(prev => ({ ...prev, name: e.target.value }))}
-                      className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA] mt-2"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email" className="text-[#EAEAEA]">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={userSettings.email}
-                      onChange={(e) => setUserSettings(prev => ({ ...prev, email: e.target.value }))}
-                      className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA] mt-2"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="company" className="text-[#EAEAEA]">Empresa</Label>
-                    <Input
-                      id="company"
-                      value={userSettings.company}
-                      onChange={(e) => setUserSettings(prev => ({ ...prev, company: e.target.value }))}
-                      className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA] mt-2"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="currency" className="text-[#EAEAEA]">Moneda</Label>
-                    <select
-                      id="currency"
-                      value={userSettings.currency}
-                      onChange={(e) => setUserSettings(prev => ({ ...prev, currency: e.target.value }))}
-                      className="w-full px-3 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA] mt-2"
-                    >
-                      <option value="MXN">MXN - Peso Mexicano</option>
-                      <option value="USD">USD - Dólar Americano</option>
-                      <option value="EUR">EUR - Euro</option>
-                    </select>
-                  </div>
-                </div>
-
-                <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
-                  Guardar Cambios
-                </Button>
-              </div>
-            )}
-
-            {activeTab === 'notifications' && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-semibold text-[#EAEAEA] mb-6">Preferencias de Notificaciones</h2>
-                
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="text-[#EAEAEA]">Notificaciones por Email</Label>
-                      <p className="text-[#EAEAEA]/60 text-sm">Recibir notificaciones importantes por correo electrónico</p>
-                    </div>
-                    <Switch
-                      checked={userSettings.notifications.email}
-                      onCheckedChange={(checked) => handleSettingChange('notifications', 'email', checked)}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="text-[#EAEAEA]">Notificaciones Push</Label>
-                      <p className="text-[#EAEAEA]/60 text-sm">Alertas en tiempo real en tu dispositivo</p>
-                    </div>
-                    <Switch
-                      checked={userSettings.notifications.push}
-                      onCheckedChange={(checked) => handleSettingChange('notifications', 'push', checked)}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="text-[#EAEAEA]">Notificaciones de Facturas</Label>
-                      <p className="text-[#EAEAEA]/60 text-sm">Alertas sobre facturas pendientes y pagos</p>
-                    </div>
-                    <Switch
-                      checked={userSettings.notifications.invoices}
-                      onCheckedChange={(checked) => handleSettingChange('notifications', 'invoices', checked)}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label className="text-[#EAEAEA]">Notificaciones de Proyectos</Label>
-                      <p className="text-[#EAEAEA]/60 text-sm">Actualizaciones de estado y deadlines</p>
-                    </div>
-                    <Switch
-                      checked={userSettings.notifications.projects}
-                      onCheckedChange={(checked) => handleSettingChange('notifications', 'projects', checked)}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeTab === 'data' && (
-              <div className="space-y-6">
-                <h2 className="text-2xl font-semibold text-[#EAEAEA] mb-6">Gestión de Datos</h2>
-                
-                <BackgroundGradient className="p-6 rounded-2xl bg-[#0D0F2D]/80 border border-[#1E90FF]/30">
-                  <h3 className="text-lg font-semibold text-[#EAEAEA] mb-4">Exportar Datos</h3>
-                  <p className="text-[#EAEAEA]/70 mb-4">
-                    Descarga una copia de seguridad de toda tu información en formato JSON.
-                  </p>
-                  <Button onClick={exportData} className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
-                    <Download className="h-4 w-4 mr-2" />
-                    Exportar Todo
-                  </Button>
-                </BackgroundGradient>
-
-                <BackgroundGradient className="p-6 rounded-2xl bg-[#0D0F2D]/80 border border-[#1E90FF]/30">
-                  <h3 className="text-lg font-semibold text-[#EAEAEA] mb-4">Importar Datos</h3>
-                  <p className="text-[#EAEAEA]/70 mb-4">
-                    Restaura tu información desde un archivo de respaldo.
-                  </p>
-                  <Button variant="outline" className="border-[#1E90FF]/30 text-[#EAEAEA]">
-                    <Upload className="h-4 w-4 mr-2" />
-                    Seleccionar Archivo
-                  </Button>
-                </BackgroundGradient>
-
-                <BackgroundGradient className="p-6 rounded-2xl bg-[#0D0F2D]/80 border border-[#1E90FF]/30">
-                  <h3 className="text-lg font-semibold text-red-400 mb-4">Zona Peligrosa</h3>
-                  <p className="text-[#EAEAEA]/70 mb-4">
-                    Elimina permanentemente todos tus datos. Esta acción no se puede deshacer.
-                  </p>
-                  <Button variant="destructive">
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Eliminar Todos los Datos
-                  </Button>
-                </BackgroundGradient>
-              </div>
-            )}
-          </Card>
+          </aside>
+          <main className="flex-1">
+            <BackgroundGradient className="rounded-2xl bg-[#0D0F2D]/80">
+              {renderContent()}
+            </BackgroundGradient>
+          </main>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Smartphone, Download, QrCode, Bell, Shield, Sync, Globe, BarChart } from 'lucide-react';
+import { Smartphone, Download, QrCode, Bell, Shield, RefreshCw, Globe, BarChart } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
@@ -17,7 +17,7 @@ const Mobile: React.FC = () => {
       description: "Accede a tus métricas clave desde cualquier lugar"
     },
     {
-      icon: <Sync className="h-8 w-8 text-yellow-400" />,
+      icon: <RefreshCw className="h-8 w-8 text-yellow-400" />,
       title: "Sincronización Offline",
       description: "Trabaja sin conexión y tus datos se sincronizarán automáticamente"
     },
