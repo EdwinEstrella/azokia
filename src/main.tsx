@@ -1,16 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { AppRouter } from './router'
-import { LanguageProvider } from './contexts/LanguageContext'
-import { AuthProvider } from './contexts/AuthContext'
+import App from './App.tsx'
 import './index.css'
+
+// Importar y ejecutar el script de creación de usuario admin
+import { createAdminUser } from './scripts/createAdminUser.ts'
+
+// Crear usuario admin al iniciar la aplicación (solo en desarrollo)
+if (import.meta.env.DEV) {
+  createAdminUser().catch(console.error)
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <LanguageProvider>
-      <AuthProvider>
-        <AppRouter />
-      </AuthProvider>
-    </LanguageProvider>
+    <App />
   </React.StrictMode>,
 )

@@ -62,13 +62,12 @@ const Home: React.FC = () => {
     }
   ];
 
-
   return (
     <div className="pt-16 md:pt-20 relative">
-      <ShaderBackground />
-      {/* Hero Section */}
-      <section className="py-12 md:py-20 relative overflow-hidden min-h-screen flex items-center">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Hero Section con ShaderBackground - FONDO AZUL ELIMINADO */}
+      <section className="py-12 md:py-20 relative overflow-hidden min-h-screen flex items-center bg-transparent">
+        <ShaderBackground />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 w-full">
           <div className="mb-4 md:mb-6">
             <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full text-white text-sm font-medium mb-6">
               AGENCIA DE MARKETING DIGITAL &amp; IA
@@ -94,137 +93,92 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Beneficios Rápidos - Tarjetas profesionales con íconos */}
+      {/* Sección de Características */}
       <section className="py-12 md:py-20 bg-transparent relative overflow-hidden z-20">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1E90FF]/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#9B59B6]/5 rounded-full blur-3xl"></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="text-center mb-8 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#EAEAEA] mb-4">
-              ¿Por qué elegir Azokia?
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full text-white text-sm font-medium mb-6">
+              Nuestro Enfoque
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EAEAEA] mb-6">
+              Transformamos tu visión en resultados digitales
             </h2>
-            <p className="text-lg md:text-xl text-[#EAEAEA]/70 max-w-3xl mx-auto px-4">
-              Beneficios que transformarán tu negocio digital
+            <p className="text-lg text-[#EAEAEA]/70 max-w-3xl mx-auto">
+              Combinamos tecnología de punta con estrategias probadas para impulsar tu negocio al siguiente nivel
             </p>
           </div>
-
           <FeaturesSectionWithHoverEffects />
         </div>
       </section>
 
-      {/* Servicios Destacados - Grid profesional con íconos */}
-      <section className="py-12 md:py-20 bg-transparent relative overflow-hidden z-20">
+      {/* Sección de Servicios Destacados */}
+      <section className="py-12 md:py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[#1E90FF]/10 to-[#9B59B6]/10 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 left-10 w-72 h-72 bg-gradient-to-br from-[#9B59B6]/10 to-[#2ECC71]/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }}></div>
+          <div className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[#1E90FF]/20 to-[#9B59B6]/20 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute bottom-20 left-10 w-72 h-72 bg-gradient-to-br from-[#9B59B6]/20 to-[#2ECC71]/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }}></div>
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="text-center mb-8 md:mb-16">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#EAEAEA] mb-4">
-              Servicios Destacados
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full text-white text-sm font-medium mb-6">
+              Servicios
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EAEAEA] mb-6">
+              Soluciones integrales para tu negocio
             </h2>
-            <p className="text-lg md:text-xl text-[#EAEAEA]/70 max-w-3xl mx-auto px-4">
-              Soluciones tecnológicas que impulsan tu crecimiento
+            <p className="text-lg text-[#EAEAEA]/70 max-w-3xl mx-auto">
+              Desde automatización hasta diseño web, tenemos todo lo que necesitas para destacar en el mundo digital
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredServices.map((service, index) => (
-              <BackgroundGradient
-                key={service.title}
-                className="rounded-[22px] p-4 sm:p-8 bg-[#0D0F2D]/80 backdrop-blur-sm animate-slide-up"
-                containerClassName="transform hover:scale-105 transition-all duration-300"
-                
-              >
-                {/* Icono profesional */}
-                <div className="w-16 h-16 bg-gradient-to-br from-[#1E90FF] to-[#9B59B6] rounded-xl flex items-center justify-center mb-6 shadow-lg">
-                  <service.icon className="h-8 w-8 text-white" />
+              <BackgroundGradient key={index} className="rounded-[22px] p-4 bg-slate-900 h-full">
+                <div className="flex flex-col items-start p-6 bg-gradient-to-br from-slate-800 to-slate-900 rounded-[18px] h-full">
+                  <div className="p-3 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-lg mb-4">
+                    <service.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#EAEAEA] mb-3">
+                    {service.title}
+                  </h3>
+                  <p className="text-[#EAEAEA]/70 mb-4 flex-1">
+                    {service.description}
+                  </p>
+                  <ul className="space-y-2">
+                    {service.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
+                        <CheckCircle className="h-4 w-4 text-[#1E90FF] mr-2 flex-shrink-0" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                
-                <h3 className="text-xl font-semibold text-[#EAEAEA] mb-4">
-                  {service.title}
-                </h3>
-                
-                <p className="text-[#EAEAEA]/70 mb-6 leading-relaxed">
-                  {service.description}
-                </p>
-                
-                <ul className="space-y-2">
-                  {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
-                      <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
               </BackgroundGradient>
             ))}
           </div>
         </div>
       </section>
 
-
-      {/* Testimonios - Columnas animadas */}
+      {/* Sección de Testimonios */}
       <TestimonialsSection />
 
-      {/* CTA Intermedio - Banner profesional */}
-      <section className="py-12 md:py-20 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] relative overflow-hidden z-20">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/10 rounded-full blur-3xl"></div>
-          {/* Ilustración profesional en lugar de robot */}
-          <div className="hidden lg:block absolute top-1/2 right-10 transform -translate-y-1/2 opacity-30">
-            <div className="w-48 h-48 relative">
-              <div className="absolute inset-0 bg-white/20 rounded-3xl transform rotate-12 animate-pulse-3d border border-white/30"></div>
-              <div className="absolute inset-4 bg-white/30 rounded-2xl transform -rotate-6 animate-float border border-white/40"></div>
-              <div className="absolute inset-8 bg-white/40 rounded-xl animate-pulse-3d border border-white/50" style={{ animationDelay: '1s' }}>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-                  <Rocket className="h-16 w-16 text-white/80" />
-                </div>
-              </div>
+      {/* Sección de Contacto */}
+      <section className="py-12 md:py-20 bg-transparent relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="text-center mb-16">
+            <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full text-white text-sm font-medium mb-6">
+              Contacto
             </div>
-          </div>
-        </div>
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6">
-            ¿Listo para llevar tu marca al futuro?
-          </h2>
-          <p className="text-lg md:text-xl text-blue-100 mb-6 md:mb-8 px-4">
-            Únete a las empresas que ya están transformando su negocio con IA y automatización
-          </p>
-          <Link
-            to="/contact"
-            className="group inline-flex items-center px-6 md:px-10 py-3 md:py-5 bg-white text-[#1E90FF] font-semibold rounded-xl shadow-2xl hover:shadow-white/25 transition-all duration-300 transform hover:scale-105 text-sm md:text-base"
-          >
-            <Calendar className="mr-2 md:mr-3 h-5 w-5 md:h-6 md:w-6" />
-            <span>Agendar llamada ahora</span>
-            <ArrowRight className="ml-2 md:ml-3 h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Formulario de Contacto Express - Diseño profesional */}
-      <section className="py-12 md:py-20 bg-transparent relative overflow-hidden z-20">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[#1E90FF]/10 to-[#9B59B6]/10 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 left-10 w-72 h-72 bg-gradient-to-br from-[#9B59B6]/10 to-[#2ECC71]/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }}></div>
-        </div>
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#EAEAEA] mb-4">
-              Formulario de Contacto Express
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#EAEAEA] mb-6">
+              ¿Listo para comenzar tu proyecto?
             </h2>
-            <p className="text-lg md:text-xl text-[#EAEAEA]/70 px-4">
-              Cuéntanos tu idea y la construimos juntos
+            <p className="text-lg text-[#EAEAEA]/70 max-w-3xl mx-auto">
+              Cuéntanos tu idea y juntos construiremos la solución perfecta para tu negocio
             </p>
           </div>
-
-          <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl md:rounded-3xl p-4 md:p-8 border border-[#1E90FF]/30 shadow-2xl shadow-[#1E90FF]/10">
-            <div className="absolute inset-0 bg-gradient-to-br from-[#1E90FF]/5 to-[#9B59B6]/5 rounded-2xl md:rounded-3xl"></div>
-            <div className="relative">
-              <ContactForm compact={true} />
-            </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <ContactForm />
           </div>
         </div>
       </section>
