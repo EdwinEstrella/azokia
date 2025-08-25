@@ -1,78 +1,42 @@
-import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
-import Home from './pages/Home';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import Dashboard from './pages/Dashboard';
-import RegisterPage from './pages/RegisterPage';
-import Clients from './pages/dashboard/Clients';
-import Contracts from './pages/dashboard/Contracts';
+import DashboardLayout from './components/layout/DashboardLayout';
+import Dashboard from './pages/dashboard/Dashboard';
 import Projects from './pages/dashboard/Projects';
-import Invoices from './pages/dashboard/Invoices';
 import Finances from './pages/dashboard/Finances';
-import Automation from './pages/dashboard/Automation';
 import Settings from './pages/dashboard/Settings';
-import DashboardHome from './pages/dashboard/Home';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: 'login',
-        element: <LoginPage />,
-      },
-      {
-        path: 'register',
-        element: <RegisterPage />,
-      },
+      { index: true, element: <HomePage /> },
+      { path: 'login', element: <LoginPage /> },
       {
         path: 'dashboard',
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        ),
         children: [
-          {
-            index: true,
-            element: <DashboardHome />,
-          },
-          {
-            path: 'clients',
-            element: <Clients />,
-          },
-          {
-            path: 'contracts',
-            element: <Contracts />,
-          },
-          {
-            path: 'projects',
-            element: <Projects />,
-          },
-          {
-            path: 'invoices',
-            element: <Invoices />,
-          },
-          {
-            path: 'finances',
-            element: <Finances />,
-          },
-          {
-            path: 'automation',
-            element: <Automation />,
-          },
-          {
-            path: 'settings',
-            element: <Settings />,
-          },
+          { index: true, element: <Dashboard /> },
+          { path: 'projects', element: <Projects /> },
+          { path: 'finances', element: <Finances /> },
+          { path: 'settings', element: <Settings /> },
         ],
       },
     ],
   },
 ]);
 
-export const AppRouter: React.FC = () => {
-  return <RouterProvider router={router} />;
-};
+export const Router = () => (
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
+);

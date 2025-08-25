@@ -10,12 +10,12 @@ function App() {
 
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-[#0D0F2D] flex flex-col">
+      <div className="min-h-screen bg-transparent flex flex-col">
         {!isDashboard && <Header />}
         <main className="flex-1">
           <Outlet />
         </main>
-        {!isDashboard && <Footer />}
+        {!isDashboard &amp;&amp; <Footer />}
       </div>
     </AuthProvider>
   );

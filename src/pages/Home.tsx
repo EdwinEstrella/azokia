@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowRight, 
-  TrendingUp, 
   Rocket, 
-  Bot, 
-  Globe, 
-  Users, 
   CheckCircle, 
   Calendar, 
   Brain,
@@ -21,6 +17,7 @@ import ContactForm from '../components/ContactForm';
 import TestimonialsSection from '../components/TestimonialsSection';
 import { FeaturesSectionWithHoverEffects } from '../components/ui/feature-section-with-hover-effects';
 import { BackgroundGradient } from '../components/ui/background-gradient';
+import ShaderBackground from '../components/ui/shader-background';
 
 const Home: React.FC = () => {
   const { } = useLanguage();
@@ -67,17 +64,14 @@ const Home: React.FC = () => {
 
 
   return (
-    <div className="pt-16 md:pt-20 bg-[#0D0F2D] relative">
+    <div className="pt-16 md:pt-20 relative">
+      <ShaderBackground />
       {/* Hero Section */}
-      <section className="py-12 md:py-20 bg-gradient-to-br from-[#0D0F2D] via-blue-900 to-indigo-900 relative overflow-hidden min-h-screen flex items-center">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
-        </div>
+      <section className="py-12 md:py-20 relative overflow-hidden min-h-screen flex items-center">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="mb-4 md:mb-6">
             <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full text-white text-sm font-medium mb-6">
-              AGENCIA DE MARKETING DIGITAL & IA
+              AGENCIA DE MARKETING DIGITAL &amp; IA
             </div>
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#EAEAEA] mb-4 md:mb-6 leading-tight">
@@ -101,7 +95,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Beneficios Rápidos - Tarjetas profesionales con íconos */}
-      <section className="py-12 md:py-20 bg-[#0D0F2D] relative overflow-hidden z-20">
+      <section className="py-12 md:py-20 bg-transparent relative overflow-hidden z-20">
         <div className="absolute inset-0">
           <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#1E90FF]/5 rounded-full blur-3xl"></div>
           <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#9B59B6]/5 rounded-full blur-3xl"></div>
@@ -121,7 +115,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Servicios Destacados - Grid profesional con íconos */}
-      <section className="py-12 md:py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden z-20">
+      <section className="py-12 md:py-20 bg-transparent relative overflow-hidden z-20">
         <div className="absolute inset-0">
           <div className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[#1E90FF]/10 to-[#9B59B6]/10 rounded-full blur-3xl animate-float"></div>
           <div className="absolute bottom-20 left-10 w-72 h-72 bg-gradient-to-br from-[#9B59B6]/10 to-[#2ECC71]/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }}></div>
@@ -140,7 +134,7 @@ const Home: React.FC = () => {
             {featuredServices.map((service, index) => (
               <BackgroundGradient
                 key={service.title}
-                className="rounded-[22px] p-4 sm:p-8 bg-[#0D0F2D] animate-slide-up"
+                className="rounded-[22px] p-4 sm:p-8 bg-[#0D0F2D]/80 backdrop-blur-sm animate-slide-up"
                 containerClassName="transform hover:scale-105 transition-all duration-300"
                 
               >
@@ -211,7 +205,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* Formulario de Contacto Express - Diseño profesional */}
-      <section className="py-12 md:py-20 bg-[#0D0F2D] relative overflow-hidden z-20">
+      <section className="py-12 md:py-20 bg-transparent relative overflow-hidden z-20">
         <div className="absolute inset-0">
           <div className="absolute top-20 right-10 w-72 h-72 bg-gradient-to-br from-[#1E90FF]/10 to-[#9B59B6]/10 rounded-full blur-3xl animate-float"></div>
           <div className="absolute bottom-20 left-10 w-72 h-72 bg-gradient-to-br from-[#9B59B6]/10 to-[#2ECC71]/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }}></div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Plus, Calendar, Clock, Users, Target, CheckCircle, Play, Pause, Edit, Trash2 } from 'lucide-react';
 import { Button } from '../../components/ui/button';
+import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { ProjectForm } from '../../components/forms/ProjectForm';
@@ -86,7 +87,7 @@ const Projects: React.FC = () => {
                 Nuevo Proyecto
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-[#0D0F2D] border-[#1E90FF]/30 text-[#EAEAEA]">
+            <DialogContent className="bg-[#1A1C3A] border-[#1E90FF]/30 text-white">
               <DialogHeader>
                 <DialogTitle>Crear Nuevo Proyecto</DialogTitle>
               </DialogHeader>
@@ -100,68 +101,62 @@ const Projects: React.FC = () => {
           {projects.map((project) => (
             <BackgroundGradient
               key={project.id}
-              className="rounded-[22px] p-4 sm:p-6 bg-[#0D0F2D]/80 flex flex-col h-full"
-              containerClassName="w-full h-full"
+              className="rounded-[22px] p-0.5 bg-[#1A1C3A]"
+              containerClassName="h-full"
             >
-              <div className="flex-grow">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-bold text-[#EAEAEA]">{project.name}</h3>
-                    <p className="text-sm text-[#1E90FF]">{project.client}</p>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm capitalize bg-[#1E90FF]/10 px-2 py-1 rounded-full text-[#1E90FF]">
-                    {getStatusIcon(project.status)}
-                    <span>{project.status}</span>
-                  </div>
-                </div>
-
-                <p className="text-[#EAEAEA]/70 text-sm mb-4">{project.description}</p>
-
-                <div className="space-y-3 text-sm mb-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-[#EAEAEA]/60 flex items-center"><Calendar className="h-4 w-4 mr-2" /> Fecha Límite</span>
-                    <span className="text-[#EAEAEA] font-medium">{new Date(project.endDate).toLocaleDateString()}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[#EAEAEA]/60 flex items-center"><Clock className="h-4 w-4 mr-2" /> Horas</span>
-                    <span className="text-[#EAEAEA] font-medium">{project.hours}h</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-[#EAEAEA]/60 flex items-center"><Target className="h-4 w-4 mr-2" /> Presupuesto</span>
-                    <span className="text-[#EAEAEA] font-medium">{formatCurrency(project.budget)}</span>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <div className="flex justify-between items-center mb-1 text-sm">
-                    <span className="text-[#EAEAEA]/60">Progreso</span>
-                    <span className="text-[#1E90FF] font-semibold">{project.progress}%</span>
-                  </div>
-                  <div className="w-full bg-[#1E90FF]/20 rounded-full h-2">
-                    <div className="bg-[#1E90FF] h-2 rounded-full" style={{ width: `${project.progress}%` }}></div>
-                  </div>
-                </div>
-
+              <Card className="p-6 bg-[#0D0F2D] border-none h-full flex flex-col justify-between">
                 <div>
-                  <p className="text-[#EAEAEA]/60 text-sm mb-2">Equipo</p>
-                  <div className="flex items-center space-x-2">
-                    {project.team.map((member, index) => (
-                      <div key={index} className="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold text-white" title={member}>
-                        {member.split(' ').map(n => n[0]).join('')}
-                      </div>
-                    ))}
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 className="text-xl font-bold text-[#EAEAEA]">{project.name}</h3>
+                    <div className="flex items-center gap-2 text-sm capitalize bg-[#1E90FF]/10 px-2 py-1 rounded-full">
+                      {getStatusIcon(project.status)}
+                      <span className="text-[#EAEAEA]/80">{project.status}</span>
+                    </div>
+                  </div>
+                  <p className="text-[#EAEAEA]/60 mb-4 text-sm">{project.description}</p>
+                  
+                  <div className="space-y-3 text-sm mb-6">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4 text-[#1E90FF]" />
+                      <span className="text-[#EAEAEA]/80">{project.startDate} - {project.endDate}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-[#1E90FF]" />
+                      <span className="text-[#EAEAEA]/80">{project.hours} horas registradas</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4 text-[#1E90FF]" />
+                      <span className="text-[#EAEAEA]/80">{project.team.join(', ')}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Target className="h-4 w-4 text-[#1E90FF]" />
+                      <span className="text-[#EAEAEA]/80">Presupuesto: {formatCurrency(project.budget)}</span>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center mb-1 text-sm">
+                      <span className="text-[#EAEAEA]/80">Progreso</span>
+                      <span className="font-semibold text-[#1E90FF]">{project.progress}%</span>
+                    </div>
+                    <div className="w-full bg-[#1E90FF]/20 rounded-full h-2">
+                      <div 
+                        className="bg-[#1E90FF] h-2 rounded-full" 
+                        style={{ width: `${project.progress}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="mt-6 pt-4 border-t border-[#1E90FF]/20 flex items-center justify-end gap-2">
-                <Button variant="ghost" size="icon" className="text-[#EAEAEA]/70 hover:text-white hover:bg-[#1E90FF]/20">
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="icon" className="text-red-400/70 hover:text-red-400 hover:bg-red-400/20">
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
+                <div className="flex items-center justify-end gap-2 mt-4">
+                  <Button variant="ghost" size="icon" className="text-[#EAEAEA]/60 hover:text-white hover:bg-[#1E90FF]/20">
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" className="text-[#EAEAEA]/60 hover:text-white hover:bg-red-500/20">
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </Card>
             </BackgroundGradient>
           ))}
         </div>
