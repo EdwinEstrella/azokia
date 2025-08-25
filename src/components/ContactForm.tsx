@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
 import { Send, Sparkles, MessageSquare } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -22,17 +20,14 @@ const ContactForm: React.FC<ContactFormProps> = ({ compact = false }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Determinar el ID basado en si es compact o no
     const formId = compact ? 'contactoExpress' : 'contacto_lento';
     
-    // Preparar datos para el webhook
     const webhookData = {
       id: formId,
       timestamp: new Date().toISOString(),
       ...formData
     };
     
-    // Enviar al webhook
     fetch('https://n8n.ibpweb.site/webhook/azokiallc', {
       method: 'POST',
       headers: {
@@ -109,18 +104,18 @@ const ContactForm: React.FC<ContactFormProps> = ({ compact = false }) => {
         {/* WhatsApp (para versión compact) */}
         {compact && (
           <div>
-            <label htmlFor="whatsapp" className="block text-sm font-medium text-[#EAEAEA]/80 mb-2">
+            <label htmlFor="phone" className="block text-sm font-medium text-[#EAEAEA]/80 mb-2">
               WhatsApp *
             </label>
-            <PhoneInput
-              international
-              countryCallingCodeEditable={false}
-              defaultCountry="US"
-              value={formData.phone}
-              onChange={(value) => setFormData({ ...formData, phone: value || '' })}
-              className="w-full"
-              inputClassName="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:ring-2 focus:ring-[#1E90FF] focus:border-transparent transition-colors text-[#EAEAEA] placeholder-gray-400 backdrop-blur-sm"
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
               required
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:ring-2 focus:ring-[#1E90FF] focus:border-transparent transition-colors text-[#EAEAEA] placeholder-gray-400 backdrop-blur-sm"
+              placeholder="+1 234 567 8900"
             />
           </div>
         )}
@@ -148,15 +143,15 @@ const ContactForm: React.FC<ContactFormProps> = ({ compact = false }) => {
             <label htmlFor="phone" className="block text-sm font-medium text-[#EAEAEA]/80 mb-2">
               {t('phone')} *
             </label>
-            <PhoneInput
-              international
-              countryCallingCodeEditable={false}
-              defaultCountry="US"
-              value={formData.phone}
-              onChange={(value) => setFormData({ ...formData, phone: value || '' })}
-              className="w-full"
-              inputClassName="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:ring-2 focus:ring-[#1E90FF] focus:border-transparent transition-colors text-[#EAEAEA] placeholder-gray-400 backdrop-blur-sm"
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
               required
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg focus:ring-2 focus:ring-[#1E90FF] focus:border-transparent transition-colors text-[#EAEAEA] placeholder-gray-400 backdrop-blur-sm"
+              placeholder={t('phone')}
             />
           </div>
         )}

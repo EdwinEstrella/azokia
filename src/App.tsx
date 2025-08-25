@@ -1,23 +1,17 @@
 import React from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
-  const location = useLocation();
-  const isDashboard = location.pathname.startsWith('/dashboard');
-
   return (
-    <AuthProvider>
-      <div className="min-h-screen bg-transparent flex flex-col">
-        {!isDashboard && <Header />}
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        {!isDashboard &amp;&amp; <Footer />}
-      </div>
-    </AuthProvider>
+    <div className="min-h-screen bg-transparent flex flex-col">
+      <Header />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
   );
 }
 
