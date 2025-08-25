@@ -7,7 +7,7 @@ import Dashboard from './pages/dashboard/Dashboard';
 import Projects from './pages/dashboard/Projects';
 import Finances from './pages/dashboard/Finances';
 import Settings from './pages/dashboard/Settings';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 
 const router = createBrowserRouter([
