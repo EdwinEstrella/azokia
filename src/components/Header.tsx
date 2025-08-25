@@ -50,14 +50,7 @@ const Header: React.FC = () => {
                 </Button>
               </Link>
             ) : (
-              <>
-                <Link to="/register">
-                  <Button variant="ghost" className="text-[#EAEAEA]/70 hover:text-[#EAEAEA]">
-                    Registrarse
-                  </Button>
-                </Link>
-                <LoginButton />
-              </>
+              <LoginButton />
             )}
           </div>
 
@@ -101,18 +94,9 @@ const Header: React.FC = () => {
                     Dashboard
                   </Link>
                 ) : (
-                  <>
-                    <Link
-                      to="/register"
-                      className="block px-3 py-2 rounded-lg text-[#EAEAEA]/70 hover:text-[#EAEAEA] hover:bg-[#1E90FF]/10 transition-colors mb-2"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      Registrarse
-                    </Link>
-                    <div className="px-3">
-                      <LoginButton />
-                    </div>
-                  </>
+                  <div className="px-3">
+                    <LoginButton />
+                  </div>
                 )}
               </div>
             </div>

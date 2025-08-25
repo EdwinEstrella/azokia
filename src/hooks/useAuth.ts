@@ -17,24 +17,11 @@ export const useAuth = () => {
         
         if (sessionError) {
           setError(sessionError.message)
+          setLoading(false)
           return
         }
 
         setUser(session?.user ?? null)
-        
-        // Verificar si el usuario existe en la tabla users
-        if (session?.user) {
-          const { data: userData, error: userError } = await supabase
-            .from('users')
-            .select('*')
-            .eq('id', session.user.id)
-            .single()
-
-          if (userError || !userData) {
-            console.warn('Usuario autenticado pero no registrado en la base de datos')
-            // No cerramos sesión aquí, permitimos que el usuario complete el registro
-          }
-        }
       } catch (err) {
         setError('Error al obtener la sesión')
         console.error('Error getting session:', err)
@@ -52,17 +39,8 @@ export const useAuth = () => {
         setLoading(false)
         
         if (event === 'SIGNED_IN' && session?.user) {
-          // Verificar si el usuario existe en la tabla users después de iniciar sesión
-          const { data: userData, error: userError } = await supabase
-            .from('users')
-            .select('*')
-            .eq('id', session.user.id)
-            .single()
-
-          if (userError || !userData) {
-            console.warn('Usuario autenticado pero no registrado - redirigiendo a completar registro')
-            navigate('/complete-registration')
-          }
+          // Usuario autenticado correctamente
+          console.log('Usuario autenticado:', session.user.email)
         }
       }
     )
@@ -84,22 +62,6 @@ export const useAuth = () => {
       })
 
       if (authError) throw authError
-
-      // Crear registro en la tabla users
-      if (data.user) {
-        const { error: userError } = await supabase
-          .from('users')
-          .insert({
-            id: data.user.id,
-            email: data.user.email!,
-            name: name
-          })
-
-        if (userError) {
-          console.error('Error creating user record:', userError)
-          // No lanzamos error aquí para no interrumpir el flujo de autenticación
-        }
-      }
 
       return data
     } catch (err: any) {
@@ -127,20 +89,6 @@ export const useAuth = () => {
         throw authError
       }
 
-      // Verificar si el usuario existe en la tabla users
-      if (data.user) {
-        const { data: userData, error: userError } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', data.user.id)
-          .single()
-
-        if (userError || !userData) {
-          console.warn('Usuario autenticado pero no registrado en la base de datos')
-          // No lanzamos error, permitimos que el usuario complete el registro
-        }
-      }
-
       return data
     } catch (err: any) {
       setError(err.message)
@@ -164,27 +112,12 @@ export const useAuth = () => {
     }
   }
 
-  const checkUserExists = async (userId: string): Promise<boolean> => {
-    try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('id')
-        .eq('id', userId)
-        .single()
-
-      return !error && !!data
-    } catch {
-      return false
-    }
-  }
-
   return {
     user,
     loading,
     error,
     signUp,
     signIn,
-    signOut,
-    checkUserExists
+    signOut
   }
 }
