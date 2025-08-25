@@ -11,151 +11,179 @@ import { Calendar } from '../ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { CalendarIcon, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
-import { esI'll continue implementing the complete dashboard structure. Let me create the remaining modules and resolve the authentication redirect issues.
+import { es } from 'date-fns/locale';
 
-<boltArtifact id="complete-dashboard-modules" title="Complete Dashboard Modules Implementation">
-<boltAction type="file" filePath="src/pages/dashboard/Contracts.tsx">import React, { useState, useEffect } from 'react';
-import { Plus, Search, Filter, FileText, Calendar, DollarSign, User, Clock } from 'lucide-react';
-import { useSupabase } from '../../hooks/useSupabase';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Card } from '../../components/ui/card';
-import { BackgroundGradient } from '../../components/ui/background-gradient';
+const contractSchema = z.object({
+  title: z.string().min(1, 'El título es requerido'),
+  contract_number: z.string().min(1, 'El número de contrato es requerido'),
+  client_name: z.string().min(1, 'El nombre del cliente es requerido'),
+  value: z.number().min(0, 'El valor debe ser mayor o igual a 0'),
+  status: z.enum(['ACTIVE', 'PENDING', 'EXPIRED']),
+  start_date: z.date(),
+  end_date: z.date(),
+  description: z.string().optional()
+});
 
-const Contracts: React.FC = () => {
-  const [contracts, setContracts] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState('ALL');
-  const { getContracts, searchContracts, loading } = useSupabase('user-id');
+type ContractFormData = z.infer<typeof contractSchema>;
 
-  useEffect(() => {
-    loadContracts();
-  }, []);
+interface ContractFormProps {
+  onSubmit: (data: ContractFormData) => void;
+  loading?: boolean;
+  initialData?: Partial<ContractFormData>;
+}
 
-  const loadContracts = async () => {
-    const data = await getContracts();
-    setContracts(data || []);
+const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading = false, initialData }) => {
+  const [date, setDate] = useState<Date | undefined>(initialData?.start_date ? new Date(initialData.start_date) : undefined);
+  
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<ContractFormData>({
+    resolver: zodResolver(contractSchema),
+    defaultValues: initialData
+  });
+
+  const handleFormSubmit = (data: ContractFormData) => {
+    onSubmit(data);
   };
-
-  const handleSearch = async (query: string) => {
-    setSearchTerm(query);
-    if (query.trim()) {
-      const results = await searchContracts(query);
-      setContracts(results || []);
-    } else {
-      loadContracts();
-    }
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'ACTIVE': return 'bg-green-500/20 text-green-400';
-      case 'EXPIRED': return 'bg-red-500/20 text-red-400';
-      case 'PENDING': return 'bg-yellow-500/20 text-yellow-400';
-      default: return 'bg-gray-500/20 text-gray-400';
-    }
-  };
-
-  const filteredContracts = contracts.filter(contract => 
-    filterStatus === 'ALL' || contract.status === filterStatus
-  );
 
   return (
-    <div className="min-h-screen bg-[#0D0F2D] p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-[#EAEAEA] mb-2">Contratos</h1>
-            <p className="text-[#EAEAEA]/60">Gestiona tus contratos y acuerdos</p>
-          </div>
-          <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Nuevo Contrato
-          </Button>
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="title">Título del Contrato</Label>
+          <Input
+            id="title"
+            {...register('title')}
+            placeholder="Ej: Contrato de Servicios"
+            className={errors.title ? 'border-red-500' : ''}
+          />
+          {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
         </div>
 
-        {/* Filters */}
-        <Card className="p-6 mb-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/20">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#EAEAEA]/40 h-4 w-4" />
-              <Input
-                placeholder="Buscar contratos..."
-                value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
-                className="pl-10 bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
-              />
-            </div>
-            <select
-              value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value)}
-              className="px-4 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA]"
-            >
-              <option value="ALL">Todos los estados</option>
-              <option value="ACTIVE">Activos</option>
-              <option value="PENDING">Pendientes</option>
-              <option value="EXPIRED">Expirados</option>
-            </select>
-          </div>
-        </Card>
-
-        {/* Contracts Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredContracts.map((contract) => (
-            <BackgroundGradient
-              key={contract.id}
-              className="rounded-2xl p-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/30"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-[#EAEAEA]">{contract.title}</h3>
-                  <p className="text-[#1E90FF] text-sm">#{contract.contract_number}</p>
-                </div>
-                <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(contract.status)}`}>
-                  {contract.status}
-                </span>
-              </div>
-
-              <div className="space-y-3 mb-4">
-                <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
-                  <User className="h-4 w-4" />
-                  <span>{contract.client_name}</span>
-                </div>
-                <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
-                  <DollarSign className="h-4 w-4" />
-                  <span>${contract.value?.toLocaleString()}</span>
-                </div>
-                <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
-                  <Calendar className="h-4 w-4" />
-                  <span>{new Date(contract.start_date).toLocaleDateString()} - {new Date(contract.end_date).toLocaleDateString()}</span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-[#EAEAEA]/60">
-                  {contract.projects?.length || 0} proyectos
-                </div>
-                <Button variant="ghost" size="sm" className="text-[#EAEAEA] hover:bg-[#1E90FF]/20">
-                  <FileText className="h-4 w-4" />
-                </Button>
-              </div>
-            </BackgroundGradient>
-          ))}
+        <div className="space-y-2">
+          <Label htmlFor="contract_number">Número de Contrato</Label>
+          <Input
+            id="contract_number"
+            {...register('contract_number')}
+            placeholder="Ej: CT-2024-001"
+            className={errors.contract_number ? 'border-red-500' : ''}
+          />
+          {errors.contract_number && <p className="text-red-500 text-sm">{errors.contract_number.message}</p>}
         </div>
-
-        {filteredContracts.length === 0 && !loading && (
-          <div className="text-center py-12">
-            <div className="text-[#EAEAEA]/40 mb-4">No hay contratos registrados</div>
-            <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
-              <Plus className="h-4 w-4 mr-2" />
-              Crear primer contrato
-            </Button>
-          </div>
-        )}
       </div>
-    </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="client_name">Cliente</Label>
+        <Input
+          id="client_name"
+          {...register('client_name')}
+          placeholder="Nombre del cliente"
+          className={errors.client_name ? 'border-red-500' : ''}
+        />
+        {errors.client_name && <p className="text-red-500 text-sm">{errors.client_name.message}</p>}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="value">Valor ($)</Label>
+          <Input
+            id="value"
+            type="number"
+            {...register('value', { valueAsNumber: true })}
+            placeholder="0.00"
+            className={errors.value ? 'border-red-500' : ''}
+          />
+          {errors.value && <p className="text-red-500 text-sm">{errors.value.message}</p>}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="status">Estado</Label>
+          <Select
+            onValueChange={(value) => setValue('status', value as any)}
+            defaultValue={initialData?.status}
+          >
+            <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
+              <SelectValue placeholder="Seleccionar estado" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="ACTIVE">Activo</SelectItem>
+              <SelectItem value="PENDING">Pendiente</SelectItem>
+              <SelectItem value="EXPIRED">Expirado</SelectItem>
+            </SelectContent>
+          </Select>
+          {errors.status && <p className="text-red-500 text-sm">{errors.status.message}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label>Fecha de Inicio</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={`w-full justify-start text-left font-normal ${errors.start_date ? 'border-red-500' : ''}`}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {watch('start_date') ? format(watch('start_date'), 'PPP', { locale: es }) : 'Seleccionar fecha'}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={watch('start_date')}
+                onSelect={(date) => setValue('start_date', date!)}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+          {errors.start_date && <p className="text-red-500 text-sm">{errors.start_date.message}</p>}
+        </div>
+
+        <div className="space-y-2">
+          <Label>Fecha de Fin</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={`w-full justify-start text-left font-normal ${errors.end_date ? 'border-red-500' : ''}`}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {watch('end_date') ? format(watch('end_date'), 'PPP', { locale: es }) : 'Seleccionar fecha'}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+              <Calendar
+                mode="single"
+                selected={watch('end_date')}
+                onSelect={(date) => setValue('end_date', date!)}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+          {errors.end_date && <p className="text-red-500 text-sm">{errors.end_date.message}</p>}
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="description">Descripción (Opcional)</Label>
+        <Input
+          id="description"
+          {...register('description')}
+          placeholder="Descripción del contrato"
+        />
+      </div>
+
+      <Button type="submit" disabled={loading} className="w-full">
+        {loading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Guardando...
+          </>
+        ) : (
+          'Guardar Contrato'
+        )}
+      </Button>
+    </form>
   );
 };
 
-export default Contracts;
+export default ContractForm;

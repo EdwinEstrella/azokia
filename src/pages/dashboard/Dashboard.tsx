@@ -1,7 +1,8 @@
 import React from 'react';
-import { TrendingUp, Users, DollarSign, Calendar, Activity } from 'lucide-react';
+import { TrendingUp, Users, DollarSign, Calendar, Activity, Eye, Plus } from 'lucide-react';
 import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
+import { Button } from '../../components/ui/button';
 
 const Dashboard: React.FC = () => {
   const stats = [
@@ -22,32 +23,39 @@ const Dashboard: React.FC = () => {
       color: 'text-blue-400'
     },
     {
-      title: 'Miembros del Equipo',
-      value: '12',
-      change: '+2',
+      title: 'Clientes Activos',
+      value: '24',
+      change: '+5',
       trend: 'up',
       icon: Users,
       color: 'text-purple-400'
     },
     {
-      title: 'Horas Facturadas',
-      value: '1,240',
-      change: '+18%',
+      title: 'Webs Activas',
+      value: '12',
+      change: '+2',
       trend: 'up',
-      icon: Calendar,
+      icon: Eye,
       color: 'text-orange-400'
     }
   ];
 
   const recentActivity = [
-    { id: 1, action: 'Nuevo proyecto creado', project: 'Rediseño Website', time: 'Hace 2 horas' },
-    { id: 2, action: 'Pago recibido', project: 'TechSolutions Inc.', time: 'Hace 4 horas' },
-    { id: 3, action: 'Tarea completada', project: 'App Móvil E-commerce', time: 'Hace 6 horas' },
-    { id: 4, action: 'Nuevo miembro agregado', project: 'Carlos Rodríguez', time: 'Hace 1 día' }
+    { id: 1, action: 'Nuevo contrato firmado', project: 'TechSolutions Inc.', time: 'Hace 2 horas' },
+    { id: 2, action: 'Pago recibido', project: 'DesignStudio', time: 'Hace 4 horas' },
+    { id: 3, action: 'Proyecto completado', project: 'E-commerce App', time: 'Hace 6 horas' },
+    { id: 4, action: 'Nuevo cliente agregado', project: 'StartupXYZ', time: 'Hace 1 día' }
+  ];
+
+  const quickActions = [
+    { label: 'Nuevo Proyecto', icon: Plus, color: 'bg-blue-500' },
+    { label: 'Crear Factura', icon: DollarSign, color: 'bg-green-500' },
+    { label: 'Agregar Cliente', icon: Users, color: 'bg-purple-500' },
+    { label: 'Nueva Web', icon: Eye, color: 'bg-orange-500' }
   ];
 
   return (
-    <div className="min-h-screen bg-[#0D0F2D] p-6">
+    <div className="min-h-screen bg-[#0D0F2D]">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -109,30 +117,20 @@ const Dashboard: React.FC = () => {
             <Card className="p-6 bg-[#0D0F2D] border-none">
               <h3 className="text-xl font-semibold text-[#EAEAEA] mb-6">Acciones Rápidas</h3>
               <div className="grid grid-cols-2 gap-4">
-                <button className="p-4 rounded-lg bg-[#1A1C3A]/50 hover:bg-[#1E90FF]/20 transition-colors text-[#EAEAEA] text-center">
-                  <div className="w-8 h-8 bg-[#1E90FF] rounded-lg flex items-center justify-center mx-auto mb-2">
-                    <TrendingUp className="h-4 w-4" />
-                  </div>
-                  <span className="text-sm">Nuevo Proyecto</span>
-                </button>
-                <button className="p-4 rounded-lg bg-[#1A1C3A]/50 hover:bg-[#1E90FF]/20 transition-colors text-[#EAEAEA] text-center">
-                  <div className="w-8 h-8 bg-[#1E90FF] rounded-lg flex items-center justify-center mx-auto mb-2">
-                    <DollarSign className="h-4 w-4" />
-                  </div>
-                  <span className="text-sm">Crear Factura</span>
-                </button>
-                <button className="p-4 rounded-lg bg-[#1A1C3A]/50 hover:bg-[#1E90FF]/20 transition-colors text-[#EAEAEA] text-center">
-                  <div className="w-8 h-8 bg-[#1E90FF] rounded-lg flex items-center justify-center mx-auto mb-2">
-                    <Users className="h-4 w-4" />
-                  </div>
-                  <span className="text-sm">Agregar Miembro</span>
-                </button>
-                <button className="p-4 rounded-lg bg-[#1A1C3A]/50 hover:bg-[#1E90FF]/20 transition-colors text-[#EAEAEA] text-center">
-                  <div className="w-8 h-8 bg-[#1E90FF] rounded-lg flex items-center justify-center mx-auto mb-2">
-                    <Calendar className="h-4 w-4" />
-                  </div>
-                  <span className="text-sm">Programar Reunión</span>
-                </button>
+                {quickActions.map((action, index) => {
+                  const Icon = action.icon;
+                  return (
+                    <Button
+                      key={index}
+                      className="p-4 rounded-lg bg-[#1A1C3A]/50 hover:bg-[#1E90FF]/20 transition-colors text-[#EAEAEA] h-auto flex-col gap-2"
+                    >
+                      <div className={`w-8 h-8 ${action.color} rounded-lg flex items-center justify-center`}>
+                        <Icon className="h-4 w-4 text-white" />
+                      </div>
+                      <span className="text-sm">{action.label}</span>
+                    </Button>
+                  );
+                })}
               </div>
             </Card>
           </BackgroundGradient>
