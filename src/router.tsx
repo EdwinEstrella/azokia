@@ -11,7 +11,6 @@ import Projects from './pages/dashboard/Projects';
 import Invoices from './pages/dashboard/Invoices';
 import Finances from './pages/dashboard/Finances';
 import Automation from './pages/dashboard/Automation';
-import Mobile from './pages/dashboard/Mobile';
 import Settings from './pages/dashboard/Settings';
 import DashboardHome from './pages/dashboard/Home';
 
@@ -63,10 +62,6 @@ const router = createBrowserRouter([
           {
             path: 'automation',
             element: <Automation />,
-          },
-          {
-            path: 'mobile',
-            element: <Mobile />,
           },
           {
             path: 'settings',
