@@ -1,212 +1,161 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useSupabase } from '../../hooks/useSupabase';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Calendar } from '../ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { CalendarIcon, Loader2 } from 'lucide-react';
+import { format } from 'date-fns';
+import { esI'll continue implementing the complete dashboard structure. Let me create the remaining modules and resolve the authentication redirect issues.
+
+<boltArtifact id="complete-dashboard-modules" title="Complete Dashboard Modules Implementation">
+<boltAction type="file" filePath="src/pages/dashboard/Contracts.tsx">import React, { useState, useEffect } from 'react';
+import { Plus, Search, Filter, FileText, Calendar, DollarSign, User, Clock } from 'lucide-react';
 import { useSupabase } from '../../hooks/useSupabase';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { Card } from '../../components/ui/card';
+import { BackgroundGradient } from '../../components/ui/background-gradient';
 
-interface ContractFormProps {
-  onSuccess?: () => void;
-  initialData?: any;
-}
-
-export const ContractForm: React.FC<ContractFormProps> = ({ onSuccess, initialData }) => {
-  const [clients, setClients] = useState<any[]>([]);
-  const [products, setProducts] = useState<any[]>([]);
-  const [formData, setFormData] = useState({
-    title: initialData?.title || '',
-    description: initialData?.description || '',
-    client_id: initialData?.client_id || '',
-    product_id: initialData?.product_id || '',
-    amount: initialData?.amount || '',
-    payment_type: initialData?.payment_type || 'MONTHLY',
-    start_date: initialData?.start_date || '',
-    end_date: initialData?.end_date || '',
-    status: initialData?.status || 'ACTIVE'
-  });
-  const [loading, setLoading] = useState(false);
-  const { createContract, getClients, getProducts } = useSupabase('user-id');
+const Contracts: React.FC = () => {
+  const [contracts, setContracts] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('ALL');
+  const { getContracts, searchContracts, loading } = useSupabase('user-id');
 
   useEffect(() => {
-    loadClientsAndProducts();
+    loadContracts();
   }, []);
 
-  const loadClientsAndProducts = async () => {
-    const [clientsData, productsData] = await Promise.all([
-      getClients(),
-      getProducts()
-    ]);
-    setClients(clientsData || []);
-    setProducts(productsData || []);
+  const loadContracts = async () => {
+    const data = await getContracts();
+    setContracts(data || []);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    try {
-      await createContract({
-        ...formData,
-        amount: parseFloat(formData.amount)
-      });
-      onSuccess?.();
-    } catch (error) {
-      console.error('Error creating contract:', error);
-    } finally {
-      setLoading(false);
+  const handleSearch = async (query: string) => {
+    setSearchTerm(query);
+    if (query.trim()) {
+      const results = await searchContracts(query);
+      setContracts(results || []);
+    } else {
+      loadContracts();
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'ACTIVE': return 'bg-green-500/20 text-green-400';
+      case 'EXPIRED': return 'bg-red-500/20 text-red-400';
+      case 'PENDING': return 'bg-yellow-500/20 text-yellow-400';
+      default: return 'bg-gray-500/20 text-gray-400';
+    }
   };
 
+  const filteredContracts = contracts.filter(contract => 
+    filterStatus === 'ALL' || contract.status === filterStatus
+  );
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Label htmlFor="title" className="text-[#EAEAEA]">Título del contrato</Label>
-        <Input
-          id="title"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-          className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="description" className="text-[#EAEAEA]">Descripción</Label>
-        <textarea
-          id="description"
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          rows={3}
-          className="w-full px-3 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA] resize-none"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="client_id" className="text-[#EAEAEA]">Cliente</Label>
-          <select
-            id="client_id"
-            name="client_id"
-            value={formData.client_id}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA]"
-          >
-            <option value="">Seleccionar cliente</option>
-            {clients.map(client => (
-              <option key={client.id} value={client.id}>{client.name}</option>
-            ))}
-          </select>
+    <div className="min-h-screen bg-[#0D0F2D] p-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-[#EAEAEA] mb-2">Contratos</h1>
+            <p className="text-[#EAEAEA]/60">Gestiona tus contratos y acuerdos</p>
+          </div>
+          <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
+            <Plus className="h-4 w-4 mr-2" />
+            Nuevo Contrato
+          </Button>
         </div>
 
-        <div>
-          <Label htmlFor="product_id" className="text-[#EAEAEA]">Producto/Servicio</Label>
-          <select
-            id="product_id"
-            name="product_id"
-            value={formData.product_id}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA]"
-          >
-            <option value="">Seleccionar producto</option>
-            {products.map(product => (
-              <option key={product.id} value={product.id}>{product.name}</option>
-            ))}
-          </select>
+        {/* Filters */}
+        <Card className="p-6 mb-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/20">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#EAEAEA]/40 h-4 w-4" />
+              <Input
+                placeholder="Buscar contratos..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className="pl-10 bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
+              />
+            </div>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="px-4 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA]"
+            >
+              <option value="ALL">Todos los estados</option>
+              <option value="ACTIVE">Activos</option>
+              <option value="PENDING">Pendientes</option>
+              <option value="EXPIRED">Expirados</option>
+            </select>
+          </div>
+        </Card>
+
+        {/* Contracts Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredContracts.map((contract) => (
+            <BackgroundGradient
+              key={contract.id}
+              className="rounded-2xl p-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/30"
+            >
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-[#EAEAEA]">{contract.title}</h3>
+                  <p className="text-[#1E90FF] text-sm">#{contract.contract_number}</p>
+                </div>
+                <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(contract.status)}`}>
+                  {contract.status}
+                </span>
+              </div>
+
+              <div className="space-y-3 mb-4">
+                <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
+                  <User className="h-4 w-4" />
+                  <span>{contract.client_name}</span>
+                </div>
+                <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
+                  <DollarSign className="h-4 w-4" />
+                  <span>${contract.value?.toLocaleString()}</span>
+                </div>
+                <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
+                  <Calendar className="h-4 w-4" />
+                  <span>{new Date(contract.start_date).toLocaleDateString()} - {new Date(contract.end_date).toLocaleDateString()}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-[#EAEAEA]/60">
+                  {contract.projects?.length || 0} proyectos
+                </div>
+                <Button variant="ghost" size="sm" className="text-[#EAEAEA] hover:bg-[#1E90FF]/20">
+                  <FileText className="h-4 w-4" />
+                </Button>
+              </div>
+            </BackgroundGradient>
+          ))}
         </div>
+
+        {filteredContracts.length === 0 && !loading && (
+          <div className="text-center py-12">
+            <div className="text-[#EAEAEA]/40 mb-4">No hay contratos registrados</div>
+            <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
+              <Plus className="h-4 w-4 mr-2" />
+              Crear primer contrato
+            </Button>
+          </div>
+        )}
       </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="amount" className="text-[#EAEAEA]">Monto</Label>
-          <Input
-            id="amount"
-            name="amount"
-            type="number"
-            step="0.01"
-            value={formData.amount}
-            onChange={handleChange}
-            required
-            className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="payment_type" className="text-[#EAEAEA]">Tipo de pago</Label>
-          <select
-            id="payment_type"
-            name="payment_type"
-            value={formData.payment_type}
-            onChange={handleChange}
-            className="w-full px-3 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA]"
-          >
-            <option value="MONTHLY">Mensual</option>
-            <option value="QUARTERLY">Trimestral</option>
-            <option value="ANNUAL">Anual</option>
-            <option value="ONE_TIME">Única vez</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="start_date" className="text-[#EAEAEA]">Fecha de inicio</Label>
-          <Input
-            id="start_date"
-            name="start_date"
-            type="date"
-            value={formData.start_date}
-            onChange={handleChange}
-            required
-            className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="end_date" className="text-[#EAEAEA]">Fecha de fin (opcional)</Label>
-          <Input
-            id="end_date"
-            name="end_date"
-            type="date"
-            value={formData.end_date}
-            onChange={handleChange}
-            className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
-          />
-        </div>
-      </div>
-
-      <div>
-        <Label htmlFor="status" className="text-[#EAEAEA]">Estado</Label>
-        <select
-          id="status"
-          name="status"
-          value={formData.status}
-          onChange={handleChange}
-          className="w-full px-3 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA]"
-        >
-          <option value="ACTIVE">Activo</option>
-          <option value="SUSPENDED">Suspendido</option>
-          <option value="COMPLETED">Completado</option>
-          <option value="CANCELLED">Cancelado</option>
-        </select>
-      </div>
-
-      <Button 
-        type="submit" 
-        className="w-full bg-[#1E90FF] hover:bg-[#1E90FF]/90"
-        disabled={loading}
-      >
-        {loading ? 'Creando...' : initialData ? 'Actualizar Contrato' : 'Crear Contrato'}
-      </Button>
-    </form>
+    </div>
   );
 };
+
+export default Contracts;

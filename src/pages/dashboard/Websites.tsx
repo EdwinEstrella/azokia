@@ -1,55 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, FileText, Edit, Trash2, Eye, Download, Calendar, DollarSign } from 'lucide-react';
+import { Plus, Search, Globe, Edit, Trash2, Eye, ExternalLink, Calendar, Server } from 'lucide-react';
 import { useSupabase } from '../../hooks/useSupabase';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
-import { ContractForm } from '../../components/forms/ContractForm';
+import { WebsiteForm } from '../../components/forms/WebsiteForm';
 
-const Contracts: React.FC = () => {
-  const [contracts, setContracts] = useState<any[]>([]);
+const Websites: React.FC = () => {
+  const [websites, setWebsites] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { getContracts, loading } = useSupabase();
+  const { getWebsites, loading } = useSupabase();
 
   useEffect(() => {
-    loadContracts();
+    loadWebsites();
   }, []);
 
-  const loadContracts = async () => {
-    const data = await getContracts();
-    setContracts(data || []);
+  const loadWebsites = async () => {
+    const data = await getWebsites();
+    setWebsites(data || []);
   };
 
-  const handleContractCreated = () => {
+  const handleWebsiteCreated = () => {
     setIsDialogOpen(false);
-    loadContracts();
+    loadWebsites();
   };
 
-  const filteredContracts = contracts.filter(contract => 
-    (filterStatus === 'ALL' || contract.status === filterStatus) &&
-    (contract.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     contract.clients?.name?.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredWebsites = websites.filter(website => 
+    (filterStatus === 'ALL' || website.status === filterStatus) &&
+    (website.domain?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     website.client_name?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'ACTIVE': return 'bg-green-500/20 text-green-400';
-      case 'PENDING': return 'bg-yellow-500/20 text-yellow-400';
-      case 'EXPIRED': return 'bg-red-500/20 text-red-400';
-      case 'CANCELLED': return 'bg-gray-500/20 text-gray-400';
+      case 'MAINTENANCE': return 'bg-yellow-500/20 text-yellow-400';
+      case 'DOWN': return 'bg-red-500/20 text-red-400';
+      case 'DEVELOPMENT': return 'bg-blue-500/20 text-blue-400';
       default: return 'bg-gray-500/20 text-gray-400';
     }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('es-ES', {
-      style: 'currency',
-      currency: 'EUR'
-    }).format(amount);
   };
 
   return (
@@ -58,21 +51,21 @@ const Contracts: React.FC = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-[#EAEAEA] mb-2">Contratos</h1>
-            <p className="text-[#EAEAEA]/60">Gestiona tus contratos con clientes</p>
+            <h1 className="text-3xl font-bold text-[#EAEAEA] mb-2">Websites</h1>
+            <p className="text-[#EAEAEA]/60">Gestiona tus sitios web activos</p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
               <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
                 <Plus className="h-4 w-4 mr-2" />
-                Nuevo Contrato
+                Nuevo Website
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-[#0D0F2D] border-[#1E90FF]/30 max-w-4xl">
+            <DialogContent className="bg-[#0D0F2D] border-[#1E90FF]/30 max-w-2xl">
               <DialogHeader>
-                <DialogTitle className="text-[#EAEAEA]">Crear Nuevo Contrato</DialogTitle>
+                <DialogTitle className="text-[#EAEAEA]">Agregar Nuevo Website</DialogTitle>
               </DialogHeader>
-              <ContractForm onSuccess={handleContractCreated} />
+              <WebsiteForm onSuccess={handleWebsiteCreated} />
             </DialogContent>
           </Dialog>
         </div>
@@ -83,7 +76,7 @@ const Contracts: React.FC = () => {
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#EAEAEA]/40 h-4 w-4" />
               <Input
-                placeholder="Buscar contratos..."
+                placeholder="Buscar websites..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
@@ -96,63 +89,70 @@ const Contracts: React.FC = () => {
             >
               <option value="ALL">Todos los estados</option>
               <option value="ACTIVE">Activos</option>
-              <option value="PENDING">Pendientes</option>
-              <option value="EXPIRED">Expirados</option>
-              <option value="CANCELLED">Cancelados</option>
+              <option value="MAINTENANCE">Mantenimiento</option>
+              <option value="DOWN">Caídos</option>
+              <option value="DEVELOPMENT">Desarrollo</option>
             </select>
           </div>
         </Card>
 
-        {/* Contracts Grid */}
+        {/* Websites Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredContracts.map((contract) => (
+          {filteredWebsites.map((website) => (
             <BackgroundGradient
-              key={contract.id}
+              key={website.id}
               className="rounded-2xl p-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/30"
             >
               <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-[#EAEAEA]">{contract.title}</h3>
-                  <p className="text-[#1E90FF] text-sm">{contract.clients?.name || 'Sin cliente'}</p>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-[#1E90FF]/20 rounded-lg">
+                    <Globe className="h-5 w-5 text-[#1E90FF]" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[#EAEAEA]">{website.domain}</h3>
+                    <p className="text-[#1E90FF] text-sm">{website.clients?.name || 'Sin cliente'}</p>
+                  </div>
                 </div>
-                <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(contract.status)}`}>
-                  {contract.status}
+                <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(website.status)}`}>
+                  {website.status}
                 </span>
               </div>
 
               <div className="space-y-2 mb-4">
-                {contract.amount && (
-                  <p className="text-[#EAEAEA] font-semibold flex items-center gap-2">
-                    <DollarSign className="h-4 w-4" />
-                    {formatCurrency(contract.amount)}
+                {website.hosting_provider && (
+                  <p className="text-[#EAEAEA]/70 text-sm flex items-center gap-2">
+                    <Server className="h-4 w-4" />
+                    {website.hosting_provider}
                   </p>
                 )}
-                {contract.start_date && contract.end_date && (
+                {website.renewal_date && (
                   <p className="text-[#EAEAEA]/70 text-sm flex items-center gap-2">
                     <Calendar className="h-4 w-4" />
-                    {new Date(contract.start_date).toLocaleDateString()} - {new Date(contract.end_date).toLocaleDateString()}
+                    Renovación: {new Date(website.renewal_date).toLocaleDateString()}
                   </p>
                 )}
-                {contract.websites?.domain && (
+                {website.ssl_expiry && (
                   <p className="text-[#EAEAEA]/70 text-sm">
-                    Website: {contract.websites.domain}
-                  </p>
-                )}
-                {contract.description && (
-                  <p className="text-[#EAEAEA]/70 text-sm line-clamp-2">
-                    {contract.description}
+                    SSL: {new Date(website.ssl_expiry).toLocaleDateString()}
                   </p>
                 )}
               </div>
 
               <div className="flex items-center justify-between">
                 <div className="text-sm text-[#EAEAEA]/60">
-                  {contract.payment_frequency || 'Mensual'}
+                  {website.contracts_count || 0} contratos
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="sm" className="text-[#EAEAEA] hover:bg-[#1E90FF]/20">
-                    <Download className="h-4 w-4" />
-                  </Button>
+                  {website.domain && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-[#EAEAEA] hover:bg-[#1E90FF]/20"
+                      onClick={() => window.open(`https://${website.domain}`, '_blank')}
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </Button>
+                  )}
                   <Button variant="ghost" size="sm" className="text-[#EAEAEA] hover:bg-[#1E90FF]/20">
                     <Eye className="h-4 w-4" />
                   </Button>
@@ -165,15 +165,15 @@ const Contracts: React.FC = () => {
           ))}
         </div>
 
-        {filteredContracts.length === 0 && !loading && (
+        {filteredWebsites.length === 0 && !loading && (
           <div className="text-center py-12">
-            <div className="text-[#EAEAEA]/40 mb-4">No hay contratos registrados</div>
+            <div className="text-[#EAEAEA]/40 mb-4">No hay websites registrados</div>
             <Button 
               className="bg-[#1E90FF] hover:bg-[#1E90FF]/90"
               onClick={() => setIsDialogOpen(true)}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Crear primer contrato
+              Agregar primer website
             </Button>
           </div>
         )}
@@ -182,4 +182,4 @@ const Contracts: React.FC = () => {
   );
 };
 
-export default Contracts;
+export default Websites;
