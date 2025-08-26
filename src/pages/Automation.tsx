@@ -1,170 +1,18 @@
 import React from 'react';
-import { Bot, Zap, MessageSquare, BarChart3, Calendar, Bell, CheckCircle, Rocket } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const Automation: React.FC = () => {
   const {  } = useLanguage();
 
-  const automationServices = [
-    {
-      icon: MessageSquare,
-      title: 'Chatbots y Asistentes Virtuales',
-      description: 'Automatiza la atención al cliente 24/7 con chatbots inteligentes para WhatsApp, Telegram y web.',
-      features: [
-        'Respuestas automáticas inteligentes',
-        'Integración con WhatsApp Business',
-        'Chatbots para Telegram',
-        'Asignación automática de conversaciones',
-        'Escalamiento a agentes humanos',
-        'Análisis de satisfacción'
-      ],
-      gradient: 'from-green-500 to-emerald-500'
-    },
-    {
-      icon: BarChart3,
-      title: 'Automatización de Ventas',
-      description: 'Optimiza tu embudo de ventas con automatizaciones que nutren leads y cierran más deals.',
-      features: [
-        'Captura automática de leads',
-        'Seguimiento personalizado',
-        'Scoring de leads',
-        'Notificaciones al equipo de ventas',
-        'Creación automática de oportunidades',
-        'Reportes de conversión'
-      ],
-      gradient: 'from-blue-500 to-cyan-500'
-    },
-    {
-      icon: Calendar,
-      title: 'Gestión de Citas y Recordatorios',
-      description: 'Automatiza la programación de citas y envía recordatorios para reducir el ausentismo.',
-      features: [
-        'Calendario inteligente',
-        'Recordatorios automáticos',
-        'Confirmación de citas',
-        'Reprogramación automática',
-        'Integración con Google Calendar',
-        'Notificaciones multicanal'
-      ],
-      gradient: 'from-purple-500 to-pink-500'
-    },
-    {
-      icon: Bell,
-      title: 'Reportes y Alertas Automáticas',
-      description: 'Mantente informado con reportes automáticos y alertas en tiempo real sobre tu negocio.',
-      features: [
-        'Reportes diarios/semanales',
-        'Alertas de rendimiento',
-        'Dashboards en tiempo real',
-        'Notificaciones personalizadas',
-        'Análisis predictivo',
-        'Exportación automática'
-      ],
-      gradient: 'from-orange-500 to-red-500'
-    }
-  ];
+  const automationServices: any[] = [];
 
-  const automationTypes = [
-    {
-      title: 'Automatización de Atención al Cliente',
-      features: [
-        'Autorespuesta inteligente 24/7',
-        'Asignación automática por especialidad',
-        'Chatbot híbrido (bot + humano)',
-        'Encuestas de satisfacción automáticas',
-        'Respuesta fuera de horario',
-        'Base de conocimientos integrada'
-      ]
-    },
-    {
-      title: 'Automatización de Marketing',
-      features: [
-        'Email marketing automatizado',
-        'Segmentación dinámica de audiencias',
-        'Campañas por comportamiento',
-        'Lead scoring automático',
-        'Retargeting inteligente',
-        'A/B testing automatizado'
-      ]
-    },
-    {
-      title: 'Automatización Operativa',
-      features: [
-        'Gestión automática de inventario',
-        'Procesamiento de pedidos',
-        'Facturación automática',
-        'Control de asistencia',
-        'Backup automático de datos',
-        'Monitoreo de sistemas'
-      ]
-    },
-    {
-      title: 'Automatización de Reportes',
-      features: [
-        'Reportes ejecutivos automáticos',
-        'KPIs en tiempo real',
-        'Alertas de métricas críticas',
-        'Análisis de tendencias',
-        'Comparativas automáticas',
-        'Distribución programada'
-      ]
-    }
-  ];
+  const automationTypes: any[] = [];
 
-  const benefits = [
-    {
-      icon: Zap,
-      title: 'Ahorro de Tiempo',
-      description: 'Reduce hasta 40 horas semanales de trabajo manual con automatizaciones inteligentes.',
-      metric: '40h/semana'
-    },
-    {
-      icon: Bot,
-      title: 'Disponibilidad 24/7',
-      description: 'Tus sistemas trabajan las 24 horas, los 7 días de la semana sin descanso.',
-      metric: '24/7'
-    },
-    {
-      icon: BarChart3,
-      title: 'Mayor Conversión',
-      description: 'Aumenta tus conversiones hasta un 300% con seguimiento automatizado.',
-      metric: '+300%'
-    },
-    {
-      icon: CheckCircle,
-      title: 'Cero Errores',
-      description: 'Elimina errores humanos con procesos automatizados y validaciones.',
-      metric: '0 errores'
-    }
-  ];
+  const benefits: any[] = [];
 
-  const processSteps = [
-    {
-      step: '01',
-      title: 'Análisis de Procesos',
-      description: 'Identificamos qué procesos pueden automatizarse para mayor impacto.',
-      icon: BarChart3
-    },
-    {
-      step: '02',
-      title: 'Diseño de Flujos',
-      description: 'Creamos diagramas de flujo detallados para cada automatización.',
-      icon: Bot
-    },
-    {
-      step: '03',
-      title: 'Implementación n8n',
-      description: 'Desarrollamos las automatizaciones usando n8n y herramientas avanzadas.',
-      icon: Zap
-    },
-    {
-      step: '04',
-      title: 'Testing y Optimización',
-      description: 'Probamos y optimizamos cada automatización para máximo rendimiento.',
-      icon: Rocket
-    }
-  ];
+  const processSteps: any[] = [];
 
   return (
     <div className="pt-20 bg-[#0D0F2D]">
@@ -212,7 +60,7 @@ const Automation: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {automationServices.map((service, index) => (
+            {automationServices.map((service: any, index: number) => (
               <div
                 key={service.title}
                 className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 animate-slide-up transform hover:scale-105"
@@ -233,7 +81,7 @@ const Automation: React.FC = () => {
                   </p>
                   
                   <ul className="space-y-3">
-                    {service.features.map((feature, featureIndex) => (
+                    {service.features.map((feature: any, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
                         <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0" />
                         {feature}
@@ -260,7 +108,7 @@ const Automation: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {automationTypes.map((type, index) => (
+            {automationTypes.map((type: any, index: number) => (
               <div
                 key={type.title}
                 className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 animate-slide-up transform hover:scale-105"
@@ -273,7 +121,7 @@ const Automation: React.FC = () => {
                   </h3>
                   
                   <ul className="space-y-3">
-                    {type.features.map((feature, featureIndex) => (
+                    {type.features.map((feature: any, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-start text-sm text-[#EAEAEA]/80">
                         <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0 mt-0.5" />
                         {feature}
@@ -300,7 +148,7 @@ const Automation: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => (
+            {benefits.map((benefit: any, index: number) => (
               <div
                 key={benefit.title}
                 className="group text-center animate-slide-up"
@@ -337,7 +185,7 @@ const Automation: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {processSteps.map((process, index) => (
+            {processSteps.map((process: any, index: number) => (
               <div
                 key={process.step}
                 className="group text-center animate-slide-up"

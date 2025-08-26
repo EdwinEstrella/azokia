@@ -7,11 +7,9 @@ type Contract = Database['public']['Tables']['contracts']['Row'];
 type Invoice = Database['public']['Tables']['invoices']['Row'];
 type Project = Database['public']['Tables']['projects']['Row'];
 type CreateClientData = Database['public']['Tables']['clients']['Insert'];
-type UpdateClientData = Database['public']['Tables']['clients']['Update'];
 type CreateContractData = Database['public']['Tables']['contracts']['Insert'];
 type CreateInvoiceData = Database['public']['Tables']['invoices']['Insert'];
 type CreateProjectData = Database['public']['Tables']['projects']['Insert'];
-type UpdateProjectData = Database['public']['Tables']['projects']['Update'];
 
 
 export const useDatabase = (userId: string) => {
@@ -61,17 +59,17 @@ export const useDatabase = (userId: string) => {
     }
   }, [userId, handleError]);
 
-  const updateClient = useCallback(async (clientId: string, data: UpdateClientData): Promise<Client> => {
-    setLoading(true);
-    setError(null);
-    try {
-      return await DatabaseService.update('clients', clientId, data, userId);
-    } catch (err) {
-      return handleError(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [userId, handleError]);
+  // const updateClient = useCallback(async (clientId: string, data: UpdateClientData): Promise<Client> => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     return await DatabaseService.update('clients', clientId, data, userId);
+  //   } catch (err) {
+  //     return handleError(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, [userId, handleError]);
 
   const deleteClient = useCallback(async (clientId: string): Promise<void> => {
     setLoading(true);
@@ -122,17 +120,17 @@ export const useDatabase = (userId: string) => {
     }
   }, [userId, handleError]);
 
-  const updateProject = useCallback(async (projectId: string, data: UpdateProjectData): Promise<Project> => {
-    setLoading(true);
-    setError(null);
-    try {
-      return await DatabaseService.update('projects', projectId, data, userId);
-    } catch (err) {
-      return handleError(err);
-    } finally {
-      setLoading(false);
-    }
-  }, [userId, handleError]);
+  // const updateProject = useCallback(async (projectId: string, data: UpdateProjectData): Promise<Project> => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     return await DatabaseService.update('projects', projectId, data, userId);
+  //   } catch (err) {
+  //     return handleError(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, [userId, handleError]);
 
   const deleteProject = useCallback(async (projectId: string): Promise<void> => {
     setLoading(true);
@@ -218,14 +216,12 @@ export const useDatabase = (userId: string) => {
     createClient,
     getClients,
     getClientById,
-    updateClient,
     deleteClient,
 
     // Project methods
     createProject,
     getProjects,
     getProjectById,
-    updateProject,
     deleteProject,
     
     // Contract methods

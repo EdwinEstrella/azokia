@@ -1,107 +1,16 @@
 import React from 'react';
-import { Globe, Code, ShoppingCart, Smartphone, Database, CheckCircle, Rocket } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const WebDevelopment: React.FC = () => {
   const {  } = useLanguage();
 
-  const webServices = [
-    {
-      icon: Globe,
-      title: 'Páginas Web Corporativas',
-      description: 'Sitios web profesionales que reflejan la identidad de tu marca y generan confianza en tus clientes.',
-      features: [
-        'Diseño responsive',
-        'Optimización SEO',
-        'Panel de administración',
-        'Formularios de contacto',
-        'Integración con redes sociales',
-        'Certificado SSL incluido'
-      ],
-      gradient: 'from-blue-500 to-cyan-500'
-    },
-    {
-      icon: ShoppingCart,
-      title: 'Tiendas Online (E-commerce)',
-      description: 'Plataformas de comercio electrónico completas con pasarelas de pago y gestión de inventario.',
-      features: [
-        'Catálogo de productos',
-        'Carrito de compras',
-        'Pasarelas de pago seguras',
-        'Gestión de inventario',
-        'Panel de administración',
-        'Reportes de ventas'
-      ],
-      gradient: 'from-green-500 to-emerald-500'
-    },
-    {
-      icon: Code,
-      title: 'Landing Pages',
-      description: 'Páginas de aterrizaje optimizadas para conversión que transforman visitantes en clientes.',
-      features: [
-        'Diseño orientado a conversión',
-        'A/B Testing',
-        'Formularios optimizados',
-        'Integración con CRM',
-        'Analytics avanzados',
-        'Carga ultra rápida'
-      ],
-      gradient: 'from-purple-500 to-pink-500'
-    },
-    {
-      icon: Smartphone,
-      title: 'Aplicaciones Web Progresivas (PWA)',
-      description: 'Aplicaciones web que funcionan como apps nativas en cualquier dispositivo.',
-      features: [
-        'Funciona offline',
-        'Instalable en dispositivos',
-        'Notificaciones push',
-        'Carga instantánea',
-        'Responsive design',
-        'Experiencia nativa'
-      ],
-      gradient: 'from-indigo-500 to-purple-500'
-    }
-  ];
+  const webServices: any[] = [];
 
-  const technologies = [
-    { name: 'React', icon: '⚛️' },
-    { name: 'Next.js', icon: '▲' },
-    { name: 'TypeScript', icon: '📘' },
-    { name: 'Node.js', icon: '🟢' },
-    { name: 'WordPress', icon: '📝' },
-    { name: 'Shopify', icon: '🛍️' },
-    { name: 'WooCommerce', icon: '🛒' },
-    { name: 'Stripe', icon: '💳' }
-  ];
+  const technologies: any[] = [];
 
-  const processSteps = [
-    {
-      step: '01',
-      title: 'Análisis y Planificación',
-      description: 'Analizamos tus necesidades y definimos la arquitectura del proyecto.',
-      icon: Database
-    },
-    {
-      step: '02',
-      title: 'Diseño UX/UI',
-      description: 'Creamos wireframes y diseños que priorizan la experiencia del usuario.',
-      icon: Smartphone
-    },
-    {
-      step: '03',
-      title: 'Desarrollo',
-      description: 'Programamos tu sitio web con las mejores prácticas y tecnologías.',
-      icon: Code
-    },
-    {
-      step: '04',
-      title: 'Testing y Lanzamiento',
-      description: 'Probamos exhaustivamente y lanzamos tu proyecto al mundo.',
-      icon: Rocket
-    }
-  ];
+  const processSteps: any[] = [];
 
   return (
     <div className="pt-20 bg-[#0D0F2D]">
@@ -109,7 +18,7 @@ const WebDevelopment: React.FC = () => {
       <section className="py-20 bg-gradient-to-br from-[#0D0F2D] via-blue-900 to-indigo-900 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: `${2}s` }}></div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-[#EAEAEA] mb-6">
@@ -149,7 +58,7 @@ const WebDevelopment: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {webServices.map((service, index) => (
+            {webServices.map((service: any, index: number) => (
               <div
                 key={service.title}
                 className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 animate-slide-up transform hover:scale-105"
@@ -170,7 +79,7 @@ const WebDevelopment: React.FC = () => {
                   </p>
                   
                   <ul className="space-y-3">
-                    {service.features.map((feature, featureIndex) => (
+                    {service.features.map((feature: any, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
                         <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0" />
                         {feature}
@@ -185,7 +94,7 @@ const WebDevelopment: React.FC = () => {
       </section>
 
       {/* Technologies */}
-      <section className="py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden">
+      <section className="py-20 bg-[#0D0F2D] relative overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-[#EAEAEA] mb-4">
@@ -197,7 +106,7 @@ const WebDevelopment: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6">
-            {technologies.map((tech, index) => (
+            {technologies.map((tech: any, index: number) => (
               <div
                 key={tech.name}
                 className="group relative bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 text-center animate-slide-up transform hover:scale-105"
@@ -212,7 +121,7 @@ const WebDevelopment: React.FC = () => {
       </section>
 
       {/* Process */}
-      <section className="py-20 bg-[#0D0F2D] relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-[#EAEAEA] mb-4">
@@ -224,7 +133,7 @@ const WebDevelopment: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {processSteps.map((process, index) => (
+            {processSteps.map((process: any, index: number) => (
               <div
                 key={process.step}
                 className="group text-center animate-slide-up"
@@ -251,7 +160,7 @@ const WebDevelopment: React.FC = () => {
       </section>
 
       {/* Contact Form */}
-      <section className="py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden">
+      <section className="py-20 bg-[#0D0F2D] relative overflow-hidden">
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-[#EAEAEA] mb-4">

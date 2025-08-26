@@ -3,32 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Badge } from '../../components/ui/badge';
 
 const ClientsPage: React.FC = () => {
-  const clients = [
-    {
-      nombre: 'TechCorp SA',
-      email: 'contacto@techcorp.com',
-      telefono: '+34 911 234 567',
-      proyecto: 'Sitio corporativo',
-      estado: 'activo',
-      ingreso: '€12,500'
-    },
-    {
-      nombre: 'Boutique Luna',
-      email: 'info@boutiqueluna.com',
-      telefono: '+34 922 345 678',
-      proyecto: 'E-commerce',
-      estado: 'completado',
-      ingreso: '€8,200'
-    },
-    {
-      nombre: 'Restaurant El Puerto',
-      email: 'reservas@elpuerto.com',
-      telefono: '+34 933 456 789',
-      proyecto: 'Landing page',
-      estado: 'desarrollo',
-      ingreso: '€3,800'
-    }
-  ];
+  const clients = [];
 
   const getStatusBadge = (status: string) => {
     const variants = {

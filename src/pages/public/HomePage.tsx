@@ -18,44 +18,7 @@ import { BackgroundGradient } from '../../components/ui/background-gradient';
 import ShaderBackground from '../../components/ui/shader-background';
 
 const HomePage: React.FC = () => {
-  const featuredServices = [
-    {
-      icon: Brain,
-      title: 'Inteligencia Artificial aplicada al marketing',
-      description: 'Chatbots inteligentes, automatizaciones con IA y análisis predictivo para maximizar tus resultados.',
-      features: ['Chatbots con IA', 'Análisis predictivo', 'Automatización inteligente', 'Segmentación de audiencias', 'Personalización de contenido'],
-    },
-    {
-      icon: ShoppingCart,
-      title: 'E-commerce y Tiendas Online',
-      description: 'Plataformas de comercio electrónico completas con pasarelas de pago, gestión de inventario y automatización de ventas.',
-      features: ['Tienda online completa', 'Pasarelas de pago', 'Gestión de inventario', 'Automatización de pedidos', 'Panel administrativo', 'Reportes de ventas'],
-    },
-    {
-      icon: Briefcase,
-      title: 'Branding y diseño de marca',
-      description: 'Identidad visual completa que conecta emocionalmente con tu audiencia.',
-      features: ['Logo y branding', 'Identidad visual', 'Manual de marca'],
-    },
-    {
-      icon: Smartphone,
-      title: 'Redes sociales',
-      description: 'Gestión profesional de redes sociales con contenido que genera engagement real.',
-      features: ['Gestión de RRSS', 'Contenido viral', 'Community management'],
-    },
-    {
-      icon: MousePointer,
-      title: 'Landing pages que convierten',
-      description: 'Páginas de aterrizaje optimizadas para maximizar conversiones y generar leads.',
-      features: ['Diseño optimizado', 'A/B Testing', 'Alta conversión'],
-    },
-    {
-      icon: Settings,
-      title: 'Automatización y CRM',
-      description: 'Sistemas CRM automatizados que nutren leads y cierran ventas automáticamente.',
-      features: ['CRM automatizado', 'Lead nurturing', 'Seguimiento automático'],
-    }
-  ];
+  const featuredServices = [];
 
   return (
     <div className="pt-16 md:pt-20 relative">

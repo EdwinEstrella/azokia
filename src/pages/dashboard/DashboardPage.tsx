@@ -3,42 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { TrendingUp, Users, FolderKanban, DollarSign } from 'lucide-react';
 
 const DashboardPage: React.FC = () => {
-  const metrics = [
-    {
-      title: 'Ingresos Totales',
-      value: '€45,890',
-      change: '+12.5%',
-      icon: TrendingUp,
-      color: 'text-green-400'
-    },
-    {
-      title: 'Clientes Activos',
-      value: '24',
-      change: '+3',
-      icon: Users,
-      color: 'text-blue-400'
-    },
-    {
-      title: 'Proyectos Activos',
-      value: '18',
-      change: '+2',
-      icon: FolderKanban,
-      color: 'text-purple-400'
-    },
-    {
-      title: 'Facturación Mensual',
-      value: '€8,750',
-      change: '+8.2%',
-      icon: DollarSign,
-      color: 'text-yellow-400'
-    }
-  ];
+  const metrics = [];
 
-  const recentProjects = [
-    { cliente: 'TechCorp SA', proyecto: 'Sitio corporativo', estado: 'Desarrollo', plazo: '15 días' },
-    { cliente: 'Boutique Luna', proyecto: 'E-commerce', estado: 'Revisión', plazo: '5 días' },
-    { cliente: 'Restaurant El Puerto', proyecto: 'Landing page', estado: 'Diseño', plazo: '10 días' }
-  ];
+  const recentProjects = [];
 
   return (
     <div className="space-y-6">

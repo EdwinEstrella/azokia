@@ -3,32 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Badge } from '../../components/ui/badge';
 
 const ContractsPage: React.FC = () => {
-  const contracts = [
-    {
-      cliente: 'TechCorp SA',
-      tipo: 'Desarrollo Web',
-      valor: '€12,500',
-      estado: 'firmado',
-      inicio: '2024-01-15',
-      fin: '2024-03-15'
-    },
-    {
-      cliente: 'Boutique Luna',
-      tipo: 'E-commerce',
-      valor: '€8,200',
-      estado: 'completado',
-      inicio: '2023-11-01',
-      fin: '2024-01-15'
-    },
-    {
-      cliente: 'Restaurant El Puerto',
-      tipo: 'Landing Page',
-      valor: '€3,800',
-      estado: 'pendiente',
-      inicio: '2024-02-01',
-      fin: '2024-02-28'
-    }
-  ];
+  const contracts = [];
 
   const getStatusBadge = (status: string) => {
     const variants = {

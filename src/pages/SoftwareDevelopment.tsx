@@ -1,130 +1,18 @@
 import React from 'react';
-import { Code2, Database, Cloud, Cpu, Shield, Zap, CheckCircle, Rocket } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const SoftwareDevelopment: React.FC = () => {
   const {  } = useLanguage();
 
-  const softwareServices = [
-    {
-      icon: Code2,
-      title: 'Aplicaciones Web Personalizadas',
-      description: 'Desarrollamos aplicaciones web a medida que se adaptan perfectamente a tus procesos de negocio.',
-      features: [
-        'Arquitectura escalable',
-        'Interfaz intuitiva',
-        'Integración con APIs',
-        'Base de datos optimizada',
-        'Seguridad avanzada',
-        'Mantenimiento incluido'
-      ],
-      gradient: 'from-blue-500 to-cyan-500'
-    },
-    {
-      icon: Database,
-      title: 'Sistemas de Gestión (CRM/ERP)',
-      description: 'Plataformas completas para gestionar clientes, inventarios, ventas y operaciones empresariales.',
-      features: [
-        'Gestión de clientes',
-        'Control de inventario',
-        'Reportes avanzados',
-        'Dashboard ejecutivo',
-        'Automatización de procesos',
-        'Integración contable'
-      ],
-      gradient: 'from-green-500 to-emerald-500'
-    },
-    {
-      icon: Cloud,
-      title: 'APIs y Microservicios',
-      description: 'Desarrollamos APIs robustas y microservicios que conectan y potencian tus sistemas.',
-      features: [
-        'APIs RESTful',
-        'Documentación completa',
-        'Autenticación segura',
-        'Escalabilidad automática',
-        'Monitoreo en tiempo real',
-        'Versionado de APIs'
-      ],
-      gradient: 'from-purple-500 to-pink-500'
-    },
-    {
-      icon: Cpu,
-      title: 'Integraciones y Automatizaciones',
-      description: 'Conectamos tus sistemas existentes y automatizamos procesos para mayor eficiencia.',
-      features: [
-        'Integración de sistemas',
-        'Migración de datos',
-        'Sincronización automática',
-        'Workflows personalizados',
-        'Notificaciones inteligentes',
-        'Backup automático'
-      ],
-      gradient: 'from-indigo-500 to-purple-500'
-    }
-  ];
+  const softwareServices: any[] = [];
 
-  const technologies = [
-    { name: 'Python', icon: '🐍' },
-    { name: 'JavaScript', icon: '📜' },
-    { name: 'Node.js', icon: '🟢' },
-    { name: 'React', icon: '⚛️' },
-    { name: 'PostgreSQL', icon: '🐘' },
-    { name: 'MongoDB', icon: '🍃' },
-    { name: 'Docker', icon: '🐳' },
-    { name: 'AWS', icon: '☁️' }
-  ];
+  const technologies: any[] = [];
 
-  const benefits = [
-    {
-      icon: Shield,
-      title: 'Seguridad Garantizada',
-      description: 'Implementamos las mejores prácticas de seguridad para proteger tu información.'
-    },
-    {
-      icon: Zap,
-      title: 'Alto Rendimiento',
-      description: 'Optimizamos cada línea de código para garantizar la máxima velocidad y eficiencia.'
-    },
-    {
-      icon: Cloud,
-      title: 'Escalabilidad',
-      description: 'Arquitecturas que crecen contigo, desde startup hasta empresa consolidada.'
-    },
-    {
-      icon: Cpu,
-      title: 'Tecnología Moderna',
-      description: 'Utilizamos las últimas tecnologías y frameworks para crear soluciones futuras.'
-    }
-  ];
+  const benefits: any[] = [];
 
-  const processSteps = [
-    {
-      step: '01',
-      title: 'Análisis de Requerimientos',
-      description: 'Entendemos a fondo tus necesidades y definimos especificaciones técnicas.',
-      icon: Database
-    },
-    {
-      step: '02',
-      title: 'Arquitectura y Diseño',
-      description: 'Diseñamos la arquitectura del sistema y los flujos de usuario.',
-      icon: Code2
-    },
-    {
-      step: '03',
-      title: 'Desarrollo Ágil',
-      description: 'Programamos usando metodologías ágiles con entregas incrementales.',
-      icon: Zap
-    },
-    {
-      step: '04',
-      title: 'Testing y Despliegue',
-      description: 'Probamos exhaustivamente y desplegamos en producción de forma segura.',
-      icon: Rocket
-    }
-  ];
+  const processSteps: any[] = [];
 
   return (
     <div className="pt-20 bg-[#0D0F2D]">
@@ -172,7 +60,7 @@ const SoftwareDevelopment: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {softwareServices.map((service, index) => (
+            {softwareServices.map((service: any, index: number) => (
               <div
                 key={service.title}
                 className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 animate-slide-up transform hover:scale-105"
@@ -193,7 +81,7 @@ const SoftwareDevelopment: React.FC = () => {
                   </p>
                   
                   <ul className="space-y-3">
-                    {service.features.map((feature, featureIndex) => (
+                    {service.features.map((feature: any, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
                         <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0" />
                         {feature}
@@ -220,13 +108,13 @@ const SoftwareDevelopment: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => (
+            {benefits.map((benefit: any, index: number) => (
               <div
                 key={benefit.title}
                 className="group text-center animate-slide-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="w-16 h-16 bg-gradient-to-br from-[#9B59B6] to-[#1E90FF] rounded-xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-purple-500/25 transition-all duration-300 transform group-hover:scale-110">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#9B59B6] to-[#1E90FF] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-purple-500/25 transition-all duration-300 transform group-hover:scale-110">
                   <benefit.icon className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-lg font-semibold text-[#EAEAEA] mb-4">
@@ -254,7 +142,7 @@ const SoftwareDevelopment: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6">
-            {technologies.map((tech, index) => (
+            {technologies.map((tech: any, index: number) => (
               <div
                 key={tech.name}
                 className="group relative bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 text-center animate-slide-up transform hover:scale-105"
@@ -281,7 +169,7 @@ const SoftwareDevelopment: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {processSteps.map((process, index) => (
+            {processSteps.map((process: any, index: number) => (
               <div
                 key={process.step}
                 className="group text-center animate-slide-up"

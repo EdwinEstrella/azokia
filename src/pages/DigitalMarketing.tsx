@@ -1,174 +1,18 @@
 import React from 'react';
-import { Target, TrendingUp, Users, BarChart3, Search, Share2, CheckCircle, Rocket } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const DigitalMarketing: React.FC = () => {
   const {  } = useLanguage();
 
-  const marketingServices = [
-    {
-      icon: Target,
-      title: 'Facebook & Instagram Ads',
-      description: 'Campañas publicitarias altamente segmentadas que maximizan tu ROI en las redes sociales más importantes.',
-      features: [
-        'Segmentación avanzada de audiencias',
-        'Creativos optimizados para conversión',
-        'A/B testing de anuncios',
-        'Retargeting inteligente',
-        'Optimización de presupuesto',
-        'Reportes detallados de ROI'
-      ],
-      gradient: 'from-blue-500 to-purple-500'
-    },
-    {
-      icon: Search,
-      title: 'Google Ads & SEM',
-      description: 'Posiciona tu negocio en los primeros resultados de Google y captura clientes con alta intención de compra.',
-      features: [
-        'Campañas de búsqueda optimizadas',
-        'Google Shopping para e-commerce',
-        'Display y remarketing',
-        'Extensiones de anuncios',
-        'Optimización de Quality Score',
-        'Análisis de palabras clave'
-      ],
-      gradient: 'from-green-500 to-blue-500'
-    },
-    {
-      icon: Share2,
-      title: 'Gestión de Redes Sociales',
-      description: 'Construye una comunidad sólida y aumenta el engagement con contenido estratégico y auténtico.',
-      features: [
-        'Estrategia de contenido personalizada',
-        'Calendario editorial',
-        'Community management',
-        'Diseño de piezas gráficas',
-        'Análisis de métricas',
-        'Gestión de crisis'
-      ],
-      gradient: 'from-pink-500 to-red-500'
-    },
-    {
-      icon: BarChart3,
-      title: 'Analytics y Optimización',
-      description: 'Medimos, analizamos y optimizamos cada aspecto de tus campañas para maximizar resultados.',
-      features: [
-        'Google Analytics 4 setup',
-        'Dashboards personalizados',
-        'Tracking de conversiones',
-        'Análisis de embudo',
-        'Reportes automatizados',
-        'Recomendaciones de mejora'
-      ],
-      gradient: 'from-orange-500 to-yellow-500'
-    }
-  ];
+  const marketingServices: any[] = [];
 
-  const additionalServices = [
-    {
-      title: 'SEO y Posicionamiento Orgánico',
-      features: [
-        'Auditoría SEO completa',
-        'Optimización on-page',
-        'Link building estratégico',
-        'SEO local para negocios',
-        'Contenido optimizado',
-        'Monitoreo de rankings'
-      ]
-    },
-    {
-      title: 'Email Marketing',
-      features: [
-        'Automatizaciones de email',
-        'Segmentación de listas',
-        'Diseño de newsletters',
-        'A/B testing de asuntos',
-        'Análisis de deliverability',
-        'Integración con CRM'
-      ]
-    },
-    {
-      title: 'Marketing de Contenidos',
-      features: [
-        'Estrategia de contenido',
-        'Blog corporativo',
-        'Videos promocionales',
-        'Infografías y ebooks',
-        'Webinars y eventos',
-        'Distribución multicanal'
-      ]
-    },
-    {
-      title: 'Influencer Marketing',
-      features: [
-        'Identificación de influencers',
-        'Negociación de colaboraciones',
-        'Gestión de campañas',
-        'Medición de impacto',
-        'Contratos y legales',
-        'ROI tracking'
-      ]
-    }
-  ];
+  const additionalServices: any[] = [];
 
-  const results = [
-    {
-      icon: TrendingUp,
-      title: 'Aumento de Ventas',
-      description: 'Incrementamos las ventas de nuestros clientes en promedio un 250% en los primeros 6 meses.',
-      metric: '+250%',
-      gradient: 'from-green-500 to-emerald-500'
-    },
-    {
-      icon: Users,
-      title: 'Crecimiento de Audiencia',
-      description: 'Expandimos el alcance orgánico y pagado para llegar a más clientes potenciales.',
-      metric: '+400%',
-      gradient: 'from-blue-500 to-cyan-500'
-    },
-    {
-      icon: Target,
-      title: 'Mejor ROI',
-      description: 'Optimizamos cada euro invertido para obtener el máximo retorno de inversión.',
-      metric: '5:1 ROI',
-      gradient: 'from-purple-500 to-pink-500'
-    },
-    {
-      icon: BarChart3,
-      title: 'Reducción de CAC',
-      description: 'Disminuimos el costo de adquisición de clientes mediante optimización continua.',
-      metric: '-60%',
-      gradient: 'from-orange-500 to-red-500'
-    }
-  ];
+  const results: any[] = [];
 
-  const processSteps = [
-    {
-      step: '01',
-      title: 'Auditoría Digital',
-      description: 'Analizamos tu presencia digital actual y identificamos oportunidades de mejora.',
-      icon: Search
-    },
-    {
-      step: '02',
-      title: 'Estrategia Personalizada',
-      description: 'Desarrollamos una estrategia de marketing digital adaptada a tus objetivos.',
-      icon: Target
-    },
-    {
-      step: '03',
-      title: 'Implementación',
-      description: 'Ejecutamos las campañas y tácticas definidas en la estrategia.',
-      icon: Rocket
-    },
-    {
-      step: '04',
-      title: 'Optimización Continua',
-      description: 'Monitoreamos, analizamos y optimizamos constantemente para mejorar resultados.',
-      icon: TrendingUp
-    }
-  ];
+  const processSteps: any[] = [];
 
   return (
     <div className="pt-20 bg-[#0D0F2D]">
@@ -216,7 +60,7 @@ const DigitalMarketing: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {marketingServices.map((service, index) => (
+            {marketingServices.map((service: any, index: number) => (
               <div
                 key={service.title}
                 className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 animate-slide-up transform hover:scale-105"
@@ -237,7 +81,7 @@ const DigitalMarketing: React.FC = () => {
                   </p>
                   
                   <ul className="space-y-3">
-                    {service.features.map((feature, featureIndex) => (
+                    {service.features.map((feature: any, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
                         <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0" />
                         {feature}
@@ -264,7 +108,7 @@ const DigitalMarketing: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {additionalServices.map((service, index) => (
+            {additionalServices.map((service: any, index: number) => (
               <div
                 key={service.title}
                 className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:bg-white/10 transition-all duration-300 animate-slide-up transform hover:scale-105"
@@ -277,9 +121,9 @@ const DigitalMarketing: React.FC = () => {
                   </h3>
                   
                   <ul className="space-y-3">
-                    {service.features.map((feature, featureIndex) => (
+                    {service.features.map((feature: any, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-start text-sm text-[#EAEAEA]/80">
-                        <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-4 w-4 text-[#2ECC71] mr-3 flex-shrink-0" />
                         {feature}
                       </li>
                     ))}
@@ -292,7 +136,7 @@ const DigitalMarketing: React.FC = () => {
       </section>
 
       {/* Results */}
-      <section className="py-20 bg-[#0D0F2D] relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden">
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-[#EAEAEA] mb-4">
@@ -304,7 +148,7 @@ const DigitalMarketing: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {results.map((result, index) => (
+            {results.map((result: any, index: number) => (
               <div
                 key={result.title}
                 className="group text-center animate-slide-up"
@@ -341,7 +185,7 @@ const DigitalMarketing: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {processSteps.map((process, index) => (
+            {processSteps.map((process: any, index: number) => (
               <div
                 key={process.step}
                 className="group text-center animate-slide-up"

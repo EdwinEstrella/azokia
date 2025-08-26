@@ -1,61 +1,14 @@
 import React from 'react';
-import { Users, Award, Target, Lightbulb, Shield, Heart, Rocket, Star } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const About: React.FC = () => {
   const { t } = useLanguage();
 
-  const values = [
-    {
-      icon: Lightbulb,
-      title: t('innovation'),
-      description: t('innovationText'),
-    },
-    {
-      icon: Award,
-      title: t('excellence'),
-      description: t('excellenceText'),
-    },
-    {
-      icon: Shield,
-      title: t('transparency'),
-      description: t('transparencyText'),
-    },
-  ];
+  const values: any[] = [];
 
-  const team = [
-    {
-      name: 'María González',
-      role: 'CEO & Founder',
-      image: 'https://images.pexels.com/photos/3756679/pexels-photo-3756679.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: '10+ años en marketing digital y estrategia empresarial.',
-    },
-    {
-      name: 'Carlos Rodríguez',
-      role: 'Director de Marketing',
-      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Especialista en campañas publicitarias y automatización.',
-    },
-    {
-      name: 'Ana Martínez',
-      role: 'Directora Creativa',
-      image: 'https://images.pexels.com/photos/3756681/pexels-photo-3756681.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Experta en diseño y experiencia de usuario.',
-    },
-    {
-      name: 'David López',
-      role: 'Director Técnico',
-      image: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400',
-      description: 'Desarrollador full-stack con enfoque en automatización.',
-    },
-  ];
+  const team: any[] = [];
 
-  const stats = [
-    { number: '500+', label: t('satisfiedClients'), icon: Users },
-    { number: '1000+', label: t('completedProjects'), icon: Rocket },
-    { number: '98%', label: t('satisfactionRate'), icon: Star },
-    { number: '5', label: t('yearsExperience'), icon: Award },
-  ];
+  const stats: any[] = [];
 
   return (
     <div className="pt-20 bg-slate-900">

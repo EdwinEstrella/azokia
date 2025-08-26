@@ -3,38 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../..
 import { CheckCircle, Code, ShoppingCart, Server, Palette, Zap } from 'lucide-react';
 
 const ServicesPage: React.FC = () => {
-  const services = [
-    {
-      icon: Code,
-      title: 'Desarrollo Web Corporativo',
-      description: 'Sitios web profesionales y responsivos que representan tu marca.',
-      features: ['Diseño personalizado', 'Responsive design', 'SEO optimizado', 'Panel administrativo']
-    },
-    {
-      icon: ShoppingCart,
-      title: 'E-commerce & Tiendas Online',
-      description: 'Plataformas de comercio electrónico completas y seguras.',
-      features: ['Pasarelas de pago', 'Gestión de inventario', 'Carrito de compras', 'Reportes de ventas']
-    },
-    {
-      icon: Palette,
-      title: 'Diseño UI/UX',
-      description: 'Experiencias de usuario intuitivas y atractivas.',
-      features: ['Diseño centrado en usuario', 'Prototipos interactivos', 'Testing de usabilidad', 'Design system']
-    },
-    {
-      icon: Server,
-      title: 'Hosting & Mantenimiento',
-      description: 'Soporte técnico y hosting confiable para tu sitio web.',
-      features: ['Hosting optimizado', 'Backups automáticos', 'Soporte 24/7', 'Actualizaciones de seguridad']
-    },
-    {
-      icon: Zap,
-      title: 'Automatización & CRM',
-      description: 'Sistemas que optimizan tus procesos de venta y marketing.',
-      features: ['Automatización de emails', 'Gestión de leads', 'CRM personalizado', 'Integraciones API']
-    }
-  ];
+  const services = [];
 
   return (
     <div className="pt-16 md:pt-20 min-h-screen bg-[#0D0F2D]">

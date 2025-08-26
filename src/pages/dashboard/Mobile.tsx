@@ -5,33 +5,7 @@ import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
 
 const Mobile: React.FC = () => {
-  const features = [
-    {
-      icon: <Bell className="h-8 w-8 text-blue-400" />,
-      title: "Notificaciones en Tiempo Real",
-      description: "Recibe alertas instantáneas de facturas, proyectos y recordatorios"
-    },
-    {
-      icon: <BarChart className="h-8 w-8 text-green-400" />,
-      title: "Dashboard Móvil",
-      description: "Accede a tus métricas clave desde cualquier lugar"
-    },
-    {
-      icon: <RefreshCw className="h-8 w-8 text-yellow-400" />,
-      title: "Sincronización Offline",
-      description: "Trabaja sin conexión y tus datos se sincronizarán automáticamente"
-    },
-    {
-      icon: <Shield className="h-8 w-8 text-red-400" />,
-      title: "Seguridad Avanzada",
-      description: "Autenticación biométrica y encriptación de extremo a extremo"
-    },
-    {
-      icon: <Globe className="h-8 w-8 text-purple-400" />,
-      title: "Acceso Global",
-      description: "Disponible en iOS y Android en todo el mundo"
-    }
-  ];
+  const features = [];
 
   return (
     <div className="min-h-screen bg-[#0D0F2D] p-6">

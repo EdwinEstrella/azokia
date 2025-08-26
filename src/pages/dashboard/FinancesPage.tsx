@@ -11,13 +11,7 @@ const FinancesPage: React.FC = () => {
     tasaRetencion: '92%'
   };
 
-  const monthlyRevenue = [
-    { mes: 'Ene', ingresos: 7200 },
-    { mes: 'Feb', ingresos: 8750 },
-    { mes: 'Mar', ingresos: 8100 },
-    { mes: 'Abr', ingresos: 8950 },
-    { mes: 'May', ingresos: 9200 }
-  ];
+  const monthlyRevenue = [];
 
   return (
     <div className="space-y-6">

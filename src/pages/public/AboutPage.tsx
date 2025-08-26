@@ -3,50 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Target, Eye, Heart } from 'lucide-react';
 
 const AboutPage: React.FC = () => {
-  const teamMembers = [
-    {
-      name: 'Carlos Rodríguez',
-      role: 'CEO & Desarrollador Full-Stack',
-      experience: '10+ años en desarrollo web',
-      specialty: 'React, Node.js, AWS'
-    },
-    {
-      name: 'Ana Martínez',
-      role: 'Diseñadora UX/UI',
-      experience: '8+ años en diseño digital',
-      specialty: 'Figma, Adobe Suite, Prototipado'
-    },
-    {
-      name: 'Miguel Sánchez',
-      role: 'Desarrollador Backend',
-      experience: '7+ años en desarrollo',
-      specialty: 'Python, Django, PostgreSQL'
-    },
-    {
-      name: 'Laura Gómez',
-      role: 'Especialista en Marketing',
-      experience: '6+ años en marketing digital',
-      specialty: 'SEO, SEM, Analytics'
-    }
-  ];
+  const teamMembers = [];
 
-  const values = [
-    {
-      icon: Target,
-      title: 'Excelencia',
-      description: 'Buscamos la perfección en cada proyecto que emprendemos.'
-    },
-    {
-      icon: Eye,
-      title: 'Innovación',
-      description: 'Siempre estamos al día con las últimas tecnologías y tendencias.'
-    },
-    {
-      icon: Heart,
-      title: 'Compromiso',
-      description: 'Tu éxito es nuestro éxito. Nos comprometemos al 100%.'
-    }
-  ];
+  const values = [];
 
   return (
     <div className="pt-16 md:pt-20 min-h-screen bg-[#0D0F2D]">

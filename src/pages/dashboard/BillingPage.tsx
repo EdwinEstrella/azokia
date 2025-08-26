@@ -3,32 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Badge } from '../../components/ui/badge';
 
 const BillingPage: React.FC = () => {
-  const invoices = [
-    {
-      numero: 'INV-001',
-      cliente: 'TechCorp SA',
-      monto: '€12,500',
-      estado: 'pagada',
-      fecha: '2024-01-20',
-      vencimiento: '2024-02-20'
-    },
-    {
-      numero: 'INV-002',
-      cliente: 'Boutique Luna',
-      monto: '€8,200',
-      estado: 'pagada',
-      fecha: '2023-12-15',
-      vencimiento: '2024-01-15'
-    },
-    {
-      numero: 'INV-003',
-      cliente: 'Restaurant El Puerto',
-      monto: '€1,900',
-      estado: 'pendiente',
-      fecha: '2024-02-01',
-      vencimiento: '2024-03-01'
-    }
-  ];
+  const invoices = [];
 
   const getStatusBadge = (status: string) => {
     const variants = {

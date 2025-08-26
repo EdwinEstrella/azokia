@@ -3,28 +3,7 @@ import { Card, CardContent } from '../../components/ui/card';
 import { Switch } from '../../components/ui/switch';
 
 const AutomationPage: React.FC = () => {
-  const automations = [
-    {
-      name: 'Notificaciones de Proyectos',
-      description: 'Alertas automáticas por email para hitos importantes',
-      enabled: true
-    },
-    {
-      name: 'Recordatorios de Pago',
-      description: 'Recordatorios automáticos para facturas pendientes',
-      enabled: true
-    },
-    {
-      name: 'Backups Automáticos',
-      description: 'Backups diarios de todos los proyectos',
-      enabled: false
-    },
-    {
-      name: 'Reportes Mensuales',
-      description: 'Generación automática de reportes de rendimiento',
-      enabled: true
-    }
-  ];
+  const automations = [];
 
   return (
     <div className="space-y-6">
