@@ -1,10 +1,10 @@
 import React from 'react';
-import { Globe, Code, ShoppingCart, Smartphone, Database, Shield, CheckCircle, Rocket, ArrowRight } from 'lucide-react';
+import { Globe, Code, ShoppingCart, Smartphone, Database, CheckCircle, Rocket } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const WebDevelopment: React.FC = () => {
-  const { t } = useLanguage();
+  const {  } = useLanguage();
 
   const webServices = [
     {

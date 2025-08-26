@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Users, Target, Eye, Heart } from 'lucide-react';
+import { Target, Eye, Heart } from 'lucide-react';
 
 const AboutPage: React.FC = () => {
   const teamMembers = [

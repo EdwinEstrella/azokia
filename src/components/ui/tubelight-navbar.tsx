@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Link, useLocation } from "react-router-dom"
 import { DivideIcon as LucideIcon, ChevronDown } from "lucide-react"
@@ -27,7 +27,7 @@ interface NavBarProps {
 export function NavBar({ items, className }: NavBarProps) {
   const location = useLocation()
   const [activeTab, setActiveTab] = useState("")
-  const [isMobile, setIsMobile] = useState(false)
+  
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
 
   useEffect(() => {
@@ -44,15 +44,7 @@ export function NavBar({ items, className }: NavBarProps) {
     }
   }, [location.pathname, items])
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  
 
   const handleItemClick = (item: NavItem) => {
     if (item.subItems && item.subItems.length > 0) {

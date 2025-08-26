@@ -60,7 +60,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({ onSuccess }) => {
   const onSubmit = async (data: ProjectFormData) => {
     setLoading(true);
     try {
-      await createProject(data);
+      await createProject({ ...data, user_id: user!.id });
       onSuccess();
     } catch (error) {
       console.error('Error creating project:', error);

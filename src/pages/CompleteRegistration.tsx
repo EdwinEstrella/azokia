@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
-import { supabase } from '../lib/supabase'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
@@ -31,17 +30,17 @@ const CompleteRegistration: React.FC = () => {
       }
 
       // Crear registro del usuario en la tabla users
-      const { error: insertError } = await supabase
-        .from('users')
-        .insert({
-          id: user.id,
-          email: user.email!,
-          name: name.trim()
-        })
+      // const { error: insertError } = await supabase
+      //   .from('users')
+      //   .insert({
+      //     id: user.id,
+      //     email: user.email!,
+      //     name: name.trim()
+      //   })
 
-      if (insertError) {
-        throw new Error('Error al completar el registro: ' + insertError.message)
-      }
+      // if (insertError) {
+      //   throw new Error('Error al completar el registro: ' + insertError.message)
+      // }
 
       setSuccess(true)
       setTimeout(() => {

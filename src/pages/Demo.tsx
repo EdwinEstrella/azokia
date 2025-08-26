@@ -1,8 +1,8 @@
-import { SignIn2 } from "../components/ui/clean-minimal-sign-in"
+import { CleanMinimalSignIn } from "../components/ui/clean-minimal-sign-in"
 
 const Demo = () => {
     return (
-        <SignIn2/>
+        <CleanMinimalSignIn/>
     )
 }
 

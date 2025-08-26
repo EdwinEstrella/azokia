@@ -1,10 +1,10 @@
 import React from 'react';
-import { Bot, Zap, MessageSquare, BarChart3, Calendar, Bell, CheckCircle, Rocket, ArrowRight } from 'lucide-react';
+import { Bot, Zap, MessageSquare, BarChart3, Calendar, Bell, CheckCircle, Rocket } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const Automation: React.FC = () => {
-  const { t } = useLanguage();
+  const {  } = useLanguage();
 
   const automationServices = [
     {
@@ -172,7 +172,7 @@ const Automation: React.FC = () => {
       <section className="py-20 bg-gradient-to-br from-[#0D0F2D] via-green-900 to-emerald-900 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-green-400/20 to-emerald-600/20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: `${2}s` }}></div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-[#EAEAEA] mb-6">

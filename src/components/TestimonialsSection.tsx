@@ -1,4 +1,3 @@
-import React from "react";
 import { TestimonialsColumn } from "./ui/testimonials-columns-1";
 import { motion } from "framer-motion";
 

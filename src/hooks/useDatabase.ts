@@ -25,11 +25,11 @@ export const useDatabase = (userId: string) => {
   }, []);
 
   // Client operations
-  const createClient = useCallback(async (data: Omit<CreateClientData, 'user_id'>): Promise<Client> => {
+  const createClient = useCallback(async (data: CreateClientData): Promise<Client> => {
     setLoading(true);
     setError(null);
     try {
-      return await DatabaseService.create('clients', data, userId);
+      return await DatabaseService.create('clients', { ...data, user_id: userId });
     } catch (err) {
       return handleError(err);
     } finally {
@@ -86,11 +86,11 @@ export const useDatabase = (userId: string) => {
   }, [userId, handleError]);
 
   // Project operations
-  const createProject = useCallback(async (data: Omit<CreateProjectData, 'user_id'>): Promise<Project> => {
+  const createProject = useCallback(async (data: CreateProjectData): Promise<Project> => {
     setLoading(true);
     setError(null);
     try {
-      return await DatabaseService.create('projects', data, userId);
+      return await DatabaseService.create('projects', { ...data, user_id: userId });
     } catch (err) {
       return handleError(err);
     } finally {
@@ -147,11 +147,11 @@ export const useDatabase = (userId: string) => {
   }, [userId, handleError]);
 
   // Contract operations
-  const createContract = useCallback(async (data: Omit<CreateContractData, 'user_id'>): Promise<Contract> => {
+  const createContract = useCallback(async (data: CreateContractData): Promise<Contract> => {
     setLoading(true);
     setError(null);
     try {
-      return await DatabaseService.create('contracts', data, userId);
+      return await DatabaseService.create('contracts', { ...data, user_id: userId });
     } catch (err) {
       return handleError(err);
     } finally {
@@ -172,11 +172,11 @@ export const useDatabase = (userId: string) => {
   }, [userId, handleError]);
 
   // Invoice operations
-  const createInvoice = useCallback(async (data: Omit<CreateInvoiceData, 'user_id'>): Promise<Invoice> => {
+  const createInvoice = useCallback(async (data: CreateInvoiceData): Promise<Invoice> => {
     setLoading(true);
     setError(null);
     try {
-      return await DatabaseService.create('invoices', data, userId);
+      return await DatabaseService.create('invoices', { ...data, user_id: userId });
     } catch (err) {
       return handleError(err);
     } finally {

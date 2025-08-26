@@ -15,7 +15,7 @@ import {
 import { Facebook, Instagram, Linkedin, Moon, Send, Sun, Twitter } from "lucide-react"
 import { useLanguage } from '@/contexts/LanguageContext'
 
-function Footerdemo() {
+function Footerdemo({ children }: { children?: React.ReactNode }) {
   const [isDarkMode, setIsDarkMode] = React.useState(false)
   const { t } = useLanguage()
 
@@ -29,6 +29,7 @@ function Footerdemo() {
 
   return (
     <footer className="relative border-t bg-slate-900 text-[#EAEAEA] transition-colors duration-300">
+      {children}
       <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8 max-w-7xl">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative">
@@ -196,5 +197,6 @@ function Footerdemo() {
     </footer>
   )
 }
+
 
 export { Footerdemo }

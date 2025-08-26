@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Globe, Edit, Trash2, Eye, ExternalLink, Calendar, Server } from 'lucide-react';
+import { Plus, Search, Globe, Edit, Eye, ExternalLink, Calendar, Server } from 'lucide-react';
 import { useDatabase } from '../../hooks/useDatabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../../components/ui/button';

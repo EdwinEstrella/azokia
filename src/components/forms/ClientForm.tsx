@@ -28,7 +28,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({ onSuccess, initialData }
     setLoading(true);
     
     try {
-      await createClient(formData);
+      await createClient({ ...formData, user_id: user!.id });
       onSuccess?.();
     } catch (error) {
       console.error('Error creating client:', error);

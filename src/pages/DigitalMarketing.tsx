@@ -1,10 +1,10 @@
 import React from 'react';
-import { Target, TrendingUp, Users, BarChart3, Search, Share2, CheckCircle, Rocket, ArrowRight } from 'lucide-react';
+import { Target, TrendingUp, Users, BarChart3, Search, Share2, CheckCircle, Rocket } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const DigitalMarketing: React.FC = () => {
-  const { t } = useLanguage();
+  const {  } = useLanguage();
 
   const marketingServices = [
     {
@@ -176,7 +176,7 @@ const DigitalMarketing: React.FC = () => {
       <section className="py-20 bg-gradient-to-br from-[#0D0F2D] via-pink-900 to-purple-900 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-pink-400/20 to-purple-600/20 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: `${2}s` }}></div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-[#EAEAEA] mb-6">

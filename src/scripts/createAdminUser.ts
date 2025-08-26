@@ -44,32 +44,32 @@ export const createAdminUser = async (): Promise<void> => {
     }
 
     // Verificar si el usuario existe en la tabla users
-    const { data: userData, error: userError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', 'info@azokia.com')
-      .single()
+    // const { data: userData, error: userError } = await supabase
+    //   .from('users')
+    //   .select('*')
+    //   .eq('email', 'info@azokia.com')
+    //   .single()
 
-    if (userError || !userData) {
-      // Crear usuario en tabla users
-      console.log('👤 Creando usuario en tabla users...')
-      const { error: insertError } = await supabase
-        .from('users')
-        .insert({
-          email: 'info@azokia.com',
-          name: 'Administrador Azokia',
-          password: '@Teamo1110a' // Nota: En producción esto debería ser hasheado
-        })
+    // if (userError || !userData) {
+    //   // Crear usuario en tabla users
+    //   console.log('👤 Creando usuario en tabla users...')
+    //   const { error: insertError } = await supabase
+    //     .from('users')
+    //     .insert({
+    //       email: 'info@azokia.com',
+    //       name: 'Administrador Azokia',
+    //       password: '@Teamo1110a' // Nota: En producción esto debería ser hasheado
+    //     })
 
-      if (insertError) {
-        console.error('❌ Error creando usuario en tabla:', insertError.message)
-        return
-      }
+    //   if (insertError) {
+    //     console.error('❌ Error creando usuario en tabla:', insertError.message)
+    //     return
+    //   }
 
-      console.log('✅ Usuario creado en tabla users')
-    } else {
-      console.log('✅ Usuario ya existe en tabla users')
-    }
+    //   console.log('✅ Usuario creado en tabla users')
+    // } else {
+    //   console.log('✅ Usuario ya existe en tabla users')
+    // }
 
     console.log('🎉 Usuario admin configurado correctamente')
     

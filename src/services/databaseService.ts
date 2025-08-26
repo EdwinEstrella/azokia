@@ -2,6 +2,24 @@ import { supabase } from '../lib/supabase';
 import { Database } from '../types/supabase';
 
 type Tables = Database['public']['Tables'];
+type Client = Tables['clients']['Row'];
+type Contract = Tables['contracts']['Row'];
+type Invoice = Tables['invoices']['Row'];
+
+// Define types for relations
+type ClientWithRelations = Client & {
+  contracts: Contract[];
+  invoices: Invoice[];
+};
+
+type InvoiceWithRelations = Invoice & {
+  clients: Client;
+  contracts: Contract[];
+};
+
+type ClientSearch = Client & {
+  contracts: Contract[];
+};
 
 export class DatabaseService {
   // Operaciones genéricas para cualquier tabla
@@ -10,13 +28,13 @@ export class DatabaseService {
     userId: string
   ): Promise<Tables[T]['Row'][]> {
     const { data, error } = await supabase
-      .from(table)
+      .from(table as keyof Database['public']['Tables'])
       .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    return data;
+    return data as unknown as Tables[T]['Row'] [];
   }
 
   static async getById<T extends keyof Tables>(
@@ -25,48 +43,47 @@ export class DatabaseService {
     userId: string
   ): Promise<Tables[T]['Row'] | null> {
     const { data, error } = await supabase
-      .from(table)
+      .from(table as keyof Database['public']['Tables'])
       .select('*')
       .eq('id', id)
       .eq('user_id', userId)
       .single();
 
     if (error) return null;
-    return data;
+    return data as unknown as Tables[T]['Row'] | null;
   }
 
   static async create<T extends keyof Tables>(
     table: T,
-    data: Omit<Tables[T]['Insert'], 'user_id'>,
-    userId: string
+    data: Tables[T]['Insert'],
   ): Promise<Tables[T]['Row']> {
     const { data: result, error } = await supabase
-      .from(table)
-      .insert({ ...data, user_id: userId } as any)
+      .from(table as keyof Database['public']['Tables'])
+      .insert(data as any)
       .select()
       .single();
 
     if (error) throw error;
-    return result;
+    return result as unknown as Tables[T]['Row'];
   }
 
-  static async update<T extends keyof Tables>(
-    table: T,
-    id: string,
-    data: Partial<Tables[T]['Update']>,
-    userId: string
-  ): Promise<Tables[T]['Row']> {
-    const { data: result, error } = await supabase
-      .from(table)
-      .update(data)
-      .eq('id', id)
-      .eq('user_id', userId)
-      .select()
-      .single();
+  // static async update<T extends keyof Tables>(
+  //   table: T,
+  //   id: string,
+  //   data: any,
+  //   userId: string
+  // ): Promise<Tables[T]['Row']> {
+  //   const { data: result, error } = await supabase
+  //     .from(table as keyof Database['public']['Tables'])
+  //     .update(data)
+  //     .eq('id', id)
+  //     .eq('user_id', userId)
+  //     .select()
+  //     .single();
 
-    if (error) throw error;
-    return result;
-  }
+  //   if (error) throw error;
+  //   return result as unknown as Tables[T]['Row']>;
+  // }
 
   static async delete<T extends keyof Tables>(
     table: T,
@@ -74,7 +91,7 @@ export class DatabaseService {
     userId: string
   ): Promise<void> {
     const { error } = await supabase
-      .from(table)
+      .from(table as keyof Database['public']['Tables'])
       .delete()
       .eq('id', id)
       .eq('user_id', userId);
@@ -83,7 +100,7 @@ export class DatabaseService {
   }
 
   // Métodos específicos para consultas complejas
-  static async getClientWithContracts(clientId: string, userId: string) {
+  static async getClientWithContracts(clientId: string, userId: string): Promise<ClientWithRelations | null> {
     const { data, error } = await supabase
       .from('clients')
       .select(`
@@ -96,10 +113,10 @@ export class DatabaseService {
       .single();
 
     if (error) throw error;
-    return data;
+    return data as unknown as ClientWithRelations | null;
   }
 
-  static async getPendingInvoices(userId: string) {
+  static async getPendingInvoices(userId: string): Promise<InvoiceWithRelations[]> {
     const { data, error } = await supabase
       .from('invoices')
       .select(`
@@ -113,10 +130,10 @@ export class DatabaseService {
       .order('due_date', { ascending: true });
 
     if (error) throw error;
-    return data;
+    return data as unknown as InvoiceWithRelations[];
   }
 
-  static async searchClients(query: string, userId: string) {
+  static async searchClients(query: string, userId: string): Promise<ClientSearch[]> {
     const { data, error } = await supabase
       .from('clients')
       .select(`
@@ -127,6 +144,6 @@ export class DatabaseService {
       .or(`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`);
 
     if (error) throw error;
-    return data;
+    return data as unknown as ClientSearch[];
   }
 }

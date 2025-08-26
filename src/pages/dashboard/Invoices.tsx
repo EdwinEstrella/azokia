@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, Filter, FileText, Calendar, DollarSign, User, Download, Send, CheckCircle, Clock } from 'lucide-react';
+import { Plus, Search, FileText, Calendar, DollarSign, Download, Send, CheckCircle, Clock } from 'lucide-react';
 import { useDatabase } from '../../hooks/useDatabase';
 import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../../components/ui/button';

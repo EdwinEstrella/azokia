@@ -1,4 +1,3 @@
-import React from 'react';
 import { Footerdemo } from './ui/footer-section';
 import { Button } from './ui/button'; // Asegúrate de importar el botón
 
