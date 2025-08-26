@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Badge } from '../../components/ui/badge';
 
 const ClientsPage: React.FC = () => {
-  const clients = [];
+  const clients: any[] = [];
 
   const getStatusBadge = (status: string) => {
     const variants = {
@@ -38,7 +38,7 @@ const ClientsPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {clients.map((client, index) => (
+                {clients.map((client: any, index: number) => (
                   <tr key={index} className="border-b border-[#1E90FF]/10">
                     <td className="py-3">
                       <div>

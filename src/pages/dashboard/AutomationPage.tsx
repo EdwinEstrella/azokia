@@ -3,7 +3,7 @@ import { Card, CardContent } from '../../components/ui/card';
 import { Switch } from '../../components/ui/switch';
 
 const AutomationPage: React.FC = () => {
-  const automations = [];
+  const automations: any[] = [];
 
   return (
     <div className="space-y-6">
@@ -13,7 +13,7 @@ const AutomationPage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        {automations.map((automation, index) => (
+        {automations.map((automation: any, index: number) => (
           <Card key={index} className="bg-gradient-to-br from-slate-800 to-slate-900 border-[#1E90FF]/20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">

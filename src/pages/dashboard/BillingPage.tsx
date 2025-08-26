@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Badge } from '../../components/ui/badge';
 
 const BillingPage: React.FC = () => {
-  const invoices = [];
+  const invoices: any[] = [];
 
   const getStatusBadge = (status: string) => {
     const variants = {
@@ -38,7 +38,7 @@ const BillingPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {invoices.map((invoice, index) => (
+                {invoices.map((invoice: any, index: number) => (
                   <tr key={index} className="border-b border-[#1E90FF]/10">
                     <td className="py-3 text-[#EAEAEA] font-medium">{invoice.numero}</td>
                     <td className="py-3 text-[#EAEAEA]">{invoice.cliente}</td>
