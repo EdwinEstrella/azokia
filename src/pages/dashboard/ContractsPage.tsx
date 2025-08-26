@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/ca
 import { Badge } from '../../components/ui/badge';
 
 const ContractsPage: React.FC = () => {
-  const contracts = [];
+  const contracts: any[] = [];
 
   const getStatusBadge = (status: string) => {
     const variants = {
@@ -38,7 +38,7 @@ const ContractsPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {contracts.map((contract, index) => (
+                {contracts.map((contract: any, index: number) => (
                   <tr key={index} className="border-b border-[#1E90FF]/10">
                     <td className="py-3 text-[#EAEAEA] font-medium">{contract.cliente}</td>
                     <td className="py-3 text-[#EAEAEA]">{contract.tipo}</td>

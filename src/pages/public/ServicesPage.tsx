@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
-import { CheckCircle, Code, ShoppingCart, Server, Palette, Zap } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 const ServicesPage: React.FC = () => {
-  const services = [];
+  const services: any[] = [];
 
   return (
     <div className="pt-16 md:pt-20 min-h-screen bg-[#0D0F2D]">
@@ -23,7 +23,7 @@ const ServicesPage: React.FC = () => {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service, index) => (
+          {services.map((service: any, index: number) => (
             <Card key={index} className="bg-gradient-to-br from-slate-800 to-slate-900 border-[#1E90FF]/20">
               <CardHeader>
                 <div className="p-3 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-lg w-fit mb-4">
@@ -36,7 +36,7 @@ const ServicesPage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {service.features.map((feature, featureIndex) => (
+                  {service.features.map((feature: any, featureIndex: number) => (
                     <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
                       <CheckCircle className="h-4 w-4 text-[#1E90FF] mr-2 flex-shrink-0" />
                       {feature}

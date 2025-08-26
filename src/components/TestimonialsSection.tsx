@@ -1,9 +1,6 @@
-import { TestimonialsColumn } from "./ui/testimonials-columns-1";
 import { motion } from "framer-motion";
 
-const testimonials = [];
 
-const testimonials: any[] = [];
 
 const TestimonialsSection = () => {
   return (
@@ -35,9 +32,7 @@ const TestimonialsSection = () => {
           </p>
         </motion.div>
 
-        <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[740px] overflow-hidden">
-          {/* TestimonialsColumn components will now receive empty arrays */}
-        </div>
+        {/* TestimonialsColumn components will now receive empty arrays */}
       </div>
     </section>
   );

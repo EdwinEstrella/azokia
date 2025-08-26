@@ -4,12 +4,6 @@ import {
   ArrowRight, 
   Rocket, 
   CheckCircle, 
-  Brain,
-  ShoppingCart,
-  Briefcase,
-  Smartphone,
-  MousePointer,
-  Settings,
 } from 'lucide-react';
 import ContactForm from '../../components/public/ContactForm';
 import TestimonialsSection from '../../components/TestimonialsSection';
@@ -18,7 +12,7 @@ import { BackgroundGradient } from '../../components/ui/background-gradient';
 import ShaderBackground from '../../components/ui/shader-background';
 
 const HomePage: React.FC = () => {
-  const featuredServices = [];
+  const featuredServices: any[] = [];
 
   return (
     <div className="pt-16 md:pt-20 relative">
@@ -90,7 +84,7 @@ const HomePage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredServices.map((service, index) => (
+            {featuredServices.map((service: any, index: number) => (
               <BackgroundGradient key={index} className="rounded-[22px] p-4 bg-slate-900 h-full">
                 <div className="flex flex-col items-start p-6 bg-gradient-to-br from-slate-800 to-slate-900 rounded-[18px] h-full">
                   <div className="p-3 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-lg mb-4">
@@ -103,7 +97,7 @@ const HomePage: React.FC = () => {
                     {service.description}
                   </p>
                   <ul className="space-y-2">
-                    {service.features.map((feature, featureIndex) => (
+                    {service.features.map((feature: any, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-center text-sm text-[#EAEAEA]/80">
                         <CheckCircle className="h-4 w-4 text-[#1E90FF] mr-2 flex-shrink-0" />
                         {feature}

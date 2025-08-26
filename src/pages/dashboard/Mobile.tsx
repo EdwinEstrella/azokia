@@ -1,11 +1,11 @@
 import React from 'react';
-import { Smartphone, Download, QrCode, Bell, Shield, RefreshCw, Globe, BarChart } from 'lucide-react';
+import { Smartphone, Download, QrCode } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
 
 const Mobile: React.FC = () => {
-  const features = [];
+  const features: any[] = [];
 
   return (
     <div className="min-h-screen bg-[#0D0F2D] p-6">
@@ -98,7 +98,7 @@ const Mobile: React.FC = () => {
 
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {features.map((feature, index) => (
+          {features.map((feature: any, index: number) => (
             <Card key={index} className="p-6 bg-[#0D0F2D]/80 border border-[#1E90FF]/20">
               <div className="flex items-center gap-4 mb-4">
                 <div className="p-2 bg-[#1E90FF]/20 rounded-lg">

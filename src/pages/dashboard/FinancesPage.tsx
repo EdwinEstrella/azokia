@@ -11,7 +11,7 @@ const FinancesPage: React.FC = () => {
     tasaRetencion: '92%'
   };
 
-  const monthlyRevenue = [];
+  const monthlyRevenue: any[] = [];
 
   return (
     <div className="space-y-6">
@@ -81,7 +81,7 @@ const FinancesPage: React.FC = () => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {monthlyRevenue.map((item, index) => (
+            {monthlyRevenue.map((item: any, index: number) => (
               <div key={index} className="flex items-center justify-between">
                 <span className="text-[#EAEAEA]">{item.mes}</span>
                 <div className="flex items-center gap-4">

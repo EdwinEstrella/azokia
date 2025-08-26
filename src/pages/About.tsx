@@ -4,12 +4,6 @@ import { useLanguage } from '../contexts/LanguageContext';
 const About: React.FC = () => {
   const { t } = useLanguage();
 
-  const values: any[] = [];
-
-  const team: any[] = [];
-
-  const stats: any[] = [];
-
   return (
     <div className="pt-20 bg-slate-900">
       {/* Hero Section con efectos 3D */}
@@ -73,7 +67,7 @@ const About: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative">
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-blue-500/25 transition-all duration-300">
-                  <Target className="h-8 w-8 text-white" />
+                  {/* <Target className="h-8 w-8 text-white" /> */}
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">
                   {t('ourMission')}
@@ -88,7 +82,7 @@ const About: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-purple-500/25 transition-all duration-300">
-                  <Heart className="h-8 w-8 text-white" />
+                  {/* <Heart className="h-8 w-8 text-white" /> */}
                 </div>
                 <h3 className="text-2xl font-bold text-white mb-4">
                   {t('ourVision')}
@@ -118,26 +112,7 @@ const About: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {values.map((value, index) => (
-              <div
-                key={value.title}
-                className="group text-center animate-slide-up"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="relative mb-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto shadow-2xl group-hover:shadow-blue-500/25 transition-all duration-300 transform group-hover:scale-110">
-                    <value.icon className="h-10 w-10 text-white" />
-                  </div>
-                  <div className="absolute -inset-2 bg-gradient-to-br from-blue-400 to-purple-600 rounded-2xl blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-4">
-                  {value.title}
-                </h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {value.description}
-                </p>
-              </div>
-            ))}
+            {/* Values are now empty */}
           </div>
         </div>
       </section>
@@ -159,34 +134,7 @@ const About: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <div
-                key={member.name}
-                className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 text-center animate-slide-up transform hover:scale-105"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative">
-                  <div className="relative mb-4">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-24 h-24 rounded-full mx-auto object-cover shadow-lg group-hover:shadow-blue-500/25 transition-all duration-300"
-                    />
-                    <div className="absolute -inset-1 bg-gradient-to-br from-blue-400 to-purple-600 rounded-full blur opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
-                  </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">
-                    {member.name}
-                  </h3>
-                  <p className="text-blue-400 font-medium mb-3">
-                    {member.role}
-                  </p>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    {member.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+            {/* Team is now empty */}
           </div>
         </div>
       </section>
@@ -198,21 +146,7 @@ const About: React.FC = () => {
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            {stats.map((stat, index) => (
-              <div key={stat.label} className="group animate-slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                <div className="relative mb-4">
-                  <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-white/25 transition-all duration-300 transform group-hover:scale-110">
-                    <stat.icon className="h-8 w-8 text-white" />
-                  </div>
-                </div>
-                <div className="text-4xl md:text-5xl font-bold text-white mb-2">
-                  {stat.number}
-                </div>
-                <div className="text-blue-100 font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+            {/* Stats are now empty */}
           </div>
         </div>
       </section>

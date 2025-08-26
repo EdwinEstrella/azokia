@@ -1,11 +1,10 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { TrendingUp, Users, FolderKanban, DollarSign } from 'lucide-react';
 
 const DashboardPage: React.FC = () => {
-  const metrics = [];
+  const metrics: any[] = [];
 
-  const recentProjects = [];
+  const recentProjects: any[] = [];
 
   return (
     <div className="space-y-6">
@@ -16,7 +15,7 @@ const DashboardPage: React.FC = () => {
 
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {metrics.map((metric, index) => {
+        {metrics.map((metric: any, index: number) => {
           const Icon = metric.icon;
           return (
             <Card key={index} className="bg-gradient-to-br from-slate-800 to-slate-900 border-[#1E90FF]/20">
@@ -54,7 +53,7 @@ const DashboardPage: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {recentProjects.map((project, index) => (
+                {recentProjects.map((project: any, index: number) => (
                   <tr key={index} className="border-b border-[#1E90FF]/10">
                     <td className="py-3 text-[#EAEAEA]">{project.cliente}</td>
                     <td className="py-3 text-[#EAEAEA]">{project.proyecto}</td>

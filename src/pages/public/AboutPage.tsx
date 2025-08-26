@@ -1,11 +1,10 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Target, Eye, Heart } from 'lucide-react';
 
 const AboutPage: React.FC = () => {
-  const teamMembers = [];
+  const teamMembers: any[] = [];
 
-  const values = [];
+  const values: any[] = [];
 
   return (
     <div className="pt-16 md:pt-20 min-h-screen bg-[#0D0F2D]">
@@ -51,11 +50,11 @@ const AboutPage: React.FC = () => {
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-[#EAEAEA] mb-8 text-center">Nuestros Valores</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {values.map((value, index) => (
+            {values.map((value: any, index: number) => (
               <Card key={index} className="bg-gradient-to-br from-slate-800 to-slate-900 border-[#1E90FF]/20 text-center">
                 <CardHeader>
                   <div className="p-3 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-lg w-fit mx-auto mb-4">
-                    <value.icon className="h-6 w-6 text-white" />
+                    {/* value.icon className="h-6 w-6 text-white" */}
                   </div>
                   <CardTitle className="text-[#EAEAEA]">{value.title}</CardTitle>
                 </CardHeader>
@@ -71,7 +70,7 @@ const AboutPage: React.FC = () => {
         <section>
           <h2 className="text-3xl font-bold text-[#EAEAEA] mb-8 text-center">Nuestro Equipo</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {teamMembers.map((member, index) => (
+            {teamMembers.map((member: any, index: number) => (
               <Card key={index} className="bg-gradient-to-br from-slate-800 to-slate-900 border-[#1E90FF]/20 text-center">
                 <CardContent className="space-y-2">
                   <h3 className="text-lg font-semibold text-[#EAEAEA]">{member.name}</h3>
