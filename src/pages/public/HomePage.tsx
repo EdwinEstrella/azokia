@@ -15,9 +15,9 @@ const HomePage: React.FC = () => {
   const featuredServices: any[] = [];
 
   return (
-    <div className="pt-16 md:pt-20 relative">
+    <div className="relative">
       {/* Hero Section */}
-      <section className="py-12 md:py-20 relative overflow-hidden min-h-screen flex items-center bg-transparent">
+      <section className="py-12 md:py-20 pt-16 md:pt-20 relative overflow-hidden min-h-screen flex items-center bg-transparent">
         <ShaderBackground />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 w-full">
           <div className="mb-4 md:mb-6">
