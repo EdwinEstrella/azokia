@@ -6,7 +6,7 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
     @apply bg-[#0D0F2D] text-[#EAEAEA] antialiased;
   }
@@ -16,15 +16,15 @@
   .btn-primary {
     @apply bg-[#1E90FF] hover:bg-[#1E90FF]/90 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200;
   }
-  
+
   .btn-secondary {
     @apply bg-[#1A1C3A] hover:bg-[#1E90FF]/20 text-[#EAEAEA] border border-[#1E90FF]/30 font-medium py-2 px-4 rounded-lg transition-colors duration-200;
   }
-  
+
   .card {
     @apply bg-[#0D0F2D]/80 border border-[#1E90FF]/20 rounded-2xl p-6;
   }
-  
+
   .input-primary {
     @apply bg-[#0D0F2D] border border-[#1E90FF]/20 text-[#EAEAEA] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1E90FF] focus:border-transparent;
   }
@@ -34,7 +34,7 @@
   .text-gradient {
     @apply bg-gradient-to-r from-[#1E90FF] to-[#9E7FFF] bg-clip-text text-transparent;
   }
-  
+
   .bg-gradient-custom {
     background: linear-gradient(135deg, #0D0F2D 0%, #1A1C3A 50%, #2D1A69 100%);
   }

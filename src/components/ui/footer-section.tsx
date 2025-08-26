@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { Link } from 'react-router-dom'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -13,11 +12,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Facebook, Instagram, Linkedin, Moon, Send, Sun, Twitter } from "lucide-react"
-import { useLanguage } from '@/contexts/LanguageContext'
 
-function Footerdemo({ children }: { children?: React.ReactNode }) {
-  const [isDarkMode, setIsDarkMode] = React.useState(false)
-  const { t } = useLanguage()
+function Footerdemo() {
+  const [isDarkMode, setIsDarkMode] = React.useState(true)
 
   React.useEffect(() => {
     if (isDarkMode) {
@@ -28,175 +25,150 @@ function Footerdemo({ children }: { children?: React.ReactNode }) {
   }, [isDarkMode])
 
   return (
-    <footer className="relative border-t bg-slate-900 text-[#EAEAEA] transition-colors duration-300">
-      {children}
-      <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8 max-w-7xl">
+    <footer className="relative bg-[#0D0F2D] text-[#EAEAEA] transition-colors duration-300">
+      <div className="container mx-auto px-4 py-12 md:px-6 lg:px-8">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div className="relative">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="relative">
-                <img 
-                  src="/catalogo copy.png" 
-                  alt="Azokia Logo" 
-                  className="w-10 h-10 object-contain"
-                />
-                <div className="absolute -inset-1 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl blur opacity-20"></div>
-              </div>
-              <div className="flex items-baseline space-x-1">
-                <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-blue-300 bg-clip-text text-transparent">
-                  AZOKIA
-                </span>
-                <span className="text-sm text-blue-300 font-bold">
-                  LLC
-                </span>
-              </div>
-            </div>
+            <h2 className="mb-4 text-3xl font-bold tracking-tight">Stay Connected</h2>
             <p className="mb-6 text-[#EAEAEA]/70">
-              {t('footerDescription')}
+              Join our newsletter for the latest updates and exclusive offers.
             </p>
             <form className="relative">
               <Input
                 type="email"
-                placeholder={t('yourEmail')}
-                className="pr-12 backdrop-blur-sm bg-white/10 border-white/20 text-[#EAEAEA] placeholder:text-[#EAEAEA]/50"
+                placeholder="Enter your email"
+                className="pr-12 bg-[#0D0F2D] border border-[#1E90FF]/30 text-[#EAEAEA] focus:ring-[#1E90FF] focus:border-transparent"
               />
               <Button
                 type="submit"
                 size="icon"
-                className="absolute right-1 top-1 h-8 w-8 rounded-full bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] text-white transition-transform hover:scale-105"
+                className="absolute right-1 top-1 h-8 w-8 rounded-full bg-[#1E90FF] text-white transition-transform hover:scale-105"
               >
                 <Send className="h-4 w-4" />
-                <span className="sr-only">{t('subscribe')}</span>
+                <span className="sr-only">Subscribe</span>
               </Button>
             </form>
             <div className="absolute -right-4 top-0 h-24 w-24 rounded-full bg-[#1E90FF]/10 blur-2xl" />
           </div>
-          
           <div>
-            <h3 className="mb-4 text-lg font-semibold text-[#EAEAEA]">{t('quickLinks')}</h3>
+            <h3 className="mb-4 text-lg font-semibold">Quick Links</h3>
             <nav className="space-y-2 text-sm">
-              <Link to="/" className="block transition-colors hover:text-[#1E90FF] text-[#EAEAEA]/80">
-                {t('home')}
-              </Link>
-              <Link to="/services" className="block transition-colors hover:text-[#1E90FF] text-[#EAEAEA]/80">
-                {t('services')}
-              </Link>
-              <Link to="/web-development" className="block transition-colors hover:text-[#1E90FF] text-[#EAEAEA]/80">
-                Desarrollo Web
-              </Link>
-              <Link to="/automation" className="block transition-colors hover:text-[#1E90FF] text-[#EAEAEA]/80">
-                Automatización
-              </Link>
-              <Link to="/contact" className="block transition-colors hover:text-[#1E90FF] text-[#EAEAEA]/80">
-                {t('contact')}
-              </Link>
+              <a href="#" className="block transition-colors hover:text-[#1E90FF]">
+                Home
+              </a>
+              <a href="#" className="block transition-colors hover:text-[#1E90FF]">
+                About Us
+              </a>
+              <a href="#" className="block transition-colors hover:text-[#1E90FF]">
+                Services
+              </a>
+              <a href="#" className="block transition-colors hover:text-[#1E90FF]">
+                Products
+              </a>
+              <a href="#" className="block transition-colors hover:text-[#1E90FF]">
+                Contact
+              </a>
             </nav>
           </div>
-          
           <div>
-            <h3 className="mb-4 text-lg font-semibold text-[#EAEAEA]">{t('contact')}</h3>
-            <address className="space-y-2 text-sm not-italic text-[#EAEAEA]/80">
-              <p>Urbanización Villa Laura</p>
-              <p>Calle 1ra Número 16</p>
-              <p>Santo Domingo, República Dominicana</p>
-              <p>Phone: +1 (555) 123-4567</p>
-              <p>Email: info@azokia.com</p>
+            <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
+            <address className="space-y-2 text-sm not-italic">
+              <p>123 Innovation Street</p>
+              <p>Tech City, TC 12345</p>
+              <p>Phone: (123) 456-7890</p>
+              <p>Email: hello @example.com</p>
             </address>
           </div>
-          
           <div className="relative">
-            <h3 className="mb-4 text-lg font-semibold text-[#EAEAEA]">{t('followUs')}</h3>
+            <h3 className="mb-4 text-lg font-semibold">Follow Us</h3>
             <div className="mb-6 flex space-x-4">
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full bg-white/10 border-white/20 text-[#EAEAEA] hover:bg-[#1E90FF]/20 hover:border-[#1E90FF]/50">
+                    <Button variant="outline" size="icon" className="rounded-full border-[#1E90FF]/30 bg-[#1A1C3A] hover:bg-[#1E90FF]/20 text-[#EAEAEA]">
                       <Facebook className="h-4 w-4" />
                       <span className="sr-only">Facebook</span>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Síguenos en Facebook</p>
+                  <TooltipContent className="bg-[#1A1C3A] text-[#EAEAEA]">
+                    <p>Follow us on Facebook</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-              
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full bg-white/10 border-white/20 text-[#EAEAEA] hover:bg-[#1E90FF]/20 hover:border-[#1E90FF]/50">
+                    <Button variant="outline" size="icon" className="rounded-full border-[#1E90FF]/30 bg-[#1A1C3A] hover:bg-[#1E90FF]/20 text-[#EAEAEA]">
                       <Twitter className="h-4 w-4" />
                       <span className="sr-only">Twitter</span>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Síguenos en Twitter</p>
+                  <TooltipContent className="bg-[#1A1C3A] text-[#EAEAEA]">
+                    <p>Follow us on Twitter</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-              
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full bg-white/10 border-white/20 text-[#EAEAEA] hover:bg-[#1E90FF]/20 hover:border-[#1E90FF]/50">
+                    <Button variant="outline" size="icon" className="rounded-full border-[#1E90FF]/30 bg-[#1A1C3A] hover:bg-[#1E90FF]/20 text-[#EAEAEA]">
                       <Instagram className="h-4 w-4" />
                       <span className="sr-only">Instagram</span>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Síguenos en Instagram</p>
+                  <TooltipContent className="bg-[#1A1C3A] text-[#EAEAEA]">
+                    <p>Follow us on Instagram</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-              
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-full bg-white/10 border-white/20 text-[#EAEAEA] hover:bg-[#1E90FF]/20 hover:border-[#1E90FF]/50">
+                    <Button variant="outline" size="icon" className="rounded-full border-[#1E90FF]/30 bg-[#1A1C3A] hover:bg-[#1E90FF]/20 text-[#EAEAEA]">
                       <Linkedin className="h-4 w-4" />
                       <span className="sr-only">LinkedIn</span>
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Conéctate en LinkedIn</p>
+                  <TooltipContent className="bg-[#1A1C3A] text-[#EAEAEA]">
+                    <p>Connect with us on LinkedIn</p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
-            
             <div className="flex items-center space-x-2">
-              <Sun className="h-4 w-4 text-[#EAEAEA]/60" />
+              <Sun className="h-4 w-4 text-[#EAEAEA]" />
               <Switch
                 id="dark-mode"
                 checked={isDarkMode}
                 onCheckedChange={setIsDarkMode}
-                className="data-[state=checked]:bg-[#1E90FF] data-[state=unchecked]:bg-white/20"
+                className="data-[state=checked]:bg-[#1E90FF] data-[state=unchecked]:bg-[#1A1C3A]"
               />
-              <Moon className="h-4 w-4 text-[#EAEAEA]/60" />
+              <Moon className="h-4 w-4 text-[#EAEAEA]" />
               <Label htmlFor="dark-mode" className="sr-only">
-                Alternar modo oscuro
+                Toggle dark mode
               </Label>
             </div>
           </div>
         </div>
-        
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-center md:flex-row">
-          <p className="text-sm text-[#EAEAEA]/60">
-            © 2024 Azokia LLC. {t('allRightsReserved')}
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#1E90FF]/30 pt-8 text-center md:flex-row">
+          <p className="text-sm text-[#EAEAEA]/70">
+            © 2024 Your Company. All rights reserved.
           </p>
           <nav className="flex gap-4 text-sm">
-            <Link to="/privacy" className="transition-colors hover:text-[#1E90FF] text-[#EAEAEA]/60">
-              {t('privacyPolicy')}
-            </Link>
-            <Link to="/terms" className="transition-colors hover:text-[#1E90FF] text-[#EAEAEA]/60">
-              {t('termsConditions')}
-            </Link>
+            <a href="#" className="transition-colors hover:text-[#1E90FF]">
+              Privacy Policy
+            </a>
+            <a href="#" className="transition-colors hover:text-[#1E90FF]">
+              Terms of Service
+            </a>
+            <a href="#" className="transition-colors hover:text-[#1E90FF]">
+              Cookie Settings
+            </a>
           </nav>
         </div>
       </div>
     </footer>
   )
 }
-
 
 export { Footerdemo }
