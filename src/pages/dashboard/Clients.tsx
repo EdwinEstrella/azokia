@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Filter, Edit, Trash2, Eye, UserPlus, Calendar, Phone, MapPin } from 'lucide-react';
-import { useSupabase } from '../../hooks/useSupabase';
+import { useDatabase } from '../../hooks/useDatabase';
+import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card } from '../../components/ui/card';
@@ -13,7 +14,8 @@ const Clients: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { getClients, searchClients, loading } = useSupabase('user-id');
+  const { user } = useAuth();
+  const { getClients, searchClients, loading } = useDatabase(user!.id);
 
   useEffect(() => {
     loadClients();

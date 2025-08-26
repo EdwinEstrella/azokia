@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Filter, FileText, Calendar, DollarSign, User, Download, Send, CheckCircle, Clock } from 'lucide-react';
-import { useSupabase } from '../../hooks/useSupabase';
+import { useDatabase } from '../../hooks/useDatabase';
+import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card } from '../../components/ui/card';
@@ -10,46 +11,39 @@ const Invoices: React.FC = () => {
   const [invoices, setInvoices] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('ALL');
-  const { getInvoices, searchInvoices, loading } = useSupabase('user-id');
+  const { user } = useAuth();
+  const { getPendingInvoices, loading } = useDatabase(user!.id);
 
   useEffect(() => {
     loadInvoices();
   }, []);
 
   const loadInvoices = async () => {
-    const data = await getInvoices();
+    const data = await getPendingInvoices();
     setInvoices(data || []);
   };
 
-  const handleSearch = async (query: string) => {
-    setSearchTerm(query);
-    if (query.trim()) {
-      const results = await searchInvoices(query);
-      setInvoices(results || []);
-    } else {
-      loadInvoices();
-    }
-  };
-
   const filteredInvoices = invoices.filter(invoice => 
-    filterStatus === 'ALL' || invoice.status === filterStatus
+    (filterStatus === 'ALL' || invoice.status === filterStatus) &&
+    (invoice.invoice_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+     invoice.client_name?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'PAID': return 'bg-green-500/20 text-green-400';
-      case 'PENDING': return 'bg-yellow-500/20 text-yellow-400';
-      case 'OVERDUE': return 'bg-red-500/20 text-red-400';
-      case 'DRAFT': return 'bg-gray-500/20 text-gray-400';
+      case 'paid': return 'bg-green-500/20 text-green-400';
+      case 'pending': return 'bg-yellow-500/20 text-yellow-400';
+      case 'overdue': return 'bg-red-500/20 text-red-400';
+      case 'cancelled': return 'bg-gray-500/20 text-gray-400';
       default: return 'bg-gray-500/20 text-gray-400';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'PAID': return <CheckCircle className="h-4 w-4" />;
-      case 'PENDING': return <Clock className="h-4 w-4" />;
-      case 'OVERDUE': return <Clock className="h-4 w-4" />;
+      case 'paid': return <CheckCircle className="h-4 w-4" />;
+      case 'pending': return <Clock className="h-4 w-4" />;
+      case 'overdue': return <Clock className="h-4 w-4" />;
       default: return <FileText className="h-4 w-4" />;
     }
   };
@@ -77,7 +71,7 @@ const Invoices: React.FC = () => {
               <Input
                 placeholder="Buscar facturas..."
                 value={searchTerm}
-                onChange={(e) => handleSearch(e.target.value)}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
               />
             </div>
@@ -87,10 +81,10 @@ const Invoices: React.FC = () => {
               className="px-4 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA]"
             >
               <option value="ALL">Todos los estados</option>
-              <option value="PAID">Pagadas</option>
-              <option value="PENDING">Pendientes</option>
-              <option value="OVERDUE">Vencidas</option>
-              <option value="DRAFT">Borradores</option>
+              <option value="paid">Pagadas</option>
+              <option value="pending">Pendientes</option>
+              <option value="overdue">Vencidas</option>
+              <option value="cancelled">Canceladas</option>
             </select>
           </div>
         </Card>
@@ -116,7 +110,7 @@ const Invoices: React.FC = () => {
               <div className="space-y-3 mb-4">
                 <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
                   <DollarSign className="h-4 w-4" />
-                  <span>${invoice.amount?.toLocaleString()}</span>
+                  <span>${invoice.total?.toLocaleString()}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
                   <Calendar className="h-4 w-4" />
@@ -138,7 +132,7 @@ const Invoices: React.FC = () => {
                   <Button variant="ghost" size="sm" className="text-[#EAEAEA] hover:bg-[#1E90FF]/20">
                     <Download className="h-4 w-4" />
                   </Button>
-                  {invoice.status === 'PENDING' && (
+                  {invoice.status === 'pending' && (
                     <Button variant="ghost" size="sm" className="text-[#EAEAEA] hover:bg-[#1E90FF]/20">
                       <Send className="h-4 w-4" />
                     </Button>

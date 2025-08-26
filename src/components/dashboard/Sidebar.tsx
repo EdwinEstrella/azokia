@@ -19,11 +19,11 @@ const menuItems = [
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
-  const { logout } = useAuth();
+  const { signOut } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    signOut();
     navigate('/login');
   };
 

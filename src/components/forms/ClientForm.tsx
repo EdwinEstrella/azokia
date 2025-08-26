@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { useSupabase } from '../../hooks/useSupabase';
+import { useDatabase } from '../../hooks/useDatabase';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface ClientFormProps {
   onSuccess?: () => void;
@@ -16,10 +17,11 @@ export const ClientForm: React.FC<ClientFormProps> = ({ onSuccess, initialData }
     phone: initialData?.phone || '',
     address: initialData?.address || '',
     birth_date: initialData?.birth_date || '',
-    status: initialData?.status || 'ACTIVE'
+    status: initialData?.status || 'active'
   });
   const [loading, setLoading] = useState(false);
-  const { createClient } = useSupabase('user-id');
+  const { user } = useAuth();
+  const { createClient } = useDatabase(user!.id);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -112,9 +114,9 @@ export const ClientForm: React.FC<ClientFormProps> = ({ onSuccess, initialData }
           onChange={handleChange}
           className="w-full px-3 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA]"
         >
-          <option value="ACTIVE">Activo</option>
-          <option value="INACTIVE">Inactivo</option>
-          <option value="SUSPENDED">Suspendido</option>
+          <option value="active">Activo</option>
+          <option value="inactive">Inactivo</option>
+          <option value="prospect">Prospecto</option>
         </select>
       </div>
 

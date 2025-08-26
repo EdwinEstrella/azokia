@@ -1,7 +1,7 @@
-import { supabase } from '../lib/supabase'
-import { Database } from '../types/supabase'
+import { supabase } from '../lib/supabase';
+import { Database } from '../types/supabase';
 
-type Tables = Database['public']['Tables']
+type Tables = Database['public']['Tables'];
 
 export class DatabaseService {
   // Operaciones genéricas para cualquier tabla
@@ -13,10 +13,10 @@ export class DatabaseService {
       .from(table)
       .select('*')
       .eq('user_id', userId)
-      .order('created_at', { ascending: false })
+      .order('created_at', { ascending: false });
 
-    if (error) throw error
-    return data
+    if (error) throw error;
+    return data;
   }
 
   static async getById<T extends keyof Tables>(
@@ -29,28 +29,25 @@ export class DatabaseService {
       .select('*')
       .eq('id', id)
       .eq('user_id', userId)
-      .single()
+      .single();
 
-    if (error) return null
-    return data
+    if (error) return null;
+    return data;
   }
 
   static async create<T extends keyof Tables>(
     table: T,
-    data: Omit<Tables[T]['Insert'], 'id' | 'created_at' | 'updated_at' | 'user_id'>,
+    data: Omit<Tables[T]['Insert'], 'user_id'>,
     userId: string
   ): Promise<Tables[T]['Row']> {
     const { data: result, error } = await supabase
       .from(table)
-      .insert({
-        ...data,
-        user_id: userId
-      })
+      .insert({ ...data, user_id: userId } as any)
       .select()
-      .single()
+      .single();
 
-    if (error) throw error
-    return result
+    if (error) throw error;
+    return result;
   }
 
   static async update<T extends keyof Tables>(
@@ -65,10 +62,10 @@ export class DatabaseService {
       .eq('id', id)
       .eq('user_id', userId)
       .select()
-      .single()
+      .single();
 
-    if (error) throw error
-    return result
+    if (error) throw error;
+    return result;
   }
 
   static async delete<T extends keyof Tables>(
@@ -80,9 +77,9 @@ export class DatabaseService {
       .from(table)
       .delete()
       .eq('id', id)
-      .eq('user_id', userId)
+      .eq('user_id', userId);
 
-    if (error) throw error
+    if (error) throw error;
   }
 
   // Métodos específicos para consultas complejas
@@ -91,34 +88,32 @@ export class DatabaseService {
       .from('clients')
       .select(`
         *,
-        contracts (*,
-          products (*)
-        ),
-        payments (*)
+        contracts (*),
+        invoices (*)
       `)
       .eq('id', clientId)
       .eq('user_id', userId)
-      .single()
+      .single();
 
-    if (error) throw error
-    return data
+    if (error) throw error;
+    return data;
   }
 
-  static async getPendingPayments(userId: string) {
+  static async getPendingInvoices(userId: string) {
     const { data, error } = await supabase
-      .from('payments')
+      .from('invoices')
       .select(`
         *,
         clients (*),
         contracts (*)
       `)
       .eq('user_id', userId)
-      .eq('status', 'PENDING')
+      .eq('status', 'pending')
       .lte('due_date', new Date().toISOString())
-      .order('due_date', { ascending: true })
+      .order('due_date', { ascending: true });
 
-    if (error) throw error
-    return data
+    if (error) throw error;
+    return data;
   }
 
   static async searchClients(query: string, userId: string) {
@@ -129,9 +124,9 @@ export class DatabaseService {
         contracts (*)
       `)
       .eq('user_id', userId)
-      .or(`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`)
+      .or(`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`);
 
-    if (error) throw error
-    return data
+    if (error) throw error;
+    return data;
   }
 }

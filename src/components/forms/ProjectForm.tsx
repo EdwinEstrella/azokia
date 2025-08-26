@@ -1,202 +1,240 @@
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useDatabase } from '../../hooks/useDatabase';
+import { useAuth } from '../../contexts/AuthContext';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Calendar } from '../ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { CalendarIcon, Loader2 } from 'lucide-react';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
-interface ProjectFormData {
-  name: string;
-  description: string;
-  clientName: string;
-  clientEmail: string;
-  startDate: string;
-  endDate: string;
-  status: string;
-  priority: string;
-  budget: string;
-  currency: string;
-}
+const projectSchema = z.object({
+  name: z.string().min(1, 'El nombre del proyecto es requerido'),
+  client_id: z.string().min(1, 'Selecciona un cliente'),
+  description: z.string().optional(),
+  type: z.enum(['corporate', 'ecommerce', 'application', 'maintenance']),
+  status: z.enum(['pending', 'development', 'testing', 'completed', 'cancelled']),
+  start_date: z.string().optional(),
+  estimated_end_date: z.string().optional(),
+  repository_url: z.string().optional(),
+  production_url: z.string().optional(),
+});
+
+type ProjectFormData = z.infer<typeof projectSchema>;
 
 interface ProjectFormProps {
-  onSubmit?: (data: ProjectFormData) => void;
-  onCancel?: () => void;
-  initialData?: Partial<ProjectFormData>;
+  onSuccess: () => void;
 }
 
-export const ProjectForm: React.FC<ProjectFormProps> = ({
-  onSubmit,
-  onCancel,
-  initialData = {}
-}) => {
-  const [formData, setFormData] = useState<ProjectFormData>({
-    name: '',
-    description: '',
-    clientName: '',
-    clientEmail: '',
-    startDate: '',
-    endDate: '',
-    status: 'planning',
-    priority: 'medium',
-    budget: '',
-    currency: 'USD',
-    ...initialData
+export const ProjectForm: React.FC<ProjectFormProps> = ({ onSuccess }) => {
+  const [clients, setClients] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+  const { createProject, getClients } = useDatabase(user!.id);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<ProjectFormData>({
+    resolver: zodResolver(projectSchema),
   });
 
-  const handleChange = (field: keyof ProjectFormData, value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  React.useEffect(() => {
+    loadClients();
+  }, []);
+
+  const loadClients = async () => {
+    const data = await getClients();
+    setClients(data || []);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit?.(formData);
+  const onSubmit = async (data: ProjectFormData) => {
+    setLoading(true);
+    try {
+      await createProject(data);
+      onSuccess();
+    } catch (error) {
+      console.error('Error creating project:', error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const startDateString = watch('start_date');
+  const startDate = startDateString ? new Date(startDateString) : undefined;
+  const estimatedEndDateString = watch('estimated_end_date');
+  const estimatedEndDate = estimatedEndDateString ? new Date(estimatedEndDateString) : undefined;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-2">
-        <Label htmlFor="name">Nombre del Proyecto</Label>
-        <Input
-          id="name"
-          value={formData.name}
-          onChange={(e) => handleChange('name', e.target.value)}
-          placeholder="Ingrese nombre del proyecto"
-          required
-        />
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <Label htmlFor="name">Nombre del Proyecto *</Label>
+          <Input
+            id="name"
+            placeholder="Mi increíble proyecto"
+            {...register('name')}
+            className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
+          />
+          {errors.name && (
+            <p className="text-red-400 text-sm">{errors.name.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="client_id">Cliente *</Label>
+          <Select onValueChange={(value) => setValue('client_id', value)}>
+            <SelectTrigger className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]">
+              <SelectValue placeholder="Selecciona un cliente" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]">
+              {clients.map((client) => (
+                <SelectItem key={client.id} value={client.id}>
+                  {client.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {errors.client_id && (
+            <p className="text-red-400 text-sm">{errors.client_id.message}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="type">Tipo de Proyecto *</Label>
+          <Select onValueChange={(value) => setValue('type', value as any)}>
+            <SelectTrigger className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]">
+              <SelectValue placeholder="Selecciona un tipo" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]">
+              <SelectItem value="corporate">Corporativo</SelectItem>
+              <SelectItem value="ecommerce">E-commerce</SelectItem>
+              <SelectItem value="application">Aplicación</SelectItem>
+              <SelectItem value="maintenance">Mantenimiento</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="status">Estado *</Label>
+          <Select onValueChange={(value) => setValue('status', value as any)}>
+            <SelectTrigger className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]">
+              <SelectValue placeholder="Selecciona estado" />
+            </SelectTrigger>
+            <SelectContent className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]">
+                <SelectItem value="pending">Pendiente</SelectItem>
+                <SelectItem value="development">Desarrollo</SelectItem>
+                <SelectItem value="testing">Pruebas</SelectItem>
+                <SelectItem value="completed">Completado</SelectItem>
+                <SelectItem value="cancelled">Cancelado</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label>Fecha de Inicio</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-start text-left font-normal bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA] hover:bg-[#1E90FF]/20"
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {startDate ? format(startDate, 'PPP', { locale: es }) : 'Seleccionar fecha'}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-[#0D0F2D] border-[#1E90FF]/20">
+              <Calendar
+                mode="single"
+                selected={startDate}
+                onSelect={(date) => setValue('start_date', date?.toISOString() || undefined)}
+                initialFocus
+                className="text-[#EAEAEA]"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+
+        <div className="space-y-2">
+          <Label>Fecha Estimada de Fin</Label>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className="w-full justify-start text-left font-normal bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA] hover:bg-[#1E90FF]/20"
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {estimatedEndDate ? format(estimatedEndDate, 'PPP', { locale: es }) : 'Seleccionar fecha'}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0 bg-[#0D0F2D] border-[#1E90FF]/20">
+              <Calendar
+                mode="single"
+                selected={estimatedEndDate}
+                onSelect={(date) => setValue('estimated_end_date', date?.toISOString() || undefined)}
+                initialFocus
+                className="text-[#EAEAEA]"
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="description">Descripción</Label>
-        <Textarea
+        <textarea
           id="description"
-          value={formData.description}
-          onChange={(e) => handleChange('description', e.target.value)}
-          placeholder="Describe el proyecto, objetivos y alcance"
           rows={3}
+          {...register('description')}
+          className="w-full px-3 py-2 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-lg text-[#EAEAEA] placeholder-[#EAEAEA]/40 resize-none"
+          placeholder="Descripción del proyecto..."
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
-          <Label htmlFor="clientName">Nombre del Cliente</Label>
+          <Label htmlFor="repository_url">URL del Repositorio</Label>
           <Input
-            id="clientName"
-            value={formData.clientName}
-            onChange={(e) => handleChange('clientName', e.target.value)}
-            placeholder="Nombre del cliente"
-            required
+            id="repository_url"
+            placeholder="https://github.com/..."
+            {...register('repository_url')}
+            className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
           />
         </div>
-        
         <div className="space-y-2">
-          <Label htmlFor="clientEmail">Email del Cliente</Label>
+          <Label htmlFor="production_url">URL de Producción</Label>
           <Input
-            id="clientEmail"
-            type="email"
-            value={formData.clientEmail}
-            onChange={(e) => handleChange('clientEmail', e.target.value)}
-            placeholder="cliente@ejemplo.com"
+            id="production_url"
+            placeholder="https://mi-proyecto.com"
+            {...register('production_url')}
+            className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="startDate">Fecha de Inicio</Label>
-          <Input
-            id="startDate"
-            type="date"
-            value={formData.startDate}
-            onChange={(e) => handleChange('startDate', e.target.value)}
-            required
-          />
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="endDate">Fecha de Finalización</Label>
-          <Input
-            id="endDate"
-            type="date"
-            value={formData.endDate}
-            onChange={(e) => handleChange('endDate', e.target.value)}
-          />
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="status">Estado</Label>
-          <Select value={formData.status} onValueChange={(value) => handleChange('status', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Seleccionar estado" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="planning">Planificación</SelectItem>
-              <SelectItem value="in-progress">En Progreso</SelectItem>
-              <SelectItem value="review">En Revisión</SelectItem>
-              <SelectItem value="completed">Completado</SelectItem>
-              <SelectItem value="on-hold">En Pausa</SelectItem>
-              <SelectItem value="cancelled">Cancelado</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="priority">Prioridad</Label>
-          <Select value={formData.priority} onValueChange={(value) => handleChange('priority', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Seleccionar prioridad" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="low">Baja</SelectItem>
-              <SelectItem value="medium">Media</SelectItem>
-              <SelectItem value="high">Alta</SelectItem>
-              <SelectItem value="urgent">Urgente</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="currency">Moneda</Label>
-          <Select value={formData.currency} onValueChange={(value) => handleChange('currency', value)}>
-            <SelectTrigger>
-              <SelectValue placeholder="Seleccionar moneda" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="USD">USD ($)</SelectItem>
-              <SelectItem value="EUR">EUR (€)</SelectItem>
-              <SelectItem value="DOP">DOP (RD$)</SelectItem>
-              <SelectItem value="GBP">GBP (£)</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="budget">Presupuesto</Label>
-        <Input
-          id="budget"
-          type="number"
-          step="0.01"
-          value={formData.budget}
-          onChange={(e) => handleChange('budget', e.target.value)}
-          placeholder="0.00"
-        />
-      </div>
-
-      <div className="flex justify-end space-x-2 pt-4">
-        {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel}>
-            Cancelar
-          </Button>
+      <Button
+        type="submit"
+        className="w-full bg-[#1E90FF] hover:bg-[#1E90FF]/90"
+        disabled={loading}
+      >
+        {loading ? (
+          <>
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            Creando...
+          </>
+        ) : (
+          'Crear Proyecto'
         )}
-        <Button type="submit">
-          Crear Proyecto
-        </Button>
-      </div>
+      </Button>
     </form>
   );
 };

@@ -17,7 +17,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   
-  const { login } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +26,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSuccess }) => {
     setError('');
 
     try {
-      await login(email, password);
+      await signIn(email, password);
       onSuccess?.();
       navigate('/dashboard');
     } catch (err) {

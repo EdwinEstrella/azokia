@@ -1,5 +1,5 @@
 {
-  "name": "azokia-dashboard",
+  "name": "azokia",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
-    "@prisma/client": "^6.14.0",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-popover": "^1.0.7",

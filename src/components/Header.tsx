@@ -7,7 +7,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const { isAuthenticated, user } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
 
   const navigation = [
@@ -43,7 +43,7 @@ const Header: React.FC = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            {isAuthenticated ? (
+            {user ? (
               <Link to="/dashboard">
                 <Button variant="outline" className="border-[#1E90FF]/30 text-[#EAEAEA] hover:bg-[#1E90FF]/10">
                   Dashboard
@@ -85,7 +85,7 @@ const Header: React.FC = () => {
               ))}
               
               <div className="pt-4 border-t border-[#1E90FF]/20">
-                {isAuthenticated ? (
+                {user ? (
                   <Link
                     to="/dashboard"
                     className="block px-3 py-2 rounded-lg text-[#EAEAEA] hover:bg-[#1E90FF]/10 transition-colors"

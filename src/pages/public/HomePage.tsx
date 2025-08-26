@@ -89,7 +89,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Sección de Características */}
-      <section className="py-12 md:py-20 bg-transparent relative overflow-hidden z-20">
+      <section className="py-12 md:py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full text-white text-sm font-medium mb-6">
@@ -158,7 +158,7 @@ const HomePage: React.FC = () => {
       <TestimonialsSection />
 
       {/* Sección de Contacto */}
-      <section className="py-12 md:py-20 bg-transparent relative overflow-hidden">
+      <section className="py-12 md:py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="text-center mb-16">
             <div className="inline-block px-4 py-2 bg-gradient-to-r from-[#1E90FF] to-[#9B59B6] rounded-full text-white text-sm font-medium mb-6">

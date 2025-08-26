@@ -5,7 +5,7 @@ import PublicFooter from '../components/public/PublicFooter';
 
 const PublicLayout: React.FC = () => {
   return (
-    <div className="min-h-screen bg-[#0D0F2D]">
+    <div className="min-h-screen">
       <PublicHeader />
       <main>
         <Outlet />

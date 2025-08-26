@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { useSupabase } from '../../hooks/useSupabase';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -17,8 +16,8 @@ const contractSchema = z.object({
   title: z.string().min(1, 'El título es requerido'),
   contract_number: z.string().min(1, 'El número de contrato es requerido'),
   client_name: z.string().min(1, 'El nombre del cliente es requerido'),
-  value: z.number().min(0, 'El valor debe ser mayor o igual a 0'),
-  status: z.enum(['ACTIVE', 'PENDING', 'EXPIRED']),
+  amount: z.number().min(0, 'El valor debe ser mayor o igual a 0'),
+  status: z.enum(['draft', 'sent', 'signed', 'completed', 'cancelled']),
   start_date: z.date(),
   end_date: z.date(),
   description: z.string().optional()
@@ -33,8 +32,6 @@ interface ContractFormProps {
 }
 
 export const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading = false, initialData }) => {
-  const [date, setDate] = useState<Date | undefined>(initialData?.start_date ? new Date(initialData.start_date) : undefined);
-  
   const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<ContractFormData>({
     resolver: zodResolver(contractSchema),
     defaultValues: initialData
@@ -83,15 +80,15 @@ export const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading = 
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="value">Valor ($)</Label>
+          <Label htmlFor="amount">Valor ($)</Label>
           <Input
-            id="value"
+            id="amount"
             type="number"
-            {...register('value', { valueAsNumber: true })}
+            {...register('amount', { valueAsNumber: true })}
             placeholder="0.00"
-            className={errors.value ? 'border-red-500' : ''}
+            className={errors.amount ? 'border-red-500' : ''}
           />
-          {errors.value && <p className="text-red-500 text-sm">{errors.value.message}</p>}
+          {errors.amount && <p className="text-red-500 text-sm">{errors.amount.message}</p>}
         </div>
 
         <div className="space-y-2">
@@ -104,9 +101,11 @@ export const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading = 
               <SelectValue placeholder="Seleccionar estado" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ACTIVE">Activo</SelectItem>
-              <SelectItem value="PENDING">Pendiente</SelectItem>
-              <SelectItem value="EXPIRED">Expirado</SelectItem>
+              <SelectItem value="draft">Borrador</SelectItem>
+              <SelectItem value="sent">Enviado</SelectItem>
+              <SelectItem value="signed">Firmado</SelectItem>
+              <SelectItem value="completed">Completado</SelectItem>
+              <SelectItem value="cancelled">Cancelado</SelectItem>
             </SelectContent>
           </Select>
           {errors.status && <p className="text-red-500 text-sm">{errors.status.message}</p>}

@@ -1,200 +1,213 @@
-import { useState, useCallback } from 'react'
-import { DatabaseService } from '../services/databaseService'
-import { 
-  Client, 
-  Product, 
-  Contract, 
-  Payment,
-  CreateClientData,
-  CreateProductData,
-  CreateContractData,
-  CreatePaymentData,
-  UpdateClientData,
-  UpdateProductData
-} from '../types/database'
+import { useState, useCallback } from 'react';
+import { DatabaseService } from '../services/databaseService';
+import { Database } from '../types/supabase';
+
+type Client = Database['public']['Tables']['clients']['Row'];
+type Contract = Database['public']['Tables']['contracts']['Row'];
+type Invoice = Database['public']['Tables']['invoices']['Row'];
+type Project = Database['public']['Tables']['projects']['Row'];
+type CreateClientData = Database['public']['Tables']['clients']['Insert'];
+type UpdateClientData = Database['public']['Tables']['clients']['Update'];
+type CreateContractData = Database['public']['Tables']['contracts']['Insert'];
+type CreateInvoiceData = Database['public']['Tables']['invoices']['Insert'];
+type CreateProjectData = Database['public']['Tables']['projects']['Insert'];
+type UpdateProjectData = Database['public']['Tables']['projects']['Update'];
+
 
 export const useDatabase = (userId: string) => {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleError = useCallback((err: unknown) => {
-    const message = err instanceof Error ? err.message : 'Error desconocido'
-    setError(message)
-    throw err
-  }, [])
+    const message = err instanceof Error ? err.message : 'Error desconocido';
+    setError(message);
+    throw err;
+  }, []);
 
   // Client operations
-  const createClient = useCallback(async (data: CreateClientData): Promise<Client> => {
-    setLoading(true)
-    setError(null)
+  const createClient = useCallback(async (data: Omit<CreateClientData, 'user_id'>): Promise<Client> => {
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.createClient(userId, data)
+      return await DatabaseService.create('clients', data, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
   const getClients = useCallback(async (): Promise<Client[]> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.getClients(userId)
+      return await DatabaseService.getAll('clients', userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
   const getClientById = useCallback(async (clientId: string): Promise<Client | null> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.getClientById(userId, clientId)
+      return await DatabaseService.getById('clients', clientId, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
   const updateClient = useCallback(async (clientId: string, data: UpdateClientData): Promise<Client> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.updateClient(userId, clientId, data)
+      return await DatabaseService.update('clients', clientId, data, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
   const deleteClient = useCallback(async (clientId: string): Promise<void> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      await DatabaseService.deleteClient(userId, clientId)
+      await DatabaseService.delete('clients', clientId, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
-  // Product operations
-  const createProduct = useCallback(async (data: CreateProductData): Promise<Product> => {
-    setLoading(true)
-    setError(null)
+  // Project operations
+  const createProject = useCallback(async (data: Omit<CreateProjectData, 'user_id'>): Promise<Project> => {
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.createProduct(userId, data)
+      return await DatabaseService.create('projects', data, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
-  const getProducts = useCallback(async (): Promise<Product[]> => {
-    setLoading(true)
-    setError(null)
+  const getProjects = useCallback(async (): Promise<Project[]> => {
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.getProducts(userId)
+      return await DatabaseService.getAll('projects', userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
-  const updateProduct = useCallback(async (productId: string, data: UpdateProductData): Promise<Product> => {
-    setLoading(true)
-    setError(null)
+  const getProjectById = useCallback(async (projectId: string): Promise<Project | null> => {
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.updateProduct(userId, productId, data)
+      return await DatabaseService.getById('projects', projectId, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
-  const deleteProduct = useCallback(async (productId: string): Promise<void> => {
-    setLoading(true)
-    setError(null)
+  const updateProject = useCallback(async (projectId: string, data: UpdateProjectData): Promise<Project> => {
+    setLoading(true);
+    setError(null);
     try {
-      await DatabaseService.deleteProduct(userId, productId)
+      return await DatabaseService.update('projects', projectId, data, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
+
+  const deleteProject = useCallback(async (projectId: string): Promise<void> => {
+    setLoading(true);
+    setError(null);
+    try {
+      await DatabaseService.delete('projects', projectId, userId);
+    } catch (err) {
+      return handleError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [userId, handleError]);
 
   // Contract operations
-  const createContract = useCallback(async (data: CreateContractData): Promise<Contract> => {
-    setLoading(true)
-    setError(null)
+  const createContract = useCallback(async (data: Omit<CreateContractData, 'user_id'>): Promise<Contract> => {
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.createContract(userId, data)
+      return await DatabaseService.create('contracts', data, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
   const getContracts = useCallback(async (): Promise<Contract[]> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.getContracts(userId)
+      return await DatabaseService.getAll('contracts', userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
-  // Payment operations
-  const createPayment = useCallback(async (data: CreatePaymentData): Promise<Payment> => {
-    setLoading(true)
-    setError(null)
+  // Invoice operations
+  const createInvoice = useCallback(async (data: Omit<CreateInvoiceData, 'user_id'>): Promise<Invoice> => {
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.createPayment(userId, data)
+      return await DatabaseService.create('invoices', data, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
-  const getPendingPayments = useCallback(async (): Promise<Payment[]> => {
-    setLoading(true)
-    setError(null)
+  const getPendingInvoices = useCallback(async (): Promise<Invoice[]> => {
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.getPendingPayments(userId)
+      return await DatabaseService.getPendingInvoices(userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
   // Search operations
   const searchClients = useCallback(async (query: string): Promise<Client[]> => {
-    setLoading(true)
-    setError(null)
+    setLoading(true);
+    setError(null);
     try {
-      return await DatabaseService.searchClients(userId, query)
+      return await DatabaseService.searchClients(query, userId);
     } catch (err) {
-      return handleError(err)
+      return handleError(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [userId, handleError])
+  }, [userId, handleError]);
 
   return {
     loading,
@@ -207,22 +220,23 @@ export const useDatabase = (userId: string) => {
     getClientById,
     updateClient,
     deleteClient,
-    
-    // Product methods
-    createProduct,
-    getProducts,
-    updateProduct,
-    deleteProduct,
+
+    // Project methods
+    createProject,
+    getProjects,
+    getProjectById,
+    updateProject,
+    deleteProject,
     
     // Contract methods
     createContract,
     getContracts,
     
-    // Payment methods
-    createPayment,
-    getPendingPayments,
+    // Invoice methods
+    createInvoice,
+    getPendingInvoices,
     
     // Search methods
     searchClients
-  }
-}
+  };
+};
