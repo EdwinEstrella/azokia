@@ -1,13 +1,12 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import AppRouter from './router/AppRouter';
-import './App.css';
+import { AppRouter } from './router';
+import { LanguageProvider } from './contexts/LanguageContext';
 
 function App() {
   return (
-    <BrowserRouter>
+    <LanguageProvider>
       <AppRouter />
-    </BrowserRouter>
+    </LanguageProvider>
   );
 }
 

@@ -3,41 +3,72 @@ import { Database } from '../types/supabase'
 
 type Tables = Database['public']['Tables']
 type Client = Tables['clients']['Row']
-type Product = Tables['products']['Row']
+type Project = Tables['projects']['Row']
 type Contract = Tables['contracts']['Row']
-type Payment = Tables['payments']['Row']
+type Invoice = Tables['invoices']['Row']
+type InvoiceItem = Tables['invoice_items']['Row']
 
 export interface CreateClientData {
   name: string
   email: string
   phone?: string
+  company?: string
   address?: string
-  status?: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED'
+  status?: 'active' | 'inactive' | 'prospect'
+  notes?: string
 }
 
-export interface CreateProductData {
+export interface CreateProjectData {
+  client_id: string
   name: string
   description?: string
-  price: number
-  type?: 'SERVICE' | 'DIGITAL_PRODUCT' | 'PACKAGE'
+  type: 'corporate' | 'ecommerce' | 'application' | 'maintenance'
+  status?: 'pending' | 'development' | 'testing' | 'completed' | 'cancelled'
+  start_date?: string
+  estimated_end_date?: string
+  budget?: number
+  estimated_hours?: number
+  repository_url?: string
+  production_url?: string
 }
 
 export interface CreateContractData {
+  client_id: string
+  project_id?: string
+  contract_number: string
   title: string
   description?: string
-  startDate: string
-  endDate?: string
-  paymentType: 'MONTHLY_30' | 'BIWEEKLY_15' | 'WEEKLY' | 'QUARTERLY' | 'ANNUAL'
   amount: number
-  clientId: string
-  productId: string
+  signed_date?: string
+  start_date?: string
+  end_date?: string
+  status?: 'draft' | 'sent' | 'signed' | 'completed' | 'cancelled'
+  terms?: string
+  file_url?: string
 }
 
-export interface CreatePaymentData {
-  amount: number
-  dueDate: string
-  contractId: string
-  clientId: string
+export interface CreateInvoiceData {
+  client_id: string
+  project_id?: string
+  invoice_number: string
+  issue_date: string
+  due_date: string
+  subtotal: number
+  taxes?: number
+  total: number
+  status?: 'pending' | 'paid' | 'overdue' | 'cancelled'
+  payment_method?: string
+  notes?: string
+  file_url?: string
+}
+
+export interface CreateInvoiceItemData {
+  invoice_id: string
+  concept: string
+  description?: string
+  quantity: number
+  unit_price: number
+  subtotal: number
 }
 
 export class SupabaseService {
@@ -48,7 +79,7 @@ export class SupabaseService {
       .insert({
         ...data,
         user_id: userId,
-        status: data.status || 'ACTIVE'
+        status: data.status || 'active'
       })
       .select()
       .single()
@@ -60,14 +91,7 @@ export class SupabaseService {
   static async getClients(userId: string): Promise<Client[]> {
     const { data: clients, error } = await supabase
       .from('clients')
-      .select(`
-        *,
-        contracts (
-          *,
-          products (*),
-          payments (*)
-        )
-      `)
+      .select('*')
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
 
@@ -78,15 +102,7 @@ export class SupabaseService {
   static async getClientById(userId: string, clientId: string): Promise<Client | null> {
     const { data: client, error } = await supabase
       .from('clients')
-      .select(`
-        *,
-        contracts (
-          *,
-          products (*),
-          payments (*)
-        ),
-        payments (*)
-      `)
+      .select('*')
       .eq('id', clientId)
       .eq('user_id', userId)
       .single()
@@ -118,52 +134,55 @@ export class SupabaseService {
     if (error) throw error
   }
 
-  // Product Operations
-  static async createProduct(userId: string, data: CreateProductData): Promise<Product> {
-    const { data: product, error } = await supabase
-      .from('products')
+  // Project Operations
+  static async createProject(userId: string, data: CreateProjectData): Promise<Project> {
+    const { data: project, error } = await supabase
+      .from('projects')
       .insert({
         ...data,
         user_id: userId,
-        type: data.type || 'SERVICE',
-        is_active: true
+        status: data.status || 'pending',
+        worked_hours: 0
       })
       .select()
       .single()
 
     if (error) throw error
-    return product
+    return project
   }
 
-  static async getProducts(userId: string): Promise<Product[]> {
-    const { data: products, error } = await supabase
-      .from('products')
-      .select('*')
+  static async getProjects(userId: string): Promise<Project[]> {
+    const { data: projects, error } = await supabase
+      .from('projects')
+      .select(`
+        *,
+        clients (*)
+      `)
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
 
     if (error) throw error
-    return products
+    return projects
   }
 
-  static async updateProduct(userId: string, productId: string, data: Partial<CreateProductData>): Promise<Product> {
-    const { data: product, error } = await supabase
-      .from('products')
+  static async updateProject(userId: string, projectId: string, data: Partial<CreateProjectData>): Promise<Project> {
+    const { data: project, error } = await supabase
+      .from('projects')
       .update(data)
-      .eq('id', productId)
+      .eq('id', projectId)
       .eq('user_id', userId)
       .select()
       .single()
 
     if (error) throw error
-    return product
+    return project
   }
 
-  static async deleteProduct(userId: string, productId: string): Promise<void> {
+  static async deleteProject(userId: string, projectId: string): Promise<void> {
     const { error } = await supabase
-      .from('products')
+      .from('projects')
       .delete()
-      .eq('id', productId)
+      .eq('id', projectId)
       .eq('user_id', userId)
 
     if (error) throw error
@@ -176,17 +195,12 @@ export class SupabaseService {
       .insert({
         ...data,
         user_id: userId,
-        status: 'ACTIVE',
-        start_date: data.startDate,
-        end_date: data.endDate,
-        client_id: data.clientId,
-        product_id: data.productId,
-        payment_type: data.paymentType
+        status: data.status || 'draft'
       })
       .select(`
         *,
         clients (*),
-        products (*)
+        projects (*)
       `)
       .single()
 
@@ -200,8 +214,7 @@ export class SupabaseService {
       .select(`
         *,
         clients (*),
-        products (*),
-        payments (*)
+        projects (*)
       `)
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
@@ -210,62 +223,81 @@ export class SupabaseService {
     return contracts
   }
 
-  // Payment Operations
-  static async createPayment(userId: string, data: CreatePaymentData): Promise<Payment> {
-    const { data: payment, error } = await supabase
-      .from('payments')
+  // Invoice Operations
+  static async createInvoice(userId: string, data: CreateInvoiceData): Promise<Invoice> {
+    const { data: invoice, error } = await supabase
+      .from('invoices')
       .insert({
         ...data,
         user_id: userId,
-        status: 'PENDING',
-        due_date: data.dueDate,
-        contract_id: data.contractId,
-        client_id: data.clientId
+        status: data.status || 'pending',
+        taxes: data.taxes || 0
       })
       .select(`
         *,
         clients (*),
-        contracts (*)
+        projects (*)
       `)
       .single()
 
     if (error) throw error
-    return payment
+    return invoice
   }
 
-  static async getPendingPayments(userId: string): Promise<Payment[]> {
-    const { data: payments, error } = await supabase
-      .from('payments')
+  static async getInvoices(userId: string): Promise<Invoice[]> {
+    const { data: invoices, error } = await supabase
+      .from('invoices')
       .select(`
         *,
         clients (*),
-        contracts (*)
+        projects (*),
+        invoice_items (*)
       `)
       .eq('user_id', userId)
-      .eq('status', 'PENDING')
-      .lte('due_date', new Date().toISOString())
-      .order('due_date', { ascending: true })
+      .order('created_at', { ascending: false })
 
     if (error) throw error
-    return payments
+    return invoices
   }
 
-  // Search Operations
-  static async searchClients(userId: string, query: string): Promise<Client[]> {
-    const { data: clients, error } = await supabase
-      .from('clients')
-      .select(`
-        *,
-        contracts (
-          *,
-          products (*)
-        )
-      `)
-      .eq('user_id', userId)
-      .or(`name.ilike.%${query}%,email.ilike.%${query}%,phone.ilike.%${query}%`)
+  // Invoice Items Operations
+  static async createInvoiceItem(data: CreateInvoiceItemData): Promise<InvoiceItem> {
+    const { data: item, error } = await supabase
+      .from('invoice_items')
+      .insert(data)
+      .select()
+      .single()
 
     if (error) throw error
-    return clients
+    return item
+  }
+
+  // Dashboard Statistics
+  static async getDashboardStats(userId: string) {
+    const [
+      clientsCount,
+      projectsCount,
+      contractsCount,
+      invoicesCount,
+      activeProjects,
+      pendingInvoices
+    ] = await Promise.all([
+      supabase.from('clients').select('id', { count: 'exact' }).eq('user_id', userId),
+      supabase.from('projects').select('id', { count: 'exact' }).eq('user_id', userId),
+      supabase.from('contracts').select('id', { count: 'exact' }).eq('user_id', userId),
+      supabase.from('invoices').select('id', { count: 'exact' }).eq('user_id', userId),
+      supabase.from('projects').select('id', { count: 'exact' }).eq('user_id', userId).eq('status', 'development'),
+      supabase.from('invoices').select('id', { count: 'exact' }).eq('user_id', userId).eq('status', 'pending')
+    ])
+
+    return {
+      totalClients: clientsCount.count || 0,
+      totalProjects: projectsCount.count || 0,
+      totalContracts: contractsCount.count || 0,
+      totalInvoices: invoicesCount.count || 0,
+      activeProjects: activeProjects.count || 0,
+      pendingInvoices: pendingInvoices.count || 0
+    }
   }
 
   // Auth Operations
