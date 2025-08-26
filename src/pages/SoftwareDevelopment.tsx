@@ -1,18 +1,128 @@
 import React from 'react';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Code, Smartphone, Cloud, Shield, TrendingUp, Lightbulb, Layout, Rocket, Server, Puzzle, Settings } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const SoftwareDevelopment: React.FC = () => {
   const {  } = useLanguage();
 
-  const softwareServices: any[] = [];
+  const softwareServices = [
+    {
+      title: "Desarrollo de Aplicaciones Web Personalizadas",
+      description: "Creamos aplicaciones web robustas y escalables, diseñadas a medida para satisfacer las necesidades específicas de tu negocio, desde CRMs hasta plataformas complejas.",
+      gradient: "from-blue-500 to-purple-600",
+      icon: Code,
+      features: [
+        "Arquitectura escalable y segura",
+        "Integración con sistemas existentes",
+        "Experiencia de usuario intuitiva",
+        "Desarrollo frontend y backend",
+      ],
+    },
+    {
+      title: "Desarrollo de Aplicaciones Móviles (iOS y Android)",
+      description: "Diseñamos y construimos aplicaciones móviles nativas y multiplataforma que ofrecen un rendimiento excepcional y una experiencia de usuario fluida en iOS y Android.",
+      gradient: "from-green-500 to-teal-600",
+      icon: Smartphone,
+      features: [
+        "Apps nativas y multiplataforma (React Native, Flutter)",
+        "Diseño UI/UX móvil",
+        "Integración de APIs y servicios",
+        "Publicación en App Stores",
+      ],
+    },
+    {
+      title: "Desarrollo de Software a Medida",
+      description: "Soluciones de software únicas para resolver tus desafíos empresariales más complejos, optimizando procesos y aumentando la eficiencia operativa.",
+      gradient: "from-red-500 to-orange-600",
+      icon: Puzzle,
+      features: [
+        "Sistemas de gestión empresarial (ERP, CRM)",
+        "Herramientas de automatización interna",
+        "Software para análisis de datos",
+        "Modernización de sistemas legados",
+      ],
+    },
+    {
+      title: "Consultoría y Auditoría de Software",
+      description: "Ofrecemos asesoramiento experto para optimizar tu infraestructura de software, mejorar la seguridad, el rendimiento y la escalabilidad de tus sistemas actuales.",
+      gradient: "from-yellow-500 to-amber-600",
+      icon: Settings,
+      features: [
+        "Análisis de arquitectura de software",
+        "Auditorías de seguridad y rendimiento",
+        "Recomendaciones de mejora y optimización",
+        "Planificación estratégica de TI",
+      ],
+    },
+  ];
 
-  const technologies: any[] = [];
+  const technologies = [
+    { name: "Python", icon: "🐍" },
+    { name: "JavaScript", icon: "📜" },
+    { name: "TypeScript", icon: "🟦" },
+    { name: "Node.js", icon: "🟢" },
+    { name: "React", icon: "⚛️" },
+    { name: "Angular", icon: "🅰️" },
+    { name: "Vue.js", icon: "💚" },
+    { name: "Django", icon: "🌐" },
+    { name: "Flask", icon: "🍶" },
+    { name: "SQL", icon: "📊" },
+    { name: "NoSQL", icon: "🗄️" },
+    { name: "AWS", icon: "☁️" },
+    { name: "Docker", icon: "🐳" },
+    { name: "Kubernetes", icon: "☸️" },
+  ];
 
-  const benefits: any[] = [];
+  const benefits = [
+    {
+      title: "Eficiencia Operativa",
+      description: "Automatiza tareas y optimiza flujos de trabajo, reduciendo costos y aumentando la productividad.",
+      icon: TrendingUp,
+    },
+    {
+      title: "Ventaja Competitiva",
+      description: "Diferénciate con soluciones únicas que te permiten innovar y adaptarte rápidamente al mercado.",
+      icon: Shield,
+    },
+    {
+      title: "Escalabilidad y Flexibilidad",
+      description: "Software diseñado para crecer contigo, adaptándose a tus necesidades futuras y a la evolución del negocio.",
+      icon: Cloud,
+    },
+    {
+      title: "Seguridad y Fiabilidad",
+      description: "Desarrollamos con los más altos estándares de seguridad, protegiendo tus datos y garantizando la continuidad operativa.",
+      icon: Server,
+    },
+  ];
 
-  const processSteps: any[] = [];
+  const processSteps = [
+    {
+      step: 1,
+      title: "Análisis y Requisitos",
+      description: "Comprendemos a fondo tus necesidades y definimos los requisitos funcionales y técnicos del software.",
+      icon: Lightbulb,
+    },
+    {
+      step: 2,
+      title: "Diseño y Prototipado",
+      description: "Creamos la arquitectura del software, diseñamos la interfaz de usuario y desarrollamos prototipos para tu validación.",
+      icon: Layout,
+    },
+    {
+      step: 3,
+      title: "Desarrollo y Pruebas",
+      description: "Codificamos el software utilizando metodologías ágiles, realizando pruebas continuas para asegurar la calidad.",
+      icon: Code,
+    },
+    {
+      step: 4,
+      title: "Implementación y Soporte",
+      description: "Desplegamos el software en tu entorno, ofrecemos capacitación y brindamos soporte post-lanzamiento.",
+      icon: Rocket,
+    },
+  ];
 
   return (
     <div className="pt-20 bg-[#0D0F2D]">

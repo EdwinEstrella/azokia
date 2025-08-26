@@ -1,18 +1,158 @@
 import React from 'react';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Search, Megaphone, BarChart, Users, Lightbulb, Code, Rocket, TrendingUp, DollarSign, Eye, FileText } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const DigitalMarketing: React.FC = () => {
   const {  } = useLanguage();
 
-  const marketingServices: any[] = [];
+  const marketingServices = [
+    {
+      title: "Optimización para Motores de Búsqueda (SEO)",
+      description: "Mejoramos la visibilidad de tu sitio web en Google y otros buscadores, atrayendo tráfico orgánico de alta calidad y aumentando tu autoridad online.",
+      gradient: "from-blue-500 to-purple-600",
+      icon: Search,
+      features: [
+        "Auditoría SEO completa",
+        "Investigación de palabras clave",
+        "Optimización on-page y off-page",
+        "Construcción de enlaces (link building)",
+      ],
+    },
+    {
+      title: "Publicidad en Motores de Búsqueda (SEM/PPC)",
+      description: "Creamos y gestionamos campañas de anuncios pagados en Google Ads y otras plataformas, maximizando tu retorno de inversión y generando leads cualificados de forma rápida.",
+      gradient: "from-green-500 to-teal-600",
+      icon: Megaphone,
+      features: [
+        "Estrategia de palabras clave y audiencias",
+        "Creación y optimización de anuncios",
+        "Gestión de pujas y presupuestos",
+        "Remarketing y audiencias personalizadas",
+      ],
+    },
+    {
+      title: "Marketing de Contenidos",
+      description: "Desarrollamos contenido relevante y valioso que atrae, educa y convierte a tu audiencia. Desde blogs y artículos hasta videos y ebooks, posicionamos tu marca como líder de pensamiento.",
+      gradient: "from-red-500 to-orange-600",
+      icon: FileText,
+      features: [
+        "Estrategia de contenidos",
+        "Creación de blogs y artículos",
+        "Producción de video y multimedia",
+        "Distribución y promoción de contenidos",
+      ],
+    },
+    {
+      title: "Marketing en Redes Sociales (SMM)",
+      description: "Construimos y gestionamos tu presencia en redes sociales, creando comunidades comprometidas, aumentando el reconocimiento de marca y dirigiendo tráfico a tu sitio web.",
+      gradient: "from-yellow-500 to-amber-600",
+      icon: Users,
+      features: [
+        "Estrategia de redes sociales",
+        "Creación y programación de contenido",
+        "Gestión de campañas de anuncios sociales",
+        "Interacción con la comunidad",
+      ],
+    },
+  ];
 
-  const additionalServices: any[] = [];
+  const additionalServices = [
+    {
+      title: "Email Marketing",
+      features: [
+        "Diseño de campañas de email",
+        "Segmentación de listas de correo",
+        "Automatización de flujos de email",
+        "Análisis de rendimiento de campañas",
+      ],
+    },
+    {
+      title: "Analítica Web y Reportes",
+      features: [
+        "Configuración de Google Analytics y Tag Manager",
+        "Monitoreo de métricas clave",
+        "Reportes personalizados y dashboards",
+        "Identificación de oportunidades de mejora",
+      ],
+    },
+    {
+      title: "Diseño Web y Landing Pages",
+      features: [
+        "Diseño de sitios web optimizados para conversión",
+        "Creación de landing pages de alto rendimiento",
+        "Optimización de la experiencia de usuario (UX)",
+        "Pruebas A/B para maximizar resultados",
+      ],
+    },
+    {
+      title: "Consultoría de Marketing Digital",
+      features: [
+        "Auditorías de marketing digital",
+        "Desarrollo de estrategias personalizadas",
+        "Capacitación y talleres para equipos",
+        "Asesoramiento continuo y soporte",
+      ],
+    },
+  ];
 
-  const results: any[] = [];
+  const results = [
+    {
+      title: "Aumento de Tráfico Orgánico",
+      metric: "+150%",
+      description: "Incrementamos la visibilidad de tu marca en los motores de búsqueda, atrayendo más visitantes a tu sitio web.",
+      gradient: "from-blue-500 to-purple-600",
+      icon: TrendingUp,
+    },
+    {
+      title: "Generación de Leads Cualificados",
+      metric: "+80%",
+      description: "Diseñamos estrategias para captar contactos interesados en tus productos o servicios, listos para la conversión.",
+      gradient: "from-green-500 to-teal-600",
+      icon: DollarSign,
+    },
+    {
+      title: "Mejora del ROI en Publicidad",
+      metric: "+200%",
+      description: "Optimizamos tus campañas de pago para que cada euro invertido genere el máximo retorno posible.",
+      gradient: "from-red-500 to-orange-600",
+      icon: BarChart,
+    },
+    {
+      title: "Mayor Reconocimiento de Marca",
+      metric: "+120%",
+      description: "Construimos una presencia digital sólida y coherente que aumenta la confianza y la lealtad de tus clientes.",
+      gradient: "from-yellow-500 to-amber-600",
+      icon: Eye,
+    },
+  ];
 
-  const processSteps: any[] = [];
+  const processSteps = [
+    {
+      step: 1,
+      title: "Análisis y Estrategia",
+      description: "Investigamos tu mercado, competencia y audiencia para diseñar una estrategia de marketing digital a medida.",
+      icon: Lightbulb,
+    },
+    {
+      step: 2,
+      title: "Implementación y Ejecución",
+      description: "Ponemos en marcha las campañas y acciones definidas, creando contenido y optimizando plataformas.",
+      icon: Code,
+    },
+    {
+      step: 3,
+      title: "Monitoreo y Optimización",
+      description: "Supervisamos el rendimiento en tiempo real, realizamos ajustes y optimizaciones para mejorar los resultados.",
+      icon: BarChart,
+    },
+    {
+      step: 4,
+      title: "Reporte y Análisis",
+      description: "Te entregamos informes detallados con métricas clave y recomendaciones para futuras acciones.",
+      icon: Rocket,
+    },
+  ];
 
   return (
     <div className="pt-20 bg-[#0D0F2D]">

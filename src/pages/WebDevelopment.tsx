@@ -1,16 +1,99 @@
 import React from 'react';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, ShoppingCart, Smartphone, Settings, Lightbulb, Layout, Code, Rocket, Briefcase } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const WebDevelopment: React.FC = () => {
   const {  } = useLanguage();
 
-  const webServices: any[] = [];
+  const webServices = [
+    {
+      title: "Diseño y Desarrollo de Sitios Web Personalizados",
+      description: "Creamos sitios web únicos y atractivos, diseñados específicamente para tu marca y tus objetivos de negocio. Desde landing pages hasta complejos portales, garantizamos una experiencia de usuario excepcional.",
+      gradient: "from-blue-500 to-purple-600",
+      icon: Briefcase,
+      features: [
+        "Diseño UI/UX intuitivo",
+        "Desarrollo frontend y backend a medida",
+        "Integración con sistemas existentes",
+        "Optimización para todos los dispositivos",
+      ],
+    },
+    {
+      title: "Desarrollo de E-commerce",
+      description: "Construimos plataformas de comercio electrónico robustas y seguras que te permiten vender tus productos o servicios online de manera eficiente. Integramos pasarelas de pago, gestión de inventario y más.",
+      gradient: "from-green-500 to-teal-600",
+      icon: ShoppingCart,
+      features: [
+        "Plataformas escalables (Shopify, WooCommerce, a medida)",
+        "Integración de pagos y envíos",
+        "Gestión de productos y pedidos",
+        "Optimización para conversión",
+      ],
+    },
+    {
+      title: "Aplicaciones Web Progresivas (PWA)",
+      description: "Transformamos tu sitio web en una aplicación que ofrece una experiencia de usuario similar a la de una app nativa, con funcionalidades offline, notificaciones push y acceso rápido desde la pantalla de inicio.",
+      gradient: "from-red-500 to-orange-600",
+      icon: Smartphone,
+      features: [
+        "Experiencia de usuario nativa",
+        "Funcionalidad offline",
+        "Notificaciones push",
+        "Instalación en pantalla de inicio",
+      ],
+    },
+    {
+      title: "Mantenimiento y Soporte Web",
+      description: "Ofrecemos servicios continuos de mantenimiento, actualizaciones de seguridad, optimización de rendimiento y soporte técnico para asegurar que tu sitio web funcione siempre a la perfección.",
+      gradient: "from-yellow-500 to-amber-600",
+      icon: Settings,
+      features: [
+        "Actualizaciones de seguridad y software",
+        "Monitoreo de rendimiento 24/7",
+        "Copias de seguridad regulares",
+        "Soporte técnico dedicado",
+      ],
+    },
+  ];
 
-  const technologies: any[] = [];
+  const technologies = [
+    { name: "React", icon: "⚛️" },
+    { name: "Next.js", icon: "⚡" },
+    { name: "Node.js", icon: "🟢" },
+    { name: "TypeScript", icon: "🟦" },
+    { name: "Tailwind CSS", icon: "🌬️" },
+    { name: "MongoDB", icon: "🍃" },
+    { name: "PostgreSQL", icon: "🐘" },
+    { name: "AWS", icon: "☁️" },
+  ];
 
-  const processSteps: any[] = [];
+  const processSteps = [
+    {
+      step: 1,
+      title: "Descubrimiento y Planificación",
+      description: "Entendemos tus necesidades, objetivos y audiencia para definir el alcance del proyecto y la estrategia.",
+      icon: Lightbulb,
+    },
+    {
+      step: 2,
+      title: "Diseño UI/UX",
+      description: "Creamos wireframes, prototipos y diseños visuales que garantizan una experiencia de usuario óptima y atractiva.",
+      icon: Layout,
+    },
+    {
+      step: 3,
+      title: "Desarrollo",
+      description: "Convertimos los diseños en código funcional, construyendo el frontend y el backend con las últimas tecnologías.",
+      icon: Code,
+    },
+    {
+      step: 4,
+      title: "Pruebas y Lanzamiento",
+      description: "Realizamos pruebas exhaustivas para asegurar la calidad, seguridad y rendimiento antes del lanzamiento oficial.",
+      icon: Rocket,
+    },
+  ];
 
   return (
     <div className="pt-20 bg-[#0D0F2D]">

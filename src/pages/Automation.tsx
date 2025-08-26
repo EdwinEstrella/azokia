@@ -1,18 +1,154 @@
 import React from 'react';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Zap, Workflow, TrendingUp, Clock, Shield, Lightbulb, Layout, Code, Rocket } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
 const Automation: React.FC = () => {
   const {  } = useLanguage();
 
-  const automationServices: any[] = [];
+  const automationServices = [
+    {
+      title: "Automatización de Procesos de Negocio (BPA)",
+      description: "Diseñamos e implementamos flujos de trabajo automatizados para optimizar tus operaciones internas, desde la gestión de clientes hasta la contabilidad.",
+      gradient: "from-blue-500 to-purple-600",
+      icon: Workflow,
+      features: [
+        "Optimización de flujos de trabajo",
+        "Reducción de errores manuales",
+        "Aumento de la productividad del equipo",
+        "Integración de sistemas legados",
+      ],
+    },
+    {
+      title: "Integración de Aplicaciones y Sistemas",
+      description: "Conectamos tus herramientas y plataformas favoritas (CRM, ERP, Marketing, etc.) para que trabajen juntas sin fisuras, eliminando silos de información.",
+      gradient: "from-green-500 to-teal-600",
+      icon: Zap,
+      features: [
+        "Sincronización de datos en tiempo real",
+        "Automatización de transferencias de datos",
+        "Conectividad con cientos de apps",
+        "API y Webhooks personalizados",
+      ],
+    },
+    {
+      title: "Automatización de Marketing y Ventas",
+      description: "Implementamos secuencias automatizadas para nutrir leads, gestionar campañas de email, programar publicaciones en redes sociales y optimizar tu embudo de ventas.",
+      gradient: "from-red-500 to-orange-600",
+      icon: TrendingUp,
+      features: [
+        "Email marketing automatizado",
+        "Gestión de leads y CRM",
+        "Publicación y monitoreo en redes sociales",
+        "Reportes y análisis de campañas",
+      ],
+    },
+    {
+      title: "Automatización de Tareas Repetitivas (RPA)",
+      description: "Identificamos y automatizamos tareas manuales y repetitivas que consumen tiempo, liberando a tu equipo para que se enfoque en actividades de mayor valor.",
+      gradient: "from-yellow-500 to-amber-600",
+      icon: Clock,
+      features: [
+        "Automatización de entrada de datos",
+        "Generación de informes automáticos",
+        "Procesamiento de documentos",
+        "Gestión de archivos y carpetas",
+      ],
+    },
+  ];
 
-  const automationTypes: any[] = [];
+  const automationTypes = [
+    {
+      title: "Automatización de Marketing",
+      features: [
+        "Envío de emails personalizados",
+        "Segmentación de audiencia",
+        "Programación de publicaciones en redes sociales",
+        "Gestión de leads",
+      ],
+    },
+    {
+      title: "Automatización de Ventas",
+      features: [
+        "Seguimiento de oportunidades",
+        "Generación de propuestas automáticas",
+        "Gestión de CRM",
+        "Notificaciones de ventas",
+      ],
+    },
+    {
+      title: "Automatización de Operaciones",
+      features: [
+        "Gestión de inventario",
+        "Procesamiento de pedidos",
+        "Facturación y contabilidad",
+        "Gestión de proyectos",
+      ],
+    },
+    {
+      title: "Automatización de Soporte al Cliente",
+      features: [
+        "Respuestas automáticas a preguntas frecuentes",
+        "Creación de tickets de soporte",
+        "Encuestas de satisfacción",
+        "Gestión de quejas",
+      ],
+    },
+  ];
 
-  const benefits: any[] = [];
+  const benefits = [
+    {
+      title: "Aumento de Productividad",
+      metric: "+40%",
+      description: "Libera a tu equipo de tareas repetitivas, permitiéndoles enfocarse en actividades estratégicas y creativas.",
+      icon: TrendingUp,
+    },
+    {
+      title: "Reducción de Costos",
+      metric: "-30%",
+      description: "Minimiza los gastos operativos al optimizar procesos y reducir la necesidad de intervención manual.",
+      icon: Shield,
+    },
+    {
+      title: "Mejora de la Eficiencia",
+      metric: "+50%",
+      description: "Acelera la ejecución de tareas y procesos, garantizando una mayor rapidez y precisión en todas las operaciones.",
+      icon: Zap,
+    },
+    {
+      title: "Toma de Decisiones Inteligente",
+      metric: "Datos en Tiempo Real",
+      description: "Accede a información precisa y actualizada para tomar decisiones estratégicas basadas en datos concretos.",
+      icon: Lightbulb,
+    },
+  ];
 
-  const processSteps: any[] = [];
+  const processSteps = [
+    {
+      step: 1,
+      title: "Análisis y Descubrimiento",
+      description: "Identificamos los procesos clave de tu negocio que pueden ser automatizados y definimos los objetivos.",
+      icon: Lightbulb,
+    },
+    {
+      step: 2,
+      title: "Diseño de Flujos de Trabajo",
+      description: "Creamos los diagramas de flujo y la lógica de las automatizaciones, asegurando una integración perfecta.",
+      icon: Layout,
+    },
+    {
+      step: 3,
+      title: "Implementación y Pruebas",
+      description: "Desarrollamos y configuramos las automatizaciones, realizando pruebas exhaustivas para garantizar su correcto funcionamiento.",
+      icon: Code,
+    },
+    {
+      step: 4,
+      title: "Monitoreo y Optimización",
+      description: "Supervisamos el rendimiento de las automatizaciones y realizamos ajustes para asegurar su eficiencia continua.",
+      icon: Rocket,
+    },
+  ];
 
   return (
     <div className="pt-20 bg-[#0D0F2D]">

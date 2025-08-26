@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/button';
+import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 import { LogIn, Home, Users, Briefcase, FileText } from 'lucide-react';
 import { NavBar } from '../ui/tubelight-navbar';
 
@@ -8,7 +9,37 @@ const PublicHeader: React.FC = () => {
   
   const navItems = [
     { name: 'Inicio', url: '/', icon: Home },
-    { name: 'Servicios', url: '/servicios', icon: Briefcase },
+    {
+      name: 'Servicios',
+      icon: Briefcase,
+      component: (
+        <Popover>
+          <PopoverTrigger asChild>
+            {/* The NavBar component will apply the correct styling to the div wrapping this span */}
+            <span className="cursor-pointer">
+              Servicios
+            </span>
+          </PopoverTrigger>
+          <PopoverContent className="w-48 p-2 bg-[#0D0F2D] border border-[#1E90FF]/30 rounded-md shadow-lg">
+            <div className="flex flex-col space-y-1">
+              <Link to="/servicios/desarrollo-web" className="block px-2 py-1 text-sm text-white hover:bg-blue-700 rounded-md">
+                Desarrollo Web
+              </Link>
+              <Link to="/servicios/desarrollo-software" className="block px-2 py-1 text-sm text-white hover:bg-blue-700 rounded-md">
+                Desarrollo de Software
+              </Link>
+              <Link to="/servicios/marketing-digital" className="block px-2 py-1 text-sm text-white hover:bg-blue-700 rounded-md">
+                Marketing Digital
+              </Link>
+              <Link to="/servicios/automatizacion" className="block px-2 py-1 text-sm text-white hover:bg-blue-700 rounded-md">
+                Automatización
+              </Link>
+            </div>
+          </PopoverContent>
+        </Popover>
+      ),
+    },
+    
     { name: 'Nosotros', url: '/nosotros', icon: Users },
     { name: 'Contacto', url: '/contacto', icon: FileText }
   ];
@@ -27,6 +58,8 @@ const PublicHeader: React.FC = () => {
 
           {/* Navegación */}
           <NavBar items={navItems} />
+
+          
 
           {/* Botón Login */}
           <Button
