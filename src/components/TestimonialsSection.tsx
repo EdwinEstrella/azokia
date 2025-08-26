@@ -3,58 +3,58 @@ import { motion } from "motion/react";
 
 const testimonials = [
   {
-    text: "This ERP revolutionized our operations, streamlining finance and inventory. The cloud-based platform keeps us productive, even remotely.",
+    text: "Este ERP revolucionó nuestras operaciones, optimizando finanzas e inventario. La plataforma en la nube nos mantiene productivos, incluso de forma remota.",
     image: "https://randomuser.me/api/portraits/women/1.jpg",
     name: "Briana Patton",
-    role: "Operations Manager",
+    role: "Gerente de Operaciones",
   },
   {
-    text: "Implementing this ERP was smooth and quick. The customizable, user-friendly interface made team training effortless.",
+    text: "La implementación de este ERP fue sencilla y rápida. La interfaz personalizable y fácil de usar hizo que la capacitación del equipo fuera sin esfuerzo.",
     image: "https://randomuser.me/api/portraits/men/2.jpg",
     name: "Bilal Ahmed",
-    role: "IT Manager",
+    role: "Gerente de TI",
   },
   {
-    text: "The support team is exceptional, guiding us through setup and providing ongoing assistance, ensuring our satisfaction.",
+    text: "El equipo de soporte es excepcional, nos guió a través de la configuración y brindó asistencia continua, asegurando nuestra satisfacción.",
     image: "https://randomuser.me/api/portraits/women/3.jpg",
     name: "Saman Malik",
-    role: "Customer Support Lead",
+    role: "Líder de Soporte al Cliente",
   },
   {
-    text: "This ERP's seamless integration enhanced our business operations and efficiency. Highly recommend for its intuitive interface.",
+    text: "La integración perfecta de este ERP mejoró nuestras operaciones comerciales y eficiencia. Lo recomiendo encarecidamente por su interfaz intuitiva.",
     image: "https://randomuser.me/api/portraits/men/4.jpg",
     name: "Omar Raza",
     role: "CEO",
   },
   {
-    text: "Its robust features and quick support have transformed our workflow, making us significantly more efficient.",
+    text: "Sus sólidas características y rápido soporte han transformado nuestro flujo de trabajo, haciéndonos significativamente más eficientes.",
     image: "https://randomuser.me/api/portraits/women/5.jpg",
     name: "Zainab Hussain",
-    role: "Project Manager",
+    role: "Gerente de Proyectos",
   },
   {
-    text: "The smooth implementation exceeded expectations. It streamlined processes, improving overall business performance.",
+    text: "La implementación fluida superó las expectativas. Optimizó los procesos, mejorando el rendimiento general del negocio.",
     image: "https://randomuser.me/api/portraits/women/6.jpg",
     name: "Aliza Khan",
-    role: "Business Analyst",
+    role: "Analista de Negocios",
   },
   {
-    text: "Our business functions improved with a user-friendly design and positive customer feedback.",
+    text: "Nuestras funciones comerciales mejoraron con un diseño fácil de usar y comentarios positivos de los clientes.",
     image: "https://randomuser.me/api/portraits/men/7.jpg",
     name: "Farhan Siddiqui",
-    role: "Marketing Director",
+    role: "Director de Marketing",
   },
   {
-    text: "They delivered a solution that exceeded expectations, understanding our needs and enhancing our operations.",
+    text: "Entregaron una solución que superó las expectativas, comprendiendo nuestras necesidades y mejorando nuestras operaciones.",
     image: "https://randomuser.me/api/portraits/women/8.jpg",
     name: "Sana Sheikh",
-    role: "Sales Manager",
+    role: "Gerente de Ventas",
   },
   {
-    text: "Using this ERP, our online presence and conversions significantly improved, boosting business performance.",
+    text: "Con este ERP, nuestra presencia en línea y las conversiones mejoraron significativamente, impulsando el rendimiento comercial.",
     image: "https://randomuser.me/api/portraits/men/9.jpg",
     name: "Hassan Ali",
-    role: "E-commerce Manager",
+    role: "Gerente de E-commerce",
   },
 ];
 
@@ -77,14 +77,14 @@ const TestimonialsSection = () => {
           className="flex flex-col items-center justify-center max-w-[540px] mx-auto"
         >
           <div className="flex justify-center">
-            <div className="border py-1 px-4 rounded-lg">Testimonials</div>
+            <div className="border py-1 px-4 rounded-lg">Testimonios</div>
           </div>
 
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tighter mt-5">
-            What our users say
+            Lo que dicen nuestros usuarios
           </h2>
           <p className="text-center mt-5 opacity-75">
-            See what our customers have to say about us.
+            Descubre lo que nuestros clientes tienen que decir sobre nosotros.
           </p>
         </motion.div>
 
