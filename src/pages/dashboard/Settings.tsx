@@ -1,10 +1,10 @@
 import React from 'react';
-import { Settings, User, Bell, Shield, CreditCard, Globe } from 'lucide-react';
+import { Settings as SettingsIcon, User, Bell, Shield, CreditCard, Globe } from 'lucide-react';
 import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
 import { Switch } from '../../components/ui/switch';
 
-const Settings: React.FC = () => {
+const DashboardSettings: React.FC = () => {
   const settingsSections = [
     {
       title: 'Perfil',
@@ -50,7 +50,7 @@ const Settings: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-[#EAEAEA] mb-2 flex items-center gap-3">
-            <Settings className="h-8 w-8 text-[#1E90FF]" />
+            <SettingsIcon className="h-8 w-8 text-[#1E90FF]" />
             Configuración
           </h1>
           <p className="text-[#EAEAEA]/60">Personaliza tu experiencia en la plataforma</p>
@@ -95,4 +95,4 @@ const Settings: React.FC = () => {
   );
 };
 
-export default Settings;
+export default DashboardSettings;

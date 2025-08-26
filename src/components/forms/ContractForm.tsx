@@ -32,7 +32,7 @@ interface ContractFormProps {
   initialData?: Partial<ContractFormData>;
 }
 
-const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading = false, initialData }) => {
+export const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading = false, initialData }) => {
   const [date, setDate] = useState<Date | undefined>(initialData?.start_date ? new Date(initialData.start_date) : undefined);
   
   const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<ContractFormData>({
@@ -185,5 +185,3 @@ const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading = false, 
     </form>
   );
 };
-
-export default ContractForm;
