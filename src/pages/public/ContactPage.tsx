@@ -14,20 +14,20 @@ const ContactPage: React.FC = () => {
     {
       icon: Phone,
       title: 'Teléfono',
-      content: '+34 912 345 678',
-      description: 'Lunes a Viernes de 9:00 a 18:00'
+      content: '+1 (849) 596-8986',
+      description: 'Llámanos para una atención personalizada'
     },
     {
       icon: MapPin,
       title: 'Ubicación',
-      content: 'Madrid, España',
-      description: 'Trabajamos con clientes de todo el mundo'
+      content: 'Urbanización villa laura, Calle 1ra #16, Santo Domingo Norte',
+      description: 'Nuestra oficina principal'
     },
     {
       icon: Clock,
       title: 'Horario',
-      content: '9:00 - 18:00',
-      description: 'Horario laboral español'
+      content: '24/7',
+      description: 'Siempre disponibles para ti'
     }
   ];
 

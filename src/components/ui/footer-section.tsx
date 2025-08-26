@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import * as React from "react" // React is used implicitly by JSX
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -9,9 +9,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Facebook, Instagram, Linkedin, Send, Twitter } from "lucide-react"
+import { Facebook, Instagram, Linkedin, Send, Twitter } from "lucide-react" // Removed Moon, Sun, Switch
 
 function Footerdemo() {
+  // Removed isDarkMode state and useEffect
 
   return (
     <React.Fragment>
@@ -43,19 +44,19 @@ function Footerdemo() {
           <div>
             <h3 className="mb-4 text-lg font-semibold">Enlaces Rápidos</h3>
             <nav className="space-y-2 text-sm">
-              <a href="#" className="block transition-colors hover:text-[#1E90FF]">
+              <a href="/" className="block transition-colors hover:text-[#1E90FF]">
                 Inicio
               </a>
-              <a href="#" className="block transition-colors hover:text-[#1E90FF]">
+              <a href="/nosotros" className="block transition-colors hover:text-[#1E90FF]">
                 Nosotros
               </a>
-              <a href="#" className="block transition-colors hover:text-[#1E90FF]">
+              <a href="/servicios" className="block transition-colors hover:text-[#1E90FF]">
                 Servicios
               </a>
               <a href="#" className="block transition-colors hover:text-[#1E90FF]">
                 Productos
               </a>
-              <a href="#" className="block transition-colors hover:text-[#1E90FF]">
+              <a href="/contacto" className="block transition-colors hover:text-[#1E90FF]">
                 Contacto
               </a>
             </nav>
@@ -63,10 +64,11 @@ function Footerdemo() {
           <div>
             <h3 className="mb-4 text-lg font-semibold">Contáctanos</h3>
             <address className="space-y-2 text-sm not-italic">
-              <p>123 Innovation Street</p>
-              <p>Tech City, TC 12345</p>
-              <p>Teléfono: +1 (849) 596-8986</p> {/* Updated phone number */}
-              <p>Email: info@azokia.com</p> {/* Updated email */}
+              <p>Urbanización villa laura, Calle 1ra #16</p>
+              <p>Santo Domingo Norte</p>
+              <p>Horario: 24/7</p>
+              <p>Teléfono: +1 (849) 596-8986</p>
+              <p>Email: info@azokia.com</p>
             </address>
           </div>
           <div className="relative">
