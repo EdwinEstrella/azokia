@@ -24,7 +24,7 @@ const Sidebar: React.FC = () => {
 
   const handleLogout = () => {
     signOut();
-    navigate('/login');
+    navigate('/');
   };
 
   return (
