@@ -120,13 +120,19 @@ npm run build
 
 ```
 src/
-├── components/     # Componentes reutilizables (UI, forms, etc.)
-├── pages/         # Páginas del sitio público y dashboard
-├── contexts/      # Contextos de React (auth, data, etc.)
-├── hooks/         # Hooks personalizados
-├── services/      # Servicios y APIs (Supabase, third-party)
-├── utils/         # Funciones auxiliares
-└── types/         # Definiciones de TypeScript
+├── components/
+│   ├── ui/           # Componentes base
+│   ├── layout/       # Header, Footer, Sidebar
+│   ├── forms/        # Formularios
+│   └── charts/       # Gráficos
+├── pages/
+│   ├── public/       # Home, Servicios, Nosotros, Contacto
+│   ├── auth/         # Login
+│   └── dashboard/    # Todas las páginas del dashboard
+├── contexts/         # AuthContext, DataContext
+├── hooks/           # Custom hooks
+├── utils/           # Helpers y constants
+└── types/           # TypeScript interfaces
 ```
 
 ## Panel de Control - Funcionalidades Avanzadas
