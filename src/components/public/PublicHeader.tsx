@@ -1,19 +1,29 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '../ui/button';
-import { LogIn } from 'lucide-react';
+import { LogIn, ChevronDown } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 
 const PublicHeader: React.FC = () => {
   const location = useLocation();
   
   const navigation = [
     { name: 'Inicio', href: '/' },
-    { name: 'Servicios', href: '/servicios' },
+    { 
+      name: 'Servicios', 
+      href: '/servicios', 
+      subLinks: [
+        { name: 'Automatización', href: '/servicios/automatizacion' },
+        { name: 'Marketing Digital', href: '/servicios/marketing-digital' },
+        { name: 'Desarrollo de Software', href: '/servicios/desarrollo-software' },
+        { name: 'Desarrollo Web', href: '/servicios/desarrollo-web' },
+      ]
+    },
     { name: 'Nosotros', href: '/nosotros' },
     { name: 'Contacto', href: '/contacto' }
   ];
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => location.pathname === path || location.pathname.startsWith(path + '/');
 
   return (
     <header className="bg-[#0D0F2D] border-b border-[#1E90FF]/20 fixed top-0 w-full z-50">
@@ -30,17 +40,47 @@ const PublicHeader: React.FC = () => {
           {/* Navegación */}
           <nav className="hidden md:flex items-center gap-6">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`text-sm font-medium transition-colors ${
-                  isActive(item.href)
-                    ? 'text-[#1E90FF]'
-                    : 'text-[#EAEAEA]/70 hover:text-[#EAEAEA]'
-                }`}
-              >
-                {item.name}
-              </Link>
+              item.subLinks ? (
+                <Popover key={item.name}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="link"
+                      className={`text-sm font-medium transition-colors ${
+                        location.pathname.startsWith(item.href)
+                          ? 'text-[#1E90FF]'
+                          : 'text-[#EAEAEA]/70 hover:text-[#EAEAEA]'
+                      }`}
+                    >
+                      {item.name} <ChevronDown className="ml-1 h-4 w-4" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-48 p-0 bg-[#0D0F2D] border border-[#1E90FF]/20 rounded-md shadow-lg">
+                    <div className="flex flex-col p-2">
+                      {item.subLinks.map((subLink) => (
+                        <Link
+                          key={subLink.name}
+                          to={subLink.href}
+                          className="px-3 py-2 text-sm text-[#EAEAEA]/70 hover:bg-[#1E90FF]/10 hover:text-[#EAEAEA] rounded-sm"
+                        >
+                          {subLink.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive(item.href)
+                      ? 'text-[#1E90FF]'
+                      : 'text-[#EAEAEA]/70 hover:text-[#EAEAEA]'
+                  }`}
+                >
+                  {item.name}
+                </Link>
+              )
             ))}
           </nav>
 

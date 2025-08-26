@@ -14,6 +14,10 @@ import BillingPage from './pages/dashboard/BillingPage';
 import FinancesPage from './pages/dashboard/FinancesPage';
 import AutomationPage from './pages/dashboard/AutomationPage';
 import SettingsPage from './pages/dashboard/SettingsPage';
+import Automation from './pages/Automation';
+import DigitalMarketing from './pages/DigitalMarketing';
+import SoftwareDevelopment from './pages/SoftwareDevelopment';
+import WebDevelopment from './pages/WebDevelopment';
 import { AuthProvider } from './contexts/AuthContext';
 
 const router = createBrowserRouter([
@@ -22,7 +26,14 @@ const router = createBrowserRouter([
     element: <PublicLayout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'servicios', element: <ServicesPage /> },
+      { path: 'servicios', element: <ServicesPage />,
+        children: [
+          { path: 'automatizacion', element: <Automation /> },
+          { path: 'marketing-digital', element: <DigitalMarketing /> },
+          { path: 'desarrollo-software', element: <SoftwareDevelopment /> },
+          { path: 'desarrollo-web', element: <WebDevelopment /> },
+        ]
+      },
       { path: 'nosotros', element: <AboutPage /> },
       { path: 'contacto', element: <ContactPage /> },
       { path: 'login', element: <LoginPage /> }
