@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
-import { Plus, Search, FileText, Calendar, DollarSign, Download, Send, CheckCircle, Clock } from 'lucide-react';
+import { Plus, Search, FileText, Calendar, CheckCircle, Clock } from 'lucide-react';
 import { useDatabase } from '../../hooks/useDatabase';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
-import { BackgroundGradient } from '../../components/ui/background-gradient';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { InvoiceForm } from '../../components/forms/InvoiceForm';
 import { Database } from '../../types/supabase';
@@ -48,6 +47,26 @@ const BillingPage: React.FC = () => {
         }
       };
       loadInvoices();
+    }
+  };
+
+  const getStatusBadge = (status: string | null) => {
+    switch (status) {
+      case 'paid': return 'bg-green-500 bg-opacity-20 text-green-400';
+      case 'pending': return 'bg-yellow-500 bg-opacity-20 text-yellow-400';
+      case 'overdue': return 'bg-red-500 bg-opacity-20 text-red-400';
+      case 'cancelled': return 'bg-gray-500 bg-opacity-20 text-gray-400';
+      default: return 'bg-gray-500 bg-opacity-20 text-gray-400';
+    }
+  };
+
+  const getStatusIcon = (status: string | null) => {
+    switch (status) {
+      case 'paid': return <CheckCircle className="h-4 w-4 mr-2" />;
+      case 'pending': return <Clock className="h-4 w-4 mr-2" />;
+      case 'overdue': return <Calendar className="h-4 w-4 mr-2" />;
+      case 'cancelled': return <FileText className="h-4 w-4 mr-2" />;
+      default: return <FileText className="h-4 w-4 mr-2" />;
     }
   };
 

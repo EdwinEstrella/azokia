@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useDatabase } from '../../hooks/useDatabase';
 import { useAuth } from '../../hooks/useAuth';
 import { Database } from '../../types/supabase';
+import { AddClientModal } from '../AddClientModal'; // Import the modal
+import { PlusCircle } from 'lucide-react';
 
 type Client = Database['public']['Tables']['clients']['Row'];
-type Project = Database['public']['Tables']['projects']['Row'];
 type CreateInvoiceData = Database['public']['Tables']['invoices']['Insert'];
 type CreateInvoiceItemData = Database['public']['Tables']['invoice_items']['Insert'];
 
@@ -34,17 +34,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
   initialData = {}
 }) => {
   const { user } = useAuth();
-        const { createInvoice, getClients, getProjects, createInvoiceItem, createClient } = useDatabase(user?.id || '');
+  const { createInvoice, getClients, createInvoiceItem } = useDatabase(user?.id || '');
   const [clients, setClients] = useState<Client[]>([]);
-  const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
-  const [showNewClientForm, setShowNewClientForm] = useState(false);
-  const [newClientData, setNewClientData] = useState({
-    name: '',
-    email: '',
-    address: '',
-    phone: '',
-  });
+  const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false);
+
   const [formData, setFormData] = useState<InvoiceFormData>({
     client_id: initialData.client_id || '',
     project_id: initialData.project_id || '',
@@ -54,30 +48,41 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
     items: initialData.items || [{ concept: '', quantity: 1, unit_price: 0 }],
   });
 
-  useEffect(() => {
+  const fetchClients = useCallback(async () => {
     if (user?.id) {
-      const fetchClientsAndProjects = async () => {
-        try {
-          const fetchedClients = await getClients();
-          setClients(fetchedClients);
-          const fetchedProjects = await getProjects();
-          setProjects(fetchedProjects);
-        } catch (err) {
-          console.error('Error fetching clients or projects:', err);
-        }
-      };
-      fetchClientsAndProjects();
+      try {
+        const fetchedClients = await getClients();
+        setClients(fetchedClients);
+      } catch (err) {
+        console.error('Error fetching clients:', err);
+      }
     }
-  }, [user?.id, getClients, getProjects]);
+  }, [user?.id, getClients]);
 
-  const handleChange = (field: keyof InvoiceFormData, value: any) => {
+  useEffect(() => {
+    fetchClients();
+  }, [fetchClients]);
+
+  const handleClientSelection = (value: string) => {
+    if (value === 'add-new-client') {
+      setIsAddClientModalOpen(true);
+    } else {
+      handleChange('client_id', value);
+    }
+  };
+
+  const handleNewClientSuccess = () => {
+    fetchClients();
+  };
+
+  const handleChange = (field: keyof InvoiceFormData, value: string | number | { concept: string; quantity: number; unit_price: number; }[]) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
     }));
   };
 
-  const handleItemChange = (index: number, field: keyof (typeof formData.items)[0], value: any) => {
+  const handleItemChange = (index: number, field: keyof InvoiceFormData['items'][0], value: string | number) => {
     const newItems = [...formData.items];
     newItems[index] = { ...newItems[index], [field]: value };
     setFormData(prev => ({ ...prev, items: newItems }));
@@ -91,40 +96,13 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
     setFormData(prev => ({ ...prev, items: prev.items.filter((_, i) => i !== index) }));
   };
 
-  const handleCreateNewClient = async () => {
-    if (!user?.id) return;
-    setLoading(true);
-    try {
-      const newClient = await createClient({
-        name: newClientData.name,
-        email: newClientData.email,
-        address: newClientData.address,
-        phone: newClientData.phone,
-        user_id: user.id,
-      });
-      // Add the new client to the clients list
-      setClients(prev => [...prev, newClient]);
-      // Select the new client in the dropdown
-      handleChange('client_id', newClient.id);
-      // Hide the new client form
-      setShowNewClientForm(false);
-      // Clear new client form data
-      setNewClientData({ name: '', email: '', address: '', phone: '' });
-    } catch (error) {
-      console.error('Error creating new client:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Calculate total amount
       const total_amount = formData.items.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0);
-      const subtotal_amount = total_amount; // Assuming no taxes for now, subtotal equals total
+      const subtotal_amount = total_amount;
 
       const newInvoice: CreateInvoiceData = {
         client_id: formData.client_id,
@@ -135,12 +113,11 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
         subtotal: subtotal_amount,
         total: total_amount,
         user_id: user!.id,
-        invoice_number: `INV-${Date.now()}` // Simple invoice number generation
+        invoice_number: `INV-${Date.now()}`
       };
 
       const createdInvoice = await createInvoice(newInvoice);
 
-      // Create invoice items
       for (const item of formData.items) {
         const newInvoiceItem: CreateInvoiceItemData = {
           invoice_id: createdInvoice.id,
@@ -162,10 +139,16 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      <AddClientModal 
+        open={isAddClientModalOpen} 
+        onOpenChange={setIsAddClientModalOpen} 
+        onSuccess={handleNewClientSuccess} 
+      />
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="client_id">Cliente *</Label>
-          <Select value={formData.client_id} onValueChange={(value) => handleChange('client_id', value)}>
+          <Select value={formData.client_id} onValueChange={handleClientSelection}>
             <SelectTrigger>
               <SelectValue placeholder="Seleccionar cliente" />
             </SelectTrigger>
@@ -173,48 +156,21 @@ export const InvoiceForm: React.FC<InvoiceFormProps> = ({
               {clients.map(client => (
                 <SelectItem key={client.id} value={client.id}>{client.name}</SelectItem>
               ))}
+              <div className="border-t my-1"></div>
+              <Button 
+                variant="ghost" 
+                className="w-full justify-start p-2 text-sm"
+                onClick={(e) => { e.preventDefault(); handleClientSelection('add-new-client'); }}
+              >
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Agregar Nuevo Cliente
+              </Button>
             </SelectContent>
           </Select>
         </div>
-        {!showNewClientForm && (
-          <div className="col-span-2 flex justify-end">
-            <Button type="button" variant="outline" onClick={() => setShowNewClientForm(true)}>
-              Crear Nuevo Cliente
-            </Button>
-          </div>
-        )}
       </div>
 
-      {showNewClientForm && (
-        <div className="space-y-2 border p-4 rounded-lg bg-[#0D0F2D]/50 border-[#1E90FF]/30">
-          <h4 className="text-lg font-semibold text-[#EAEAEA] mb-4">Nuevo Cliente</h4>
-          <div>
-            <Label htmlFor="newClientName" className="text-[#EAEAEA]">Nombre</Label>
-            <Input id="newClientName" value={newClientData.name} onChange={(e) => setNewClientData(prev => ({ ...prev, name: e.target.value }))} className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]" />
-          </div>
-          <div>
-            <Label htmlFor="newClientEmail" className="text-[#EAEAEA]">Email</Label>
-            <Input id="newClientEmail" type="email" value={newClientData.email} onChange={(e) => setNewClientData(prev => ({ ...prev, email: e.target.value }))} className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]" />
-          </div>
-          <div>
-            <Label htmlFor="newClientPhone" className="text-[#EAEAEA]">Teléfono</Label>
-            <Input id="newClientPhone" value={newClientData.phone} onChange={(e) => setNewClientData(prev => ({ ...prev, phone: e.target.value }))} className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]" />
-          </div>
-          <div>
-            <Label htmlFor="newClientAddress" className="text-[#EAEAEA]">Dirección</Label>
-            <Input id="newClientAddress" value={newClientData.address} onChange={(e) => setNewClientData(prev => ({ ...prev, address: e.target.value }))} className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]" />
-          </div>
-          <div className="flex justify-end space-x-2">
-            <Button type="button" variant="outline" onClick={() => setShowNewClientForm(false)}>
-              Cancelar
-            </Button>
-            <Button type="button" onClick={handleCreateNewClient} disabled={loading}>
-              {loading ? 'Creando...' : 'Guardar Nuevo Cliente'}
-            </Button>
-          </div>
-        </div>
-      )}
-
+      {/* Rest of the form remains the same */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="issue_date">Fecha de Emisión *</Label>

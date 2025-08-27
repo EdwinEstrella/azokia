@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 import { DatabaseService } from '../services/databaseService';
-import { Database } from '../types/supabase';
 import { Tables, InvoiceWithClientAndItems, ContractWithClient, ProjectWithClient } from '../services/databaseService';
 
 type Client = Tables['clients']['Row'];
@@ -172,6 +171,18 @@ export const useDatabase = (userId: string) => {
     }
   }, [userId, handleError]);
 
+  const getContractById = useCallback(async (contractId: string): Promise<ContractWithClient | null> => {
+    setLoading(true);
+    setError(null);
+    try {
+      return await DatabaseService.getContractWithClient(contractId, userId);
+    } catch (err) {
+      return handleError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [userId, handleError]);
+
   // Invoice operations
   const createInvoice = useCallback(async (data: CreateInvoiceData): Promise<Invoice> => {
     setLoading(true);
@@ -244,10 +255,12 @@ export const useDatabase = (userId: string) => {
     // Contract methods
     createContract,
     getContracts,
+    getContractById,
     
     // Invoice methods
     createInvoice,
     createInvoiceItem,
+    getInvoices,
     
     // Search methods
     searchClients

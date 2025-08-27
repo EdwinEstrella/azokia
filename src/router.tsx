@@ -20,6 +20,7 @@ import WebDevelopment from './pages/WebDevelopment';
 import LoginPage from './pages/auth/LoginPage';
 import ProtectedRoute from './components/auth/ProtectedRoute'; // New import
 import { AuthProvider } from './contexts/AuthContext'; // New import
+import ContractPreviewPage from './pages/dashboard/ContractPreviewPage';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
           { index: true, element: <DashboardPage /> },
           { path: 'clientes', element: <ClientsPage /> },
           { path: 'contratos', element: <ContractsPage /> },
+          { path: 'contratos/preview/:id', element: <ContractPreviewPage /> },
           { path: 'proyectos', element: <ProjectsPage /> },
           { path: 'facturacion', element: <BillingPage /> },
           { path: 'finanzas', element: <FinancesPage /> },

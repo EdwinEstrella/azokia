@@ -32,7 +32,9 @@ export type InvoiceWithClientAndItems = Invoice & {
 };
 
 export type ContractWithClient = Contract & {
-  clients: { name: string } | null;
+  clients: Client | null;
+  payment_terms: string | null;
+  client_signature: string | null;
 };
 
 export class DatabaseService {
@@ -213,5 +215,23 @@ export class DatabaseService {
 
     if (error) throw error;
     return data as unknown as ContractWithClient[];
+  }
+
+  static async getContractWithClient(contractId: string, userId: string): Promise<ContractWithClient | null> {
+    const { data, error } = await supabase
+      .from('contracts')
+      .select(`
+        *,
+        clients (*)
+      `)
+      .eq('id', contractId)
+      .eq('user_id', userId)
+      .single();
+
+    if (error) {
+        console.error('Error fetching contract with client:', error);
+        return null;
+    }
+    return data as unknown as ContractWithClient | null;
   }
 }

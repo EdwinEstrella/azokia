@@ -15,6 +15,8 @@ import { useDatabase } from '../../hooks/useDatabase';
 import { useAuth } from '../../hooks/useAuth';
 import { Database } from '../../types/supabase';
 
+import { useNavigate } from 'react-router-dom';
+
 type Client = Database['public']['Tables']['clients']['Row'];
 
 const contractSchema = z.object({
@@ -25,13 +27,15 @@ const contractSchema = z.object({
   status: z.enum(['draft', 'sent', 'signed', 'completed', 'cancelled']),
   start_date: z.string().min(1, 'Fecha de inicio requerida'),
   end_date: z.string().min(1, 'Fecha de fin requerida'),
-  description: z.string().optional()
+  description: z.string().optional(),
+  payment_terms: z.string().min(1, 'Las condiciones de pago son requeridas'),
+  client_signature: z.string().optional(), // Opcional hasta que el cliente firme
 });
 
 type ContractFormData = z.infer<typeof contractSchema>;
 
 interface ContractFormProps {
-  onSuccess: () => void;
+  onSuccess?: () => void; // Hacer onSuccess opcional
   initialData?: Partial<ContractFormData>;
 }
 
@@ -40,10 +44,12 @@ export const ContractForm: React.FC<ContractFormProps> = ({ onSuccess, initialDa
   const { user } = useAuth();
   const { createContract, getClients } = useDatabase(user?.id || '');
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<ContractFormData>({
     resolver: zodResolver(contractSchema),
     defaultValues: {
+      status: 'draft',
       ...initialData,
       start_date: initialData?.start_date ? new Date(initialData.start_date).toISOString().split('T')[0] : '',
       end_date: initialData?.end_date ? new Date(initialData.end_date).toISOString().split('T')[0] : '',
@@ -64,7 +70,21 @@ export const ContractForm: React.FC<ContractFormProps> = ({ onSuccess, initialDa
     }
   }, [user?.id, getClients]);
 
-  
+  const handleFormSubmit = async (data: ContractFormData) => {
+    setLoading(true);
+    try {
+      const newContract = await createContract({ ...data, user_id: user!.id });
+      if (onSuccess) {
+        onSuccess();
+      }
+      // Redirigir a la página de vista previa del contrato
+      navigate(`/dashboard/contracts/preview/${newContract.id}`);
+    } catch (error) {
+      console.error("Error creating contract", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
@@ -74,7 +94,7 @@ export const ContractForm: React.FC<ContractFormProps> = ({ onSuccess, initialDa
           <Input
             id="title"
             {...register('title')}
-            placeholder="Ej: Contrato de Servicios"
+            placeholder="Ej: Desarrollo de Sitio Web Corporativo"
             className={errors.title ? 'border-red-500' : ''}
           />
           {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
@@ -111,35 +131,32 @@ export const ContractForm: React.FC<ContractFormProps> = ({ onSuccess, initialDa
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="amount">Valor ($)</Label>
+          <Label htmlFor="amount">Valor Total ($)</Label>
           <Input
             id="amount"
             type="number"
+            step="0.01"
             {...register('amount', { valueAsNumber: true })}
-            placeholder="0.00"
+            placeholder="1500.00"
             className={errors.amount ? 'border-red-500' : ''}
           />
           {errors.amount && <p className="text-red-500 text-sm">{errors.amount.message}</p>}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="status">Estado</Label>
-          <Select
-            onValueChange={(value) => setValue('status', value as any)}
-            defaultValue={initialData?.status}
-          >
-            <SelectTrigger className={errors.status ? 'border-red-500' : ''}>
-              <SelectValue placeholder="Seleccionar estado" />
+          <Label htmlFor="payment_terms">Condiciones de Pago *</Label>
+          <Select onValueChange={(value) => setValue('payment_terms', value)} defaultValue={initialData?.payment_terms}>
+            <SelectTrigger className={errors.payment_terms ? 'border-red-500' : ''}>
+              <SelectValue placeholder="Selecciona las condiciones" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="draft">Borrador</SelectItem>
-              <SelectItem value="sent">Enviado</SelectItem>
-              <SelectItem value="signed">Firmado</SelectItem>
-              <SelectItem value="completed">Completado</SelectItem>
-              <SelectItem value="cancelled">Cancelado</SelectItem>
+              <SelectItem value="Pago Unico">Pago Único al inicio</SelectItem>
+              <SelectItem value="50/50">50% al inicio, 50% a la entrega</SelectItem>
+              <SelectItem value="Cuotas Mensuales">Cuotas Mensuales</SelectItem>
+              <SelectItem value="Personalizado">Personalizado (detallar en descripción)</SelectItem>
             </SelectContent>
           </Select>
-          {errors.status && <p className="text-red-500 text-sm">{errors.status.message}</p>}
+          {errors.payment_terms && <p className="text-red-500 text-sm">{errors.payment_terms.message}</p>}
         </div>
       </div>
 
@@ -194,11 +211,11 @@ export const ContractForm: React.FC<ContractFormProps> = ({ onSuccess, initialDa
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Descripción (Opcional)</Label>
+        <Label htmlFor="description">Descripción Detallada del Servicio (Opcional)</Label>
         <Input
           id="description"
           {...register('description')}
-          placeholder="Descripción del contrato"
+          placeholder="Ej: Incluye diseño, 5 páginas, formulario de contacto, SEO básico..."
         />
       </div>
 
@@ -209,7 +226,7 @@ export const ContractForm: React.FC<ContractFormProps> = ({ onSuccess, initialDa
             Guardando...
           </>
         ) : (
-          'Guardar Contrato'
+          'Guardar y Visualizar Contrato'
         )}
       </Button>
     </form>
