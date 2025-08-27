@@ -1,15 +1,18 @@
 import { useState, useCallback } from 'react';
 import { DatabaseService } from '../services/databaseService';
 import { Database } from '../types/supabase';
+import { Tables, InvoiceWithClientAndItems, ContractWithClient, ProjectWithClient } from '../services/databaseService';
 
-type Client = Database['public']['Tables']['clients']['Row'];
-type Contract = Database['public']['Tables']['contracts']['Row'];
-type Invoice = Database['public']['Tables']['invoices']['Row'];
-type Project = Database['public']['Tables']['projects']['Row'];
-type CreateClientData = Database['public']['Tables']['clients']['Insert'];
-type CreateContractData = Database['public']['Tables']['contracts']['Insert'];
-type CreateInvoiceData = Database['public']['Tables']['invoices']['Insert'];
-type CreateProjectData = Database['public']['Tables']['projects']['Insert'];
+type Client = Tables['clients']['Row'];
+type Contract = Tables['contracts']['Row'];
+type Invoice = Tables['invoices']['Row'];
+type Project = Tables['projects']['Row'];
+
+type CreateClientData = Tables['clients']['Insert'];
+type CreateContractData = Tables['contracts']['Insert'];
+type CreateInvoiceData = Tables['invoices']['Insert'];
+type CreateInvoiceItemData = Tables['invoice_items']['Insert'];
+type CreateProjectData = Tables['projects']['Insert'];
 
 
 export const useDatabase = (userId: string) => {
@@ -96,11 +99,11 @@ export const useDatabase = (userId: string) => {
     }
   }, [userId, handleError]);
 
-  const getProjects = useCallback(async (): Promise<Project[]> => {
+  const getProjects = useCallback(async (): Promise<ProjectWithClient[]> => {
     setLoading(true);
     setError(null);
     try {
-      return await DatabaseService.getAll('projects', userId);
+      return await DatabaseService.getProjectsWithClientNames(userId);
     } catch (err) {
       return handleError(err);
     } finally {
@@ -157,11 +160,11 @@ export const useDatabase = (userId: string) => {
     }
   }, [userId, handleError]);
 
-  const getContracts = useCallback(async (): Promise<Contract[]> => {
+  const getContracts = useCallback(async (): Promise<ContractWithClient[]> => {
     setLoading(true);
     setError(null);
     try {
-      return await DatabaseService.getAll('contracts', userId);
+      return await DatabaseService.getContractsWithClientNames(userId);
     } catch (err) {
       return handleError(err);
     } finally {
@@ -182,17 +185,31 @@ export const useDatabase = (userId: string) => {
     }
   }, [userId, handleError]);
 
-  const getPendingInvoices = useCallback(async (): Promise<Invoice[]> => {
+  const getInvoices = useCallback(async (): Promise<InvoiceWithClientAndItems[]> => {
     setLoading(true);
     setError(null);
     try {
-      return await DatabaseService.getPendingInvoices(userId);
+      return await DatabaseService.getInvoicesWithClientAndItems(userId);
     } catch (err) {
       return handleError(err);
     } finally {
       setLoading(false);
     }
   }, [userId, handleError]);
+
+  
+
+  const createInvoiceItem = useCallback(async (data: CreateInvoiceItemData): Promise<Tables['invoice_items']['Row']> => {
+    setLoading(true);
+    setError(null);
+    try {
+      return await DatabaseService.createInvoiceItem(data);
+    } catch (err) {
+      return handleError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [handleError]);
 
   // Search operations
   const searchClients = useCallback(async (query: string): Promise<Client[]> => {
@@ -230,7 +247,7 @@ export const useDatabase = (userId: string) => {
     
     // Invoice methods
     createInvoice,
-    getPendingInvoices,
+    createInvoiceItem,
     
     // Search methods
     searchClients

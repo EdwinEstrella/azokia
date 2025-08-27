@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckCircle, ShoppingCart, Smartphone, Settings, Lightbulb, Layout, Code, Rocket, Briefcase } from 'lucide-react';
+import { Logos3 } from '@/components/ui/logos3';
 import { useLanguage } from '../contexts/LanguageContext';
 import ContactForm from '../components/ContactForm';
 
@@ -57,16 +58,7 @@ const WebDevelopment: React.FC = () => {
     },
   ];
 
-  const technologies = [
-    { name: "React", icon: "⚛️" },
-    { name: "Next.js", icon: "⚡" },
-    { name: "Node.js", icon: "🟢" },
-    { name: "TypeScript", icon: "🟦" },
-    { name: "Tailwind CSS", icon: "🌬️" },
-    { name: "MongoDB", icon: "🍃" },
-    { name: "PostgreSQL", icon: "🐘" },
-    { name: "AWS", icon: "☁️" },
-  ];
+  
 
   const processSteps = [
     {
@@ -177,31 +169,7 @@ const WebDevelopment: React.FC = () => {
       </section>
 
       {/* Technologies */}
-      <section className="py-20 bg-[#0D0F2D] relative overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#EAEAEA] mb-4">
-              Tecnologías que Utilizamos
-            </h2>
-            <p className="text-xl text-[#EAEAEA]/70">
-              Las mejores herramientas para crear soluciones web de vanguardia
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6">
-            {technologies.map((tech: any, index: number) => (
-              <div
-                key={tech.name}
-                className="group relative bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300 text-center animate-slide-up transform hover:scale-105"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="text-3xl mb-3">{tech.icon}</div>
-                <h3 className="text-sm font-medium text-[#EAEAEA]">{tech.name}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Logos3 />
 
       {/* Process */}
       <section className="py-20 bg-gradient-to-br from-[#0D0F2D] to-[#1a1f4a] relative overflow-hidden">

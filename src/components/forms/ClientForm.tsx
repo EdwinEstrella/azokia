@@ -16,7 +16,6 @@ export const ClientForm: React.FC<ClientFormProps> = ({ onSuccess, initialData }
     email: initialData?.email || '',
     phone: initialData?.phone || '',
     address: initialData?.address || '',
-    birth_date: initialData?.birth_date || '',
     status: initialData?.status || 'active'
   });
   const [loading, setLoading] = useState(false);
@@ -93,17 +92,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({ onSuccess, initialData }
         />
       </div>
 
-      <div>
-        <Label htmlFor="birth_date" className="text-[#EAEAEA]">Fecha de nacimiento</Label>
-        <Input
-          id="birth_date"
-          name="birth_date"
-          type="date"
-          value={formData.birth_date}
-          onChange={handleChange}
-          className="bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
-        />
-      </div>
+      
 
       <div>
         <Label htmlFor="status" className="text-[#EAEAEA]">Estado</Label>

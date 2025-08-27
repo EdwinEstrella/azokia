@@ -63,7 +63,7 @@ const PublicHeader: React.FC = () => {
 
           {/* Botón Login */}
           <Button
-            className="text-sm font-semibold px-6 py-2 rounded-full transition-colors text-[#EAEAEA]/70 hover:text-[#1E90FF]"
+            className="relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors text-[#EAEAEA]/70 hover:text-[#1E90FF]" // Applied NavBar styling
           >
             <Link to="/login" className="flex items-center gap-2">
               <LogIn className="h-4 w-4" />

@@ -5,7 +5,6 @@ import HomePage from './pages/public/HomePage';
 import ServicesPage from './pages/public/ServicesPage';
 import AboutPage from './pages/public/AboutPage';
 import ContactPage from './pages/public/ContactPage';
-import LoginPage from './pages/auth/LoginPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import ClientsPage from './pages/dashboard/ClientsPage';
 import ContractsPage from './pages/dashboard/ContractsPage';
@@ -18,7 +17,9 @@ import Automation from './pages/Automation';
 import DigitalMarketing from './pages/DigitalMarketing';
 import SoftwareDevelopment from './pages/SoftwareDevelopment';
 import WebDevelopment from './pages/WebDevelopment';
-import { AuthProvider } from './contexts/AuthContext';
+import LoginPage from './pages/auth/LoginPage';
+import ProtectedRoute from './components/auth/ProtectedRoute'; // New import
+import { AuthProvider } from './contexts/AuthContext'; // New import
 
 const router = createBrowserRouter([
   {
@@ -35,23 +36,31 @@ const router = createBrowserRouter([
         ]
       },
       { path: 'nosotros', element: <AboutPage /> },
-      { path: 'contacto', element: <ContactPage /> },
-      { path: 'login', element: <LoginPage /> }
+      { path: 'contacto', element: <ContactPage /> }
     ]
   },
   {
     path: '/dashboard',
-    element: <DashboardLayout />,
+    element: <ProtectedRoute />,
     children: [
-      { index: true, element: <DashboardPage /> },
-      { path: 'clientes', element: <ClientsPage /> },
-      { path: 'contratos', element: <ContractsPage /> },
-      { path: 'proyectos', element: <ProjectsPage /> },
-      { path: 'facturacion', element: <BillingPage /> },
-      { path: 'finanzas', element: <FinancesPage /> },
-      { path: 'automatizacion', element: <AutomationPage /> },
-      { path: 'configuracion', element: <SettingsPage /> }
+      {
+        element: <DashboardLayout />,
+        children: [
+          { index: true, element: <DashboardPage /> },
+          { path: 'clientes', element: <ClientsPage /> },
+          { path: 'contratos', element: <ContractsPage /> },
+          { path: 'proyectos', element: <ProjectsPage /> },
+          { path: 'facturacion', element: <BillingPage /> },
+          { path: 'finanzas', element: <FinancesPage /> },
+          { path: 'automatizacion', element: <AutomationPage /> },
+          { path: 'configuracion', element: <SettingsPage /> }
+        ]
+      }
     ]
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
   }
 ]);
 

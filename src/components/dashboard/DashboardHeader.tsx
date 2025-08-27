@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbSeparator } from '../ui/breadcrumb';
 import { Button } from '../ui/button';
 import { User, LogOut } from 'lucide-react';
@@ -7,7 +7,17 @@ import { useAuth } from '../../contexts/AuthContext';
 
 const DashboardHeader: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, signOut } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate('/');
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
 
   const getBreadcrumbItems = () => {
     const pathnames = location.pathname.split('/').filter(x => x);
@@ -80,7 +90,7 @@ const DashboardHeader: React.FC = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={signOut}
+            onClick={handleLogout}
             className="text-[#EAEAEA]/70 hover:text-[#EAEAEA] hover:bg-red-500/20"
           >
             <LogOut className="h-4 w-4" />

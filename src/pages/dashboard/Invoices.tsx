@@ -1,32 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, FileText, Calendar, DollarSign, Download, Send, CheckCircle, Clock } from 'lucide-react';
 import { useDatabase } from '../../hooks/useDatabase';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
+import { InvoiceForm } from '../../components/forms/InvoiceForm';
+import { Database } from '../../types/supabase';
+
+type Invoice = Database['public']['Tables']['invoices']['Row'];
+type InvoiceWithClientAndItems = Invoice & { clients: { name: string } | null; invoice_items: { id: string; concept: string; description: string | null; quantity: number; unit_price: number; total_price: number }[]; };
 
 const Invoices: React.FC = () => {
-  const [invoices, setInvoices] = useState<any[]>([]);
+  const [invoices, setInvoices] = useState<InvoiceWithClientAndItems[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('ALL');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { user } = useAuth();
-  const { getPendingInvoices, loading } = useDatabase(user!.id);
+  const { getInvoices, loading } = useDatabase(user?.id || '');
 
   useEffect(() => {
-    loadInvoices();
-  }, []);
+    if (user?.id) {
+      const loadInvoices = async () => {
+        try {
+          const data = await getInvoices();
+          setInvoices(data || []);
+        } catch (err) {
+          console.error('Error loading invoices:', err);
+        }
+      };
+      loadInvoices();
+    }
+  }, [user?.id, getInvoices]);
 
-  const loadInvoices = async () => {
-    const data = await getPendingInvoices();
-    setInvoices(data || []);
+  const handleInvoiceCreated = () => {
+    setIsDialogOpen(false);
+    if (user?.id) {
+      const loadInvoices = async () => {
+        try {
+          const data = await getInvoices();
+          setInvoices(data || []);
+        } catch (err) {
+          console.error('Error loading invoices:', err);
+        }
+      };
+      loadInvoices();
+    }
   };
 
   const filteredInvoices = invoices.filter(invoice => 
     (filterStatus === 'ALL' || invoice.status === filterStatus) &&
     (invoice.invoice_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     invoice.client_name?.toLowerCase().includes(searchTerm.toLowerCase()))
+     invoice.clients?.name?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const getStatusColor = (status: string) => {
@@ -55,12 +82,22 @@ const Invoices: React.FC = () => {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-[#EAEAEA] mb-2">Facturas</h1>
-            <p className="text-[#EAEAEA]/60">Gestiona tus facturas y pagos</p>
+            <p className="text-[#EAEAEA}/60">Gestiona tus facturas y pagos</p>
           </div>
-          <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Nueva Factura
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-[#1E90FF] hover:bg-[#1E90FF]/90">
+                <Plus className="h-4 w-4 mr-2" />
+                Nueva Factura
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-[#0D0F2D] border-[#1E90FF]/30 max-w-2xl">
+              <DialogHeader>
+                <DialogTitle className="text-[#EAEAEA]">Crear Nueva Factura</DialogTitle>
+              </DialogHeader>
+              <InvoiceForm onSuccess={handleInvoiceCreated} />
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Filters */}
@@ -71,7 +108,7 @@ const Invoices: React.FC = () => {
               <Input
                 placeholder="Buscar facturas..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                 className="pl-10 bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
               />
             </div>
@@ -99,7 +136,7 @@ const Invoices: React.FC = () => {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-semibold text-[#EAEAEA]">Factura #{invoice.invoice_number}</h3>
-                  <p className="text-[#1E90FF] text-sm">{invoice.client_name}</p>
+                  <p className="text-[#1E90FF] text-sm">{invoice.clients?.name || 'N/A'}</p>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs flex items-center gap-1 ${getStatusColor(invoice.status)}`}>
                   {getStatusIcon(invoice.status)}
@@ -110,7 +147,7 @@ const Invoices: React.FC = () => {
               <div className="space-y-3 mb-4">
                 <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
                   <DollarSign className="h-4 w-4" />
-                  <span>${invoice.total?.toLocaleString()}</span>
+                  <span>${invoice.total}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[#EAEAEA]/70 text-sm">
                   <Calendar className="h-4 w-4" />
@@ -126,7 +163,7 @@ const Invoices: React.FC = () => {
 
               <div className="flex items-center justify-between">
                 <div className="text-sm text-[#EAEAEA]/60">
-                  {invoice.items?.length || 0} items
+                  {invoice.invoice_items?.length || 0} items
                 </div>
                 <div className="flex gap-2">
                   <Button variant="ghost" size="sm" className="text-[#EAEAEA] hover:bg-[#1E90FF]/20">

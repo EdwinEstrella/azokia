@@ -1,17 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
 import { Badge } from '../../components/ui/badge';
+import { useDatabase } from '../../hooks/useDatabase';
+import { useAuth } from '../../hooks/useAuth';
+import { Database } from '../../types/supabase';
+
+type Client = Database['public']['Tables']['clients']['Row'];
 
 const ClientsPage: React.FC = () => {
-  const clients: any[] = [];
+  const { user } = useAuth();
+  const { getClients, loading, error } = useDatabase(user?.id || '');
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(() => {
+    if (user?.id) {
+      const fetchClients = async () => {
+        try {
+          const fetchedClients = await getClients();
+          setClients(fetchedClients);
+        } catch (err) {
+          console.error('Error fetching clients:', err);
+        }
+      };
+      fetchClients();
+    }
+  }, [user?.id, getClients]);
 
   const getStatusBadge = (status: string) => {
-    const variants = {
-      activo: 'bg-green-500/20 text-green-400',
-      desarrollo: 'bg-blue-500/20 text-blue-400',
-      completado: 'bg-gray-500/20 text-gray-400'
+    const variants: { [key: string]: string } = {
+      active: 'bg-green-500/20 text-green-400',
+      inactive: 'bg-red-500/20 text-red-400',
+      prospect: 'bg-blue-500/20 text-blue-400',
     };
-    return variants[status as keyof typeof variants] || 'bg-gray-500/20 text-gray-400';
+    return variants[status] || 'bg-gray-500/20 text-gray-400';
   };
 
   return (
@@ -31,29 +52,39 @@ const ClientsPage: React.FC = () => {
               <thead>
                 <tr className="border-b border-[#1E90FF]/20">
                   <th className="text-left text-[#EAEAEA]/70 py-3">Cliente</th>
-                  <th className="text-left text-[#EAEAEA]/70 py-3">Contacto</th>
-                  <th className="text-left text-[#EAEAEA]/70 py-3">Proyecto</th>
+                  <th className="text-left text-[#EAEAEA]/70 py-3">Email</th>
+                  <th className="text-left text-[#EAEAEA]/70 py-3">Teléfono</th>
                   <th className="text-left text-[#EAEAEA]/70 py-3">Estado</th>
-                  <th className="text-left text-[#EAEAEA]/70 py-3">Ingreso</th>
                 </tr>
               </thead>
               <tbody>
-                {clients.map((client: any, index: number) => (
-                  <tr key={index} className="border-b border-[#1E90FF]/10">
+                {loading && (
+                  <tr>
+                    <td colSpan={4} className="py-3 text-center text-[#EAEAEA]/70">Cargando clientes...</td>
+                  </tr>
+                )}
+                {error && (
+                  <tr>
+                    <td colSpan={4} className="py-3 text-center text-red-400">Error: {error}</td>
+                  </tr>
+                )}
+                {!loading && !error && clients.length === 0 && (
+                  <tr>
+                    <td colSpan={4} className="py-3 text-center text-[#EAEAEA]/70">No hay clientes registrados.</td>
+                  </tr>
+                )}
+                {clients.map((client: Client) => (
+                  <tr key={client.id} className="border-b border-[#1E90FF]/10">
                     <td className="py-3">
-                      <div>
-                        <p className="text-[#EAEAEA] font-medium">{client.nombre}</p>
-                        <p className="text-[#EAEAEA]/70 text-sm">{client.email}</p>
-                      </div>
+                      <p className="text-[#EAEAEA] font-medium">{client.name}</p>
                     </td>
-                    <td className="py-3 text-[#EAEAEA]">{client.telefono}</td>
-                    <td className="py-3 text-[#EAEAEA]">{client.proyecto}</td>
+                    <td className="py-3 text-[#EAEAEA]">{client.email}</td>
+                    <td className="py-3 text-[#EAEAEA]">{client.phone || 'N/A'}</td>
                     <td className="py-3">
-                      <Badge className={getStatusBadge(client.estado)}>
-                        {client.estado}
+                      <Badge className={getStatusBadge(client.status)}>
+                        {client.status}
                       </Badge>
                     </td>
-                    <td className="py-3 text-[#EAEAEA] font-medium">{client.ingreso}</td>
                   </tr>
                 ))}
               </tbody>

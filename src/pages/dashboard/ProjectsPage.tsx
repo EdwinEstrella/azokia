@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, Globe, Edit, Eye, ExternalLink, Calendar, Server } from 'lucide-react';
 import { useDatabase } from '../../hooks/useDatabase';
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Card } from '../../components/ui/card';
 import { BackgroundGradient } from '../../components/ui/background-gradient';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../../components/ui/dialog';
 import { ProjectForm } from '../../components/forms/ProjectForm';
+import { Database } from '../../types/supabase';
+
+type Project = Database['public']['Tables']['projects']['Row'];
+type ProjectWithClient = Project & { clients: { name: string } | null };
 
 const Projects: React.FC = () => {
-  const [projects, setProjects] = useState<any[]>([]);
+  const [projects, setProjects] = useState<ProjectWithClient[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { user } = useAuth();
-  const { getProjects, loading } = useDatabase(user!.id);
+  const { getProjects, loading } = useDatabase(user?.id || '');
 
   useEffect(() => {
     loadProjects();
@@ -34,7 +38,7 @@ const Projects: React.FC = () => {
   const filteredProjects = projects.filter(project =>
     (filterStatus === 'ALL' || project.status === filterStatus) &&
     (project.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     project.client_name?.toLowerCase().includes(searchTerm.toLowerCase()))
+     project.clients?.name?.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const getStatusColor = (status: string) => {
@@ -81,7 +85,7 @@ const Projects: React.FC = () => {
               <Input
                 placeholder="Buscar proyectos..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
                 className="pl-10 bg-[#0D0F2D] border-[#1E90FF]/20 text-[#EAEAEA]"
               />
             </div>
@@ -114,7 +118,7 @@ const Projects: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-[#EAEAEA]">{project.name}</h3>
-                    <p className="text-[#1E90FF] text-sm">{project.clients?.name || 'Sin cliente'}</p>
+                    <p className="text-[#1E90FF] text-sm">{(project.clients?.name || 'Sin cliente')}</p>
                   </div>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(project.status)}`}>
@@ -143,16 +147,13 @@ const Projects: React.FC = () => {
               </div>
 
               <div className="flex items-center justify-between">
-                <div className="text-sm text-[#EAEAEA]/60">
-                  {project.contracts_count || 0} contratos
-                </div>
                 <div className="flex gap-2">
                   {project.production_url && (
                     <Button
                       variant="ghost"
                       size="sm"
                       className="text-[#EAEAEA] hover:bg-[#1E90FF]/20"
-                      onClick={() => window.open(project.production_url, '_blank')}
+                      onClick={() => project.production_url && window.open(project.production_url, '_blank')}
                     >
                       <ExternalLink className="h-4 w-4" />
                     </Button>

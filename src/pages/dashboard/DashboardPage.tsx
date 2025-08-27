@@ -1,75 +1,93 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
+import { BarChart3, Users, FileText, DollarSign } from 'lucide-react';
+import { useDatabase } from '../../hooks/useDatabase';
+import { useAuth } from '../../hooks/useAuth';
+import { Database } from '../../types/supabase';
+
+type Project = Database['public']['Tables']['projects']['Row'];
+type InvoiceWithClientAndItems = Database['public']['Tables']['invoices']['Row'] & { clients: { name: string } | null; invoice_items: any[] };
+type ProjectWithClient = Project & { clients: { name: string } | null };
 
 const DashboardPage: React.FC = () => {
-  const metrics: any[] = [];
+  const { user } = useAuth();
+  const { getClients, getProjects, getInvoices, loading, error } = useDatabase(user?.id || '');
+  const [totalClients, setTotalClients] = useState(0);
+  const [totalProjects, setTotalProjects] = useState(0);
+  const [totalRevenue, setTotalRevenue] = useState(0);
+  const [recentProjects, setRecentProjects] = useState<ProjectWithClient[]>([]);
 
-  const recentProjects: any[] = [];
+  useEffect(() => {
+    if (user?.id) {
+      const fetchData = async () => {
+        try {
+          // Fetch Clients
+          const clients = await getClients();
+          setTotalClients(clients.length);
+
+          // Fetch Projects
+          const projects = await getProjects();
+          setTotalProjects(projects.length);
+          setRecentProjects(projects.slice(0, 5)); // Get last 5 projects
+
+          // Fetch Invoices for Revenue
+          const invoices = await getInvoices();
+          const revenue = invoices.filter((inv: InvoiceWithClientAndItems) => inv.status === 'paid').reduce((sum: number, inv: InvoiceWithClientAndItems) => sum + inv.total, 0);
+          setTotalRevenue(revenue);
+
+        } catch (err) {
+          console.error('Error fetching dashboard data:', err);
+        }
+      };
+      fetchData();
+    }
+  }, [user?.id, getClients, getProjects, getInvoices]);
+
+  const metrics = [
+    {
+      title: 'Ingresos Totales',
+      value: `${totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+      change: '+10% vs last month', // Placeholder
+      color: 'text-green-400',
+      icon: DollarSign,
+    },
+    {
+      title: 'Clientes Activos',
+      value: totalClients.toString(),
+      change: '+5% vs last month', // Placeholder
+      color: 'text-blue-400',
+      icon: Users,
+    },
+    {
+      title: 'Proyectos Totales',
+      value: totalProjects.toString(),
+      change: '+2% vs last month', // Placeholder
+      color: 'text-yellow-400',
+      icon: FileText,
+    },
+    {
+      title: 'Proyectos en Desarrollo',
+      value: recentProjects.filter(p => p.status === 'development').length.toString(),
+      change: '-', // Placeholder
+      color: 'text-purple-400',
+      icon: BarChart3,
+    },
+  ];
+
+  const getProjectStatusBadge = (status: string) => {
+    switch (status) {
+      case 'completed': return 'bg-green-500/20 text-green-400';
+      case 'development': return 'bg-blue-500/20 text-blue-400';
+      case 'pending': return 'bg-yellow-500/20 text-yellow-400';
+      case 'cancelled': return 'bg-red-500/20 text-red-400';
+      case 'testing': return 'bg-purple-500/20 text-purple-400';
+      default: return 'bg-gray-500/20 text-gray-400';
+    }
+  };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-[#EAEAEA] mb-2">Dashboard</h1>
-        <p className="text-[#EAEAEA]/70">Resumen del rendimiento de la agencia</p>
-      </div>
-
-      {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {metrics.map((metric: any, index: number) => {
-          const Icon = metric.icon;
-          return (
-            <Card key={index} className="bg-gradient-to-br from-slate-800 to-slate-900 border-[#1E90FF]/20">
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-[#EAEAEA]/70">{metric.title}</p>
-                    <p className="text-2xl font-bold text-[#EAEAEA]">{metric.value}</p>
-                    <p className={`text-sm ${metric.color}`}>{metric.change}</p>
-                  </div>
-                  <div className="p-3 bg-[#1E90FF]/20 rounded-lg">
-                    <Icon className="h-6 w-6 text-[#1E90FF]" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-
-      {/* Recent Projects */}
-      <Card className="bg-gradient-to-br from-slate-800 to-slate-900 border-[#1E90FF]/20">
-        <CardHeader>
-          <CardTitle className="text-[#EAEAEA]">Proyectos Recientes</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-[#1E90FF]/20">
-                  <th className="text-left text-[#EAEAEA]/70 py-3">Cliente</th>
-                  <th className="text-left text-[#EAEAEA]/70 py-3">Proyecto</th>
-                  <th className="text-left text-[#EAEAEA]/70 py-3">Estado</th>
-                  <th className="text-left text-[#EAEAEA]/70 py-3">Plazo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {recentProjects.map((project: any, index: number) => (
-                  <tr key={index} className="border-b border-[#1E90FF]/10">
-                    <td className="py-3 text-[#EAEAEA]">{project.cliente}</td>
-                    <td className="py-3 text-[#EAEAEA]">{project.proyecto}</td>
-                    <td className="py-3">
-                      <span className="px-2 py-1 bg-blue-500/20 text-blue-400 rounded text-xs">
-                        {project.estado}
-                      </span>
-                    </td>
-                    <td className="py-3 text-[#EAEAEA]/70">{project.plazo}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+    <div>
+      <h1>Dashboard Page</h1>
     </div>
   );
 };

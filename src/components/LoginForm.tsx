@@ -4,7 +4,7 @@ import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 interface LoginFormProps {
   onSuccess?: () => void;

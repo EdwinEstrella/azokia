@@ -1,10 +1,11 @@
 import { supabase } from '../lib/supabase';
 import { Database } from '../types/supabase';
 
-type Tables = Database['public']['Tables'];
+export type Tables = Database['public']['Tables'];
 type Client = Tables['clients']['Row'];
 type Contract = Tables['contracts']['Row'];
 type Invoice = Tables['invoices']['Row'];
+type Project = Tables['projects']['Row'];
 
 // Define types for relations
 type ClientWithRelations = Client & {
@@ -19,6 +20,19 @@ type InvoiceWithRelations = Invoice & {
 
 type ClientSearch = Client & {
   contracts: Contract[];
+};
+
+export type ProjectWithClient = Project & {
+  clients: { name: string } | null;
+};
+
+export type InvoiceWithClientAndItems = Invoice & {
+  clients: { name: string } | null;
+  invoice_items: { id: string; concept: string; description: string | null; quantity: number; unit_price: number; total_price: number }[];
+};
+
+export type ContractWithClient = Contract & {
+  clients: { name: string } | null;
 };
 
 export class DatabaseService {
@@ -65,6 +79,17 @@ export class DatabaseService {
 
     if (error) throw error;
     return result as unknown as Tables[T]['Row'];
+  }
+
+  static async createInvoiceItem(data: Tables['invoice_items']['Insert']): Promise<Tables['invoice_items']['Row']> {
+    const { data: result, error } = await supabase
+      .from('invoice_items')
+      .insert(data as any)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return result as unknown as Tables['invoice_items']['Row'];
   }
 
   // static async update<T extends keyof Tables>(
@@ -145,5 +170,48 @@ export class DatabaseService {
 
     if (error) throw error;
     return data as unknown as ClientSearch[];
+  }
+
+  static async getProjectsWithClientNames(userId: string): Promise<ProjectWithClient[]> {
+    const { data, error } = await supabase
+      .from('projects')
+      .select(`
+        *,
+        clients (name)
+      `)
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data as unknown as ProjectWithClient[];
+  }
+
+  static async getInvoicesWithClientAndItems(userId: string): Promise<InvoiceWithClientAndItems[]> {
+    const { data, error } = await supabase
+      .from('invoices')
+      .select(`
+        *,
+        clients (name),
+        invoice_items (*)
+      `)
+      .eq('user_id', userId)
+      .order('issue_date', { ascending: false });
+
+    if (error) throw error;
+    return data as unknown as InvoiceWithClientAndItems[];
+  }
+
+  static async getContractsWithClientNames(userId: string): Promise<ContractWithClient[]> {
+    const { data, error } = await supabase
+      .from('contracts')
+      .select(`
+        *,
+        clients (name)
+      `)
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    return data as unknown as ContractWithClient[];
   }
 }
