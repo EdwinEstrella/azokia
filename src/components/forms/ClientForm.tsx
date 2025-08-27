@@ -4,6 +4,7 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { useDatabase } from '../../hooks/useDatabase';
 import { useAuth } from '../../contexts/AuthContext';
+import { Loader2 } from 'lucide-react';
 
 interface ClientFormProps {
   onSuccess?: () => void;
@@ -19,15 +20,21 @@ export const ClientForm: React.FC<ClientFormProps> = ({ onSuccess, initialData }
     status: initialData?.status || 'active'
   });
   const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
-  const { createClient } = useDatabase(user!.id);
+  const { user, loading: authLoading } = useAuth();
+  const { createClient } = useDatabase(user?.id || '');
+
+  console.log('ClientForm Render - user:', user, 'authLoading:', authLoading, 'formLoading:', loading);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      console.error('User is not authenticated');
+      return;
+    }
     setLoading(true);
     
     try {
-      await createClient({ ...formData, user_id: user!.id });
+      await createClient({ ...formData, user_id: user.id });
       onSuccess?.();
     } catch (error) {
       console.error('Error creating client:', error);
@@ -42,6 +49,10 @@ export const ClientForm: React.FC<ClientFormProps> = ({ onSuccess, initialData }
       [e.target.name]: e.target.value
     }));
   };
+
+  if (authLoading) {
+    return <div className="flex justify-center items-center"><Loader2 className="h-8 w-8 animate-spin" /></div>;
+  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -112,10 +123,11 @@ export const ClientForm: React.FC<ClientFormProps> = ({ onSuccess, initialData }
       <Button 
         type="submit" 
         className="w-full bg-[#1E90FF] hover:bg-[#1E90FF]/90"
-        disabled={loading}
+        disabled={loading || authLoading || !user}
       >
         {loading ? 'Creando...' : initialData ? 'Actualizar Cliente' : 'Crear Cliente'}
       </Button>
     </form>
   );
 };
+
